@@ -1,0 +1,4 @@
+LAYOUT(MainLayout, 108, 128)
+	ITEM(Board, board, HSizePosZ(4, 4).VSizePosZ(4, 4))
+END_LAYOUT
+

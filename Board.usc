@@ -1,0 +1,19 @@
+ctrl Board
+{
+	group "Soccer";
+
+	GetMinSize()
+	{
+		return Size(100, 100);
+	}
+	
+	GetStdSize()
+	{
+		return GetMinSize() * 2;
+	}
+
+	Paint(w)
+	{
+		w.DrawRect(GetRect(), :Green);
+	}
+};

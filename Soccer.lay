@@ -1,0 +1,4 @@
+LAYOUT(MainLayout, 268, 204)
+	ITEM(Board, board, LeftPosZ(44, 100).TopPosZ(20, 120))
+END_LAYOUT
+

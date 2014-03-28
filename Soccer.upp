@@ -1,0 +1,15 @@
+uses
+	CtrlLib;
+
+file
+	Board.cpp,
+	Board.h,
+	Board.usc,
+	MainWindow.h,
+	MainWindow.cpp,
+	main.cpp,
+	Main.lay;
+
+mainconfig
+	"" = "GUI SSE2";
+
