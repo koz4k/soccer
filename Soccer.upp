@@ -3,12 +3,21 @@ uses
 
 file
 	Board.cpp,
+	soccer/Point.cpp,
+	soccer/Point.h,
+	soccer/core.cpp,
+	soccer/upp.h,
+	soccer/core.h,
+	soccer/GameState.cpp,
+	soccer/GameState.h,
 	Board.h,
 	Board.usc,
 	MainWindow.h,
 	MainWindow.cpp,
 	main.cpp,
-	Main.lay;
+	Main.lay,
+	soccer/upp.cpp,
+	src.tpp;
 
 mainconfig
 	"" = "GUI SSE2";
