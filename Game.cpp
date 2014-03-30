@@ -1,8 +1,11 @@
 #include "Game.h"
 
+using namespace soccer;
 using namespace Upp;
 
-Game::Game(soccer::Ai* ai, int boardWidth, int boardHeight, bool playerDown):
+// TODO: wywalic wiekszosc logiki do Board
+
+Game::Game(Ai* ai, int boardWidth, int boardHeight, bool playerDown):
 	ai_(ai), finished_(false)
 {
 	window_.board.SetBoardSize(Size(boardWidth, boardHeight));
@@ -19,22 +22,19 @@ void Game::Run()
 	window_.Run();
 }
 
-void Game::WhenMove_(const soccer::GameState& state, soccer::Direction)
+void Game::WhenMove_(const GameState& state, Direction)
 {
 	if(finished_)
 		return;
 	
-	soccer::Point point = state.getCurrentPosition();
-	if(point.y == aiGate_)
+	Vector2 position = state.getCurrentPosition();
+	if(position.y == aiGate_)
 		Won_();
-	else if(point.y == playerGate_)
-		Lost_();
-	
-	if(state.isBlocked())
+	else if(position.y == playerGate_ || state.isBlocked())
 		Lost_();
 }
 
-void Game::WhenFullMove_(soccer::GameState& state)
+void Game::WhenFullMove_(GameState& state)
 {	
 	if(finished_)
 		return;
@@ -43,27 +43,30 @@ void Game::WhenFullMove_(soccer::GameState& state)
 	
 	do
 	{
-		soccer::Direction direction = ai_->move(state, 0);
+		Direction direction = ai_->move(state, 0);
 		state.move(direction);
 	}
-	while(state.canRebound() && !state.isBlocked());
-	
-	if(state.isBlocked())
-		Won_();
+	while(state.canRebound() && !state.isBlocked() &&
+		  std::abs(state.getCurrentPosition().y) != std::abs(playerGate_));
 	
 	window_.board.Unfreeze();
+	
+	if(state.getCurrentPosition().y == playerGate_)
+		Lost_();
+	else if(state.isBlocked())
+		Won_();
 }
 
 void Game::Won_()
 {
-	PromptOK("Wygrales!");
+	PromptOK("Wygrałeś!");
 	finished_ = true;
 	window_.board.Freeze();
 }
 
 void Game::Lost_()
 {
-	PromptOK("Przegrales!");
+	PromptOK("Przegrałeś!");
 	finished_ = true;
 	window_.board.Freeze();
 }

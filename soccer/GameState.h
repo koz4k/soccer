@@ -31,26 +31,26 @@ class GameState
 	typedef _Move Move;
 
 	GameState(int width, int height);
-	const Field& getField(Point point) const;
+	const Field& getField(Vector2 point) const;
 	const Field& getCurrentField() const;
-	Point getCurrentPosition() const;
+	Vector2 getCurrentPosition() const;
 	bool canMove(Direction direction) const;
 	GameState& move(Direction direction);
 	bool canRebound() const;
 	bool isBlocked() const;
 	std::vector<Move> getValidMoves() const; // TODO: optymalizacja
-	bool isOnBorder(Point point, Direction direction) const;
+	bool isOnBorder(Vector2 point, Direction direction) const;
 	
   private:
-	Field& getField_(Point point);
-	Point boardToStorage_(Point board) const;
+	Field& getField_(Vector2 point);
+	Vector2 boardToStorage_(Vector2 board) const;
 	void getValidMoves_(const std::vector<Direction>& prepend, 
 						std::vector<Move>& acc) const;
-	bool isOnBorder_(Point point) const;
+	bool isOnBorder_(Vector2 point) const;
 						
 	std::vector<Field> fields_;
 	int width_, height_;
-	Point currentPosition_;
+	Vector2 currentPosition_;
 };
 	
 struct _Move

@@ -1,18 +1,19 @@
 #include "Board.h"
-#include "soccer/upp.h"
+#include "conversion.h"
 
+using namespace soccer;
 using namespace Upp;
 
 Board::Board():
-	state_(soccer::DEFAULT_WIDTH, soccer::DEFAULT_HEIGHT),
-	size_(soccer::DEFAULT_WIDTH, soccer::DEFAULT_HEIGHT),
+	state_(DEFAULT_WIDTH, DEFAULT_HEIGHT),
+	size_(DEFAULT_WIDTH, DEFAULT_HEIGHT),
 	moveBegin_(0, 0), target_(0, 0), freezed_(false)
 {
 }
 
 Board& Board::SetBoardSize(Size size)
 {
-	state_ = soccer::GameState(size.cx, size.cy);
+	state_ = GameState(size.cx, size.cy);
 	size_ = size;
 	
 	return *this;
@@ -39,50 +40,49 @@ void Board::Paint(Draw& draw)
 	int halfX = size_.cx / 2, halfY = size_.cy / 2 + 1;
 	
 	for(int x = -halfX; x <= halfX; ++x)
-		DrawLine_(draw, Point(x, -halfY), Point(x, halfY), 0, Gray());
+		DrawLine_(draw, Vector2(x, -halfY), Vector2(x, halfY), 0, Gray());
 	
 	for(int y = -halfY; y <= halfY; ++y)
-		DrawLine_(draw, Point(-halfX, y), Point(halfX, y), 0, Gray());
+		DrawLine_(draw, Vector2(-halfX, y), Vector2(halfX, y), 0, Gray());
 
-	DrawLine_(draw, Point(-1, -halfY), Point(1, -halfY), 2, White());
-	DrawLine_(draw, Point(-halfX, -halfY + 1), Point(-1, -halfY + 1), 2, White());
-	DrawLine_(draw, Point(1, -halfY + 1), Point(halfX, -halfY + 1), 2, White());
+	DrawLine_(draw, Vector2(-1, -halfY), Vector2(1, -halfY), 2, White());
+	DrawLine_(draw, Vector2(-halfX, -halfY + 1), Vector2(-1, -halfY + 1), 2, White());
+	DrawLine_(draw, Vector2(1, -halfY + 1), Vector2(halfX, -halfY + 1), 2, White());
 
-	DrawLine_(draw, Point(-1, halfY), Point(1, halfY), 2, White());
-	DrawLine_(draw, Point(-halfX, halfY - 1), Point(-1, halfY - 1), 2, White());
-	DrawLine_(draw, Point(1, halfY - 1), Point(halfX, halfY - 1), 2, White());
+	DrawLine_(draw, Vector2(-1, halfY), Vector2(1, halfY), 2, White());
+	DrawLine_(draw, Vector2(-halfX, halfY - 1), Vector2(-1, halfY - 1), 2, White());
+	DrawLine_(draw, Vector2(1, halfY - 1), Vector2(halfX, halfY - 1), 2, White());
 	
-	DrawLine_(draw, Point(-1, -halfY), Point(-1, -halfY + 1), 2, White());
-	DrawLine_(draw, Point(-halfX, -halfY + 1), Point(-halfX, halfY - 1), 2, White());
-	DrawLine_(draw, Point(1, -halfY), Point(1, -halfY + 1), 2, White());
+	DrawLine_(draw, Vector2(-1, -halfY), Vector2(-1, -halfY + 1), 2, White());
+	DrawLine_(draw, Vector2(-halfX, -halfY + 1), Vector2(-halfX, halfY - 1), 2, White());
+	DrawLine_(draw, Vector2(1, -halfY), Vector2(1, -halfY + 1), 2, White());
 	
-	DrawLine_(draw, Point(1, halfY), Point(1, halfY - 1), 2, White());
-	DrawLine_(draw, Point(halfX, -halfY + 1), Point(halfX, halfY - 1), 2, White());
-	DrawLine_(draw, Point(-1, halfY), Point(-1, halfY - 1), 2, White());
+	DrawLine_(draw, Vector2(1, halfY), Vector2(1, halfY - 1), 2, White());
+	DrawLine_(draw, Vector2(halfX, -halfY + 1), Vector2(halfX, halfY - 1), 2, White());
+	DrawLine_(draw, Vector2(-1, halfY), Vector2(-1, halfY - 1), 2, White());
 	
-	soccer::Point p;
+	Vector2 p;
 	for(p.y = -halfY; p.y <= halfY; ++p.y)
 	{
 		for(p.x = -halfX; p.x <= halfX; ++p.x)
 		{
-			for(int dir = soccer::DIR_BEGIN; dir < soccer::DIR_END / 2; ++dir)
+			for(int dir = DIR_BEGIN; dir < DIR_END / 2; ++dir)
 			{
 				if(state_.getField(p).isOccupied(dir) && !state_.isOnBorder(p, dir))
-					DrawLine_(draw, pointToUpp(p),
-							  pointToUpp(p.getNeighbor(dir)), 1, White());
+					DrawLine_(draw, p, p.getNeighbor(dir), 1, White());
 			}
 		}
 	}
 	
-	p = soccer::pointFromUpp(moveBegin_);
+	p = moveBegin_;
 	for(int i = 0; i < move_.GetCount(); ++i)
 	{
-		soccer::Point p2 = p.getNeighbor(move_[i]);
-		DrawLine_(draw, soccer::pointToUpp(p), soccer::pointToUpp(p2), 2, White());
+		Vector2 p2 = p.getNeighbor(move_[i]);
+		DrawLine_(draw, p, p2, 2, White());
 		p = p2;
 	}
 	
-	DrawLine_(draw, soccer::pointToUpp(p), target_, 2, White());
+	DrawLine_(draw, p, target_, 2, White());
 	
 	DrawCircle_(draw, target_, 8, White());
 }
@@ -92,20 +92,18 @@ void Board::MouseMove(Point point, dword)
 	if(freezed_)
 		return;
 	
-	soccer::Point spoint = soccer::pointFromUpp(PixelToBoard_(point));
-	soccer::Point position = state_.getCurrentPosition();
+	Vector2 spoint = PixelToBoard_(point);
+	Vector2 position = state_.getCurrentPosition();
 	if(position.isNeighbor(spoint))
 	{
-		soccer::Direction direction = position.getDirection(spoint);
+		Direction direction = position.getDirection(spoint);
 		if(state_.canMove(direction))
-		{
-			target_ = pointToUpp(spoint);
-		}
+			target_ = spoint;
 		else
-			target_ = pointToUpp(position);
+			target_ = position;
 	}
-	else if(target_ != pointToUpp(position))
-		target_ = pointToUpp(position);
+	else if(target_ != position)
+		target_ = position;
 	
 	Refresh();
 }
@@ -115,16 +113,15 @@ void Board::LeftDown(Point point, dword)
 	if(freezed_)
 		return;
 	
-	point = PixelToBoard_(point);
-	if(point != target_)
+	Vector2 spoint = PixelToBoard_(point);
+	if(spoint != target_)
 		return;
 
-	soccer::Point spoint = soccer::pointFromUpp(point);
-	soccer::Point position = state_.getCurrentPosition();
+	Vector2 position = state_.getCurrentPosition();
 	if(spoint == position)
 		return;
 	
-	soccer::Direction direction = position.getDirection(spoint);
+	Direction direction = position.getDirection(spoint);
 	if(state_.canMove(direction))
 		state_.move(direction);
 	
@@ -138,14 +135,14 @@ void Board::LeftDown(Point point, dword)
 		move_.Clear();
 		
 		WhenFullMove(state_);
-		moveBegin_ = target_ = soccer::pointToUpp(state_.getCurrentPosition());
+		moveBegin_ = target_ = state_.getCurrentPosition();
 	}
 	
 	Refresh();
 }
 
-Point Board::BoardToPixel_(Point point)
-{
+Point Board::BoardToPixel_(Vector2 point)
+{	
 	// TODO: do skladowych prywatnych
 	
 	Size pixelSize = GetSize();
@@ -157,14 +154,19 @@ Point Board::BoardToPixel_(Point point)
 	Point center = pixelSize / 2;
 	Point start = center - fieldSize / 2;
 	
-	point.y *= -1;
-	point += fullSize / 2;
-	point *= tile;
-	point += start;
-	return point;
+	// TODO: skorzystac z Vector2
+	
+	Point upoint = ConvertVector(point);
+	
+	upoint.y *= -1;
+	upoint += fullSize / 2;
+	upoint *= tile;
+	upoint += start;
+	
+	return upoint;
 }
 
-Upp::Point Board::PixelToBoard_(Upp::Point point)
+Vector2 Board::PixelToBoard_(Point point)
 {
 	// TODO: do skladowych prywatnych
 	
@@ -177,23 +179,25 @@ Upp::Point Board::PixelToBoard_(Upp::Point point)
 	Point center = pixelSize / 2;
 	Point start = center - fieldSize / 2;
 	
+	// TODO: skorzystac z Vector2
+	
 	point -= start;
 	point.x = (int) round(((double) point.x) / tile);
 	point.y = (int) round(((double) point.y) / tile);
 	point -= fullSize / 2;
 	point.y *= -1;
-	return point;
+	return ConvertVector(point);
 }
 
-void Board::DrawLine_(Draw& draw, Point from, Point to, int width, Color color)
+void Board::DrawLine_(Draw& draw, Vector2 from, Vector2 to, int width, Color color)
 {
-	from = BoardToPixel_(from);
-	to = BoardToPixel_(to);
-	draw.DrawLine(from.x, from.y, to.x, to.y, width, color);
+	Point ufrom = BoardToPixel_(from);
+	Point uto = BoardToPixel_(to);
+	draw.DrawLine(ufrom.x, ufrom.y, uto.x, uto.y, width, color);
 }
 
-void Board::DrawCircle_(Draw& draw, Point center, int radius, Color color)
+void Board::DrawCircle_(Draw& draw, Vector2 center, int radius, Color color)
 {
-	center = BoardToPixel_(center);
-	draw.DrawEllipse(center.x - radius / 2, center.y - radius / 2, radius, radius, color);
+	Point ucenter = BoardToPixel_(center);
+	draw.DrawEllipse(ucenter.x - radius / 2, ucenter.y - radius / 2, radius, radius, color);
 }

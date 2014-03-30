@@ -45,7 +45,7 @@ GameState::GameState(int width, int height):
 {
 	fields_.resize(width_ * height_);
 		
-	Point p;
+	Vector2 p;
 	for(p.x = -width / 2; p.x <= width / 2; ++p.x)
 	{
 		for(p.y = -height / 2 - 1; p.y <= height / 2 + 1; ++p.y)
@@ -62,7 +62,7 @@ GameState::GameState(int width, int height):
 	}
 }
 	
-const GameState::Field& GameState::getField(Point point) const
+const GameState::Field& GameState::getField(Vector2 point) const
 {
 	point = boardToStorage_(point);
 	return fields_[point.y * width_ + point.x];
@@ -73,7 +73,7 @@ inline const GameState::Field& GameState::getCurrentField() const
 	return getField(currentPosition_);
 }
 
-Point GameState::getCurrentPosition() const
+Vector2 GameState::getCurrentPosition() const
 {
 	return currentPosition_;
 }
@@ -101,17 +101,17 @@ bool GameState::isBlocked() const
 	return getCurrentField().isBlocked();
 }
 
-bool GameState::isOnBorder(Point point, Direction direction) const
+bool GameState::isOnBorder(Vector2 point, Direction direction) const
 {
-	Point point2 = point.getNeighbor(direction);
+	Vector2 point2 = point.getNeighbor(direction);
 	if(!isOnBorder_(point) || !isOnBorder_(point2))
 		return false;
 	
 	if(!(direction & 1))
 		return true;
 	
-	Point cross1(point.x, point2.y);
-	Point cross2(point2.x, point.y);
+	Vector2 cross1(point.x, point2.y);
+	Vector2 cross2(point2.x, point.y);
 	return isOnBorder_(cross1) && isOnBorder_(cross2);
 }
 	
@@ -122,15 +122,15 @@ std::vector<GameState::Move> GameState::getValidMoves() const
 	return acc;
 }
 
-GameState::Field& GameState::getField_(Point point)
+GameState::Field& GameState::getField_(Vector2 point)
 {
 	point = boardToStorage_(point);
 	return fields_[point.y * width_ + point.x];
 }
 	
-inline Point GameState::boardToStorage_(Point board) const
+inline Vector2 GameState::boardToStorage_(Vector2 board) const
 {
-	return Point(board.x + (width_ - 1) / 2, board.y + (height_ - 1) / 2);
+	return Vector2(board.x + (width_ - 1) / 2, board.y + (height_ - 1) / 2);
 }
 
 void GameState::getValidMoves_(const std::vector<Direction>& prepend,
@@ -152,7 +152,7 @@ void GameState::getValidMoves_(const std::vector<Direction>& prepend,
 	}
 }
 
-bool GameState::isOnBorder_(Point point) const
+bool GameState::isOnBorder_(Vector2 point) const
 {
 	return std::abs(point.x) >= width_ / 2 ||
 		   std::abs(point.y) >= height_ / 2 ||

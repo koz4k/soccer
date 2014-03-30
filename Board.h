@@ -19,18 +19,18 @@ class Board: public Upp::Ctrl
 	Upp::Callback1<soccer::GameState&> WhenFullMove;
 	
   private:
-  	Upp::Point BoardToPixel_(Upp::Point point);
-	Upp::Point PixelToBoard_(Upp::Point point);
-  	void DrawLine_(Upp::Draw& draw, Upp::Point from, Upp::Point to,
+  	Upp::Point BoardToPixel_(soccer::Vector2 point);
+	soccer::Vector2 PixelToBoard_(Upp::Point point);
+  	void DrawLine_(Upp::Draw& draw, soccer::Vector2 from, soccer::Vector2 to,
   				   int width, Upp::Color color);
-  	void DrawCircle_(Upp::Draw& draw, Upp::Point center,
+  	void DrawCircle_(Upp::Draw& draw, soccer::Vector2 center,
   					 int radius, Upp::Color color);
   
 	soccer::GameState state_;
 	Upp::Size size_;
 	Upp::Vector<soccer::Direction> move_;
-	Upp::Point moveBegin_;
-	Upp::Point target_;
+	soccer::Vector2 moveBegin_;
+	soccer::Vector2 target_;
 	bool freezed_;
 };
 

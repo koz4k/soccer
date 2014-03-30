@@ -2,6 +2,6 @@
 
 MainWindow::MainWindow()
 {
-	CtrlLayout(*this, "Window title");
+	CtrlLayout(*this, "Piłka");
 	Sizeable();
 }

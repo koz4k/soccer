@@ -27,6 +27,6 @@ Direction reverseDirection(Direction direction);
 
 }
 
-#include "Point.h"
+#include "Vector2.h"
 
 #endif

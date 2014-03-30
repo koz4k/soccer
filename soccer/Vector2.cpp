@@ -1,61 +1,61 @@
-#include "Point.h"
+#include "Vector2.h"
 #include <cmath>
 
 namespace soccer {
 
-Point::Point(): x(0), y(0)
+Vector2::Vector2(): x(0), y(0)
 {
 }
 
-Point::Point(int x, int y):
+Vector2::Vector2(int x, int y):
 	x(x), y(y)
 {
 }
 
-bool Point::operator==(Point that) const
+bool Vector2::operator==(Vector2 that) const
 {
 	return x == that.x && y == that.y;
 }
 
-bool Point::operator!=(Point that) const
+bool Vector2::operator!=(Vector2 that) const
 {
 	return x != that.x || y != that.y;
 }
 
-Point Point::getNeighbor(Direction direction) const
+Vector2 Vector2::getNeighbor(Direction direction) const
 {
 	switch(direction)
 	{
 	  case DIR_UP:
-	  	return Point(x, y + 1);
+	  	return Vector2(x, y + 1);
 	  	
 	  case DIR_UP_RIGHT:
-	  	return Point(x + 1, y + 1);
+	  	return Vector2(x + 1, y + 1);
 	  	
 	  case DIR_RIGHT:
-	  	return Point(x + 1, y);
+	  	return Vector2(x + 1, y);
 	  	
 	  case DIR_DOWN_RIGHT:
-	  	return Point(x + 1, y - 1);
+	  	return Vector2(x + 1, y - 1);
 	  	
 	  case DIR_DOWN:
-	  	return Point(x, y - 1);
+	  	return Vector2(x, y - 1);
 	  	
 	  case DIR_DOWN_LEFT:
-	  	return Point(x - 1, y - 1);
+	  	return Vector2(x - 1, y - 1);
 	  	
 	  case DIR_LEFT:
-	  	return Point(x - 1, y);
+	  	return Vector2(x - 1, y);
 	  	
 	  case DIR_UP_LEFT:
-	  	return Point(x - 1, y + 1);
+	  	return Vector2(x - 1, y + 1);
 	  
 	  default:
 	  	return *this;
 	}
 }
 
-bool Point::isNeighbor(Point point) const
+bool Vector2::isNeighbor(Vector2 point) const
 {
 	return std::abs(x - point.x) <= 1 && std::abs(y - point.y) <= 1 &&
 		   (x != point.x || y != point.y);
@@ -66,7 +66,7 @@ inline int sgn(int x)
 	return x > 0 ? 1 : x < 0 ? -1 : 0;
 }
 
-Direction Point::getDirection(Point neighbor) const
+Direction Vector2::getDirection(Vector2 neighbor) const
 {
 	switch(sgn(neighbor.x - x))
 	{
