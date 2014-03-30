@@ -1,7 +1,8 @@
-#include "MainWindow.h"
-#include "soccer/core.h"
+#include "Game.h"
+#include "soccer/ai/Random.h"
 
 GUI_APP_MAIN
 {
-	MainWindow().Run();
+	soccer::ai::Random ai;
+	Game(&ai).Run();
 }

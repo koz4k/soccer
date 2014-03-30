@@ -17,6 +17,7 @@ class GameState
 		Field();
 		bool isOccupied(Direction direction) const;
 		bool couldRebound() const;
+		bool isBlocked() const;
 	
 	  private:
 	  	int getOccupiedCount_() const;
@@ -36,6 +37,7 @@ class GameState
 	bool canMove(Direction direction) const;
 	GameState& move(Direction direction);
 	bool canRebound() const;
+	bool isBlocked() const;
 	std::vector<Move> getValidMoves() const; // TODO: optymalizacja
 	bool isOnBorder(Point point, Direction direction) const;
 	

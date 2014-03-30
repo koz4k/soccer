@@ -2,16 +2,16 @@
 #define _Soccer_MainWindow_h
 
 #include <CtrlLib/CtrlLib.h>
-#include <Soccer/Board.h>
-
-using namespace Upp;
+#include "Board.h"
 
 #define LAYOUTFILE <Soccer/Main.lay>
 #include <CtrlCore/lay.h>
 
-class MainWindow : public WithMainLayout<TopWindow> {
-public:
+class MainWindow: public WithMainLayout<Upp::TopWindow>
+{
+  public:
 	typedef MainWindow CLASSNAME;
+	
 	MainWindow();
 };
 

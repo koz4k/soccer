@@ -2,6 +2,9 @@ uses
 	CtrlLib;
 
 file
+	soccer/ai/Random.cpp,
+	soccer/ai/Random.h,
+	soccer/Ai.h,
 	Board.cpp,
 	soccer/Point.cpp,
 	soccer/Point.h,
@@ -17,6 +20,8 @@ file
 	main.cpp,
 	Main.lay,
 	soccer/upp.cpp,
+	Game.h,
+	Game.cpp,
 	src.tpp;
 
 mainconfig

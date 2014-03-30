@@ -6,14 +6,30 @@ using namespace Upp;
 Board::Board():
 	state_(soccer::DEFAULT_WIDTH, soccer::DEFAULT_HEIGHT),
 	size_(soccer::DEFAULT_WIDTH, soccer::DEFAULT_HEIGHT),
-	moveBegin_(0, 0), target_(0, 0)
+	moveBegin_(0, 0), target_(0, 0), freezed_(false)
 {
 }
 
-void Board::SetBoardSize(Size size)
+Board& Board::SetBoardSize(Size size)
 {
 	state_ = soccer::GameState(size.cx, size.cy);
 	size_ = size;
+	
+	return *this;
+}
+
+Board& Board::Freeze()
+{
+	freezed_ = true;
+	
+	return *this;
+}
+
+Board& Board::Unfreeze()
+{
+	freezed_ = false;
+	
+	return *this;
 }
 
 void Board::Paint(Draw& draw)
@@ -73,6 +89,9 @@ void Board::Paint(Draw& draw)
 
 void Board::MouseMove(Point point, dword)
 {
+	if(freezed_)
+		return;
+	
 	soccer::Point spoint = soccer::pointFromUpp(PixelToBoard_(point));
 	soccer::Point position = state_.getCurrentPosition();
 	if(position.isNeighbor(spoint))
@@ -93,6 +112,9 @@ void Board::MouseMove(Point point, dword)
 
 void Board::LeftDown(Point point, dword)
 {
+	if(freezed_)
+		return;
+	
 	point = PixelToBoard_(point);
 	if(point != target_)
 		return;
@@ -105,6 +127,8 @@ void Board::LeftDown(Point point, dword)
 	soccer::Direction direction = position.getDirection(spoint);
 	if(state_.canMove(direction))
 		state_.move(direction);
+	
+	WhenMove(state_, direction);
 
 	if(state_.canRebound())
 		move_.Add(direction);
@@ -112,6 +136,9 @@ void Board::LeftDown(Point point, dword)
 	{
 		moveBegin_ = target_;
 		move_.Clear();
+		
+		WhenFullMove(state_);
+		moveBegin_ = target_ = soccer::pointToUpp(state_.getCurrentPosition());
 	}
 	
 	Refresh();

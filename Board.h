@@ -8,10 +8,15 @@ class Board: public Upp::Ctrl
 {	
   public:
 	Board();
-	void SetBoardSize(Upp::Size size);
+	Board& SetBoardSize(Upp::Size size);
+	Board& Freeze();
+	Board& Unfreeze();
 	virtual void Paint(Upp::Draw& w);
 	virtual void MouseMove(Upp::Point point, Upp::dword);
 	virtual void LeftDown(Upp::Point, Upp::dword);
+
+	Upp::Callback2<const soccer::GameState&, soccer::Direction> WhenMove;
+	Upp::Callback1<soccer::GameState&> WhenFullMove;
 	
   private:
   	Upp::Point BoardToPixel_(Upp::Point point);
@@ -26,6 +31,7 @@ class Board: public Upp::Ctrl
 	Upp::Vector<soccer::Direction> move_;
 	Upp::Point moveBegin_;
 	Upp::Point target_;
+	bool freezed_;
 };
 
 #endif

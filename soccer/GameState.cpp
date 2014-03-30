@@ -18,6 +18,11 @@ inline bool GameState::Field::couldRebound() const
 	return links_ != 0;
 }
 
+inline bool GameState::Field::isBlocked() const
+{
+	return links_ == 0xff;
+}
+
 int GameState::Field::getOccupiedCount_() const
 {
 	int count = 0;
@@ -89,6 +94,11 @@ GameState& GameState::move(Direction direction)
 inline bool GameState::canRebound() const
 {
 	return getCurrentField().getOccupiedCount_() > 1;
+}
+
+bool GameState::isBlocked() const
+{
+	return getCurrentField().isBlocked();
 }
 
 bool GameState::isOnBorder(Point point, Direction direction) const
