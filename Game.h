@@ -13,10 +13,8 @@ class Game
   	void Run();
   	
   private:
-	void WhenMove_(const soccer::GameState& state, soccer::Direction);
   	void WhenFullMove_(soccer::GameState& state);
-  	void Won_();
-  	void Lost_();
+  	void WhenGameOver_(const soccer::GameState& state, bool won);
   
   	MainWindow window_;
   	soccer::Ai* ai_;

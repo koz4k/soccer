@@ -8,7 +8,7 @@ class Board: public Upp::Ctrl
 {	
   public:
 	Board();
-	Board& SetBoardSize(Upp::Size size);
+	Board& Initialize(Upp::Size size, bool playerDown);
 	Board& Freeze();
 	Board& Unfreeze();
 	virtual void Paint(Upp::Draw& w);
@@ -17,6 +17,7 @@ class Board: public Upp::Ctrl
 
 	Upp::Callback2<const soccer::GameState&, soccer::Direction> WhenMove;
 	Upp::Callback1<soccer::GameState&> WhenFullMove;
+	Upp::Callback2<const soccer::GameState&, bool> WhenGameOver;
 	
   private:
   	Upp::Point BoardToPixel_(soccer::Vector2 point);
@@ -25,13 +26,19 @@ class Board: public Upp::Ctrl
   				   int width, Upp::Color color);
   	void DrawCircle_(Upp::Draw& draw, soccer::Vector2 center,
   					 int radius, Upp::Color color);
+  	void WhenMove_(soccer::Direction direction);
+  	void WhenFullMove_();
+  	void WhenGameOver_(bool won);
   
 	soccer::GameState state_;
 	Upp::Size size_;
+	int playerGate_;
+	int aiGate_;
 	Upp::Vector<soccer::Direction> move_;
 	soccer::Vector2 moveBegin_;
 	soccer::Vector2 target_;
 	bool freezed_;
+	bool finished_;
 };
 
 #endif

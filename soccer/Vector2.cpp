@@ -63,7 +63,7 @@ bool Vector2::isNeighbor(Vector2 point) const
 
 inline int sgn(int x)
 {
-	return x > 0 ? 1 : x < 0 ? -1 : 0;
+	return (x > 0) - (x < 0);
 }
 
 Direction Vector2::getDirection(Vector2 neighbor) const

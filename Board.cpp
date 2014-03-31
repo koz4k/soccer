@@ -5,16 +5,19 @@ using namespace soccer;
 using namespace Upp;
 
 Board::Board():
-	state_(DEFAULT_WIDTH, DEFAULT_HEIGHT),
-	size_(DEFAULT_WIDTH, DEFAULT_HEIGHT),
-	moveBegin_(0, 0), target_(0, 0), freezed_(false)
+	state_(DEFAULT_WIDTH, DEFAULT_HEIGHT), size_(DEFAULT_WIDTH, DEFAULT_HEIGHT),
+	playerGate_(DEFAULT_HEIGHT / 2 + 1), aiGate_(-DEFAULT_HEIGHT / 2 - 1),
+	moveBegin_(0, 0), target_(0, 0), freezed_(false), finished_(false)
 {
 }
 
-Board& Board::SetBoardSize(Size size)
+Board& Board::Initialize(Size size, bool playerDown)
 {
 	state_ = GameState(size.cx, size.cy);
 	size_ = size;
+	
+	playerGate_ = (playerDown ? -1 : 1) * (size.cy / 2 + 1);
+	aiGate_ = -playerGate_;
 	
 	return *this;
 }
@@ -125,7 +128,7 @@ void Board::LeftDown(Point point, dword)
 	if(state_.canMove(direction))
 		state_.move(direction);
 	
-	WhenMove(state_, direction);
+	WhenMove_(direction);
 
 	if(state_.canRebound())
 		move_.Add(direction);
@@ -134,7 +137,7 @@ void Board::LeftDown(Point point, dword)
 		moveBegin_ = target_;
 		move_.Clear();
 		
-		WhenFullMove(state_);
+		WhenFullMove_();
 		moveBegin_ = target_ = state_.getCurrentPosition();
 	}
 	
@@ -200,4 +203,42 @@ void Board::DrawCircle_(Draw& draw, Vector2 center, int radius, Color color)
 {
 	Point ucenter = BoardToPixel_(center);
 	draw.DrawEllipse(ucenter.x - radius / 2, ucenter.y - radius / 2, radius, radius, color);
+}
+
+void Board::WhenMove_(Direction direction)
+{
+	if(finished_)
+		return;
+	
+	Vector2 position = state_.getCurrentPosition();
+	if(position.y == aiGate_)
+		WhenGameOver_(true);
+	else if(position.y == playerGate_ || state_.isBlocked())
+		WhenGameOver_(false);
+	else
+		WhenMove(state_, direction);
+}
+
+void Board::WhenFullMove_()
+{
+	if(finished_)
+		return;
+
+	Freeze();
+	
+	WhenFullMove(state_);
+	
+	Unfreeze();
+	
+	if(state_.getCurrentPosition().y == playerGate_)
+		WhenGameOver_(false);
+	else if(state_.getCurrentPosition().y == aiGate_ || state_.isBlocked())
+		WhenGameOver_(true);
+}
+
+void Board::WhenGameOver_(bool won)
+{
+	Freeze();
+	finished_ = true;
+	WhenGameOver(state_, won);
 }
