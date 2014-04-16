@@ -21,7 +21,7 @@ class GameState
 	
 	  private:
 	  	int getOccupiedCount_() const;
-	  	Field& setOccupied_(Direction direction);
+	  	Field& setOccupied_(Direction direction, bool occupied = true);
 	  
 		u8 links_;
 		
@@ -36,8 +36,10 @@ class GameState
 	Vector2 getCurrentPosition() const;
 	bool canMove(Direction direction) const;
 	GameState& move(Direction direction);
+	GameState& undo(Direction direction);
 	bool canRebound() const;
 	bool isBlocked() const;
+	bool isGameOver() const;
 	std::vector<Move> getValidMoves() const; // TODO: optymalizacja
 	bool isOnBorder(Vector2 point, Direction direction) const;
 	

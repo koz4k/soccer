@@ -34,9 +34,12 @@ int GameState::Field::getOccupiedCount_() const
 	return count;
 }
 
-inline GameState::Field& GameState::Field::setOccupied_(Direction direction)
+inline GameState::Field& GameState::Field::setOccupied_(Direction direction, bool occupied)
 {
-	links_ |= 1 << direction;
+	if(occupied)
+		links_ |= 1 << direction;
+	else
+		links_ &= ~(1 << direction);
 	return *this;
 }
 
@@ -91,14 +94,29 @@ GameState& GameState::move(Direction direction)
 	return *this;
 }
 
+GameState& GameState::undo(Direction direction)
+{
+	direction = reverseDirection(direction);
+	getField_(currentPosition_).setOccupied_(direction, false);
+	currentPosition_ = currentPosition_.getNeighbor(direction);
+	getField_(currentPosition_).setOccupied_(reverseDirection(direction), false);
+	return *this;
+}
+	
+
 inline bool GameState::canRebound() const
 {
-	return getCurrentField().getOccupiedCount_() > 1;
+	return getCurrentField().getOccupiedCount_() > 1 && !isGameOver();
 }
 
 bool GameState::isBlocked() const
 {
 	return getCurrentField().isBlocked();
+}
+
+bool GameState::isGameOver() const
+{
+	return isBlocked() || std::abs(currentPosition_.y) == height_ / 2;
 }
 
 bool GameState::isOnBorder(Vector2 point, Direction direction) const

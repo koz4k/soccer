@@ -64,6 +64,23 @@ void Board::Paint(Draw& draw)
 	DrawLine_(draw, Vector2(halfX, -halfY + 1), Vector2(halfX, halfY - 1), 2, White());
 	DrawLine_(draw, Vector2(-1, halfY), Vector2(-1, halfY - 1), 2, White());
 	
+	/*std::vector<GameState::Move> validMoves = state_.getValidMoves();
+	for(int i = 0; i < validMoves.size(); ++i)
+	{
+		Vector2 p;
+		for(p.y = -halfY; p.y <= halfY; ++p.y)
+		{
+			for(p.x = -halfX; p.x <= halfX; ++p.x)
+			{
+				for(int dir = DIR_BEGIN; dir < DIR_END / 2; ++dir)
+				{
+					if(validMoves[i].endState.getField(p).isOccupied(dir) && !state_.isOnBorder(p, dir))
+						DrawLine_(draw, p, p.getNeighbor(dir), 1, Red());
+				}
+			}
+		}
+	}*/
+	
 	Vector2 p;
 	for(p.y = -halfY; p.y <= halfY; ++p.y)
 	{
