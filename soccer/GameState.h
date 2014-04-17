@@ -42,6 +42,8 @@ class GameState
 	bool isGameOver() const;
 	std::vector<Move> getValidMoves() const; // TODO: optymalizacja
 	bool isOnBorder(Vector2 point, Direction direction) const;
+	Player whoseTurn() const;
+	Player whoWon() const;
 	
   private:
 	Field& getField_(Vector2 point);
@@ -53,6 +55,7 @@ class GameState
 	std::vector<Field> fields_;
 	int width_, height_;
 	Vector2 currentPosition_;
+	Player currentPlayer_;
 };
 	
 struct _Move

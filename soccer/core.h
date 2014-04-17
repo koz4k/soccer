@@ -23,7 +23,15 @@ const Direction DIR_DOWN_RIGHT = 7;
 const Direction DIR_BEGIN = 0;
 const Direction DIR_END = 8;
 
+enum Player
+{
+	NO_PLAYER,
+	PLAYER_1,
+	PLAYER_2
+};
+
 Direction reverseDirection(Direction direction);
+Player otherPlayer(Player player);
 
 }
 

@@ -17,7 +17,7 @@ class Board: public Upp::Ctrl
 
 	Upp::Callback2<const soccer::GameState&, soccer::Direction> WhenMove;
 	Upp::Callback1<soccer::GameState&> WhenFullMove;
-	Upp::Callback2<const soccer::GameState&, bool> WhenGameOver;
+	Upp::Callback1<const soccer::GameState&> WhenGameOver;
 	
   private:
   	Upp::Point BoardToPixel_(soccer::Vector2 point);
@@ -28,12 +28,10 @@ class Board: public Upp::Ctrl
   					 int radius, Upp::Color color);
   	void WhenMove_(soccer::Direction direction);
   	void WhenFullMove_();
-  	void WhenGameOver_(bool won);
+  	void WhenGameOver_();
   
 	soccer::GameState state_;
 	Upp::Size size_;
-	int playerGate_;
-	int aiGate_;
 	Upp::Vector<soccer::Direction> move_;
 	soccer::Vector2 moveBegin_;
 	soccer::Vector2 target_;

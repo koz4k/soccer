@@ -44,7 +44,7 @@ inline GameState::Field& GameState::Field::setOccupied_(Direction direction, boo
 }
 
 GameState::GameState(int width, int height):
-	width_(width + 1), height_(height + 3), currentPosition_(0, 0)
+	width_(width + 1), height_(height + 3), currentPosition_(0, 0), currentPlayer_(PLAYER_1)
 {
 	fields_.resize(width_ * height_);
 		
@@ -91,15 +91,23 @@ GameState& GameState::move(Direction direction)
 	getField_(currentPosition_).setOccupied_(direction);
 	currentPosition_ = currentPosition_.getNeighbor(direction);
 	getField_(currentPosition_).setOccupied_(reverseDirection(direction));
+	
+	if(!canRebound() && !isBlocked())
+		currentPlayer_ = otherPlayer(currentPlayer_);
+	
 	return *this;
 }
 
 GameState& GameState::undo(Direction direction)
 {
+	if(!canRebound() && !isBlocked())
+		currentPlayer_ = otherPlayer(currentPlayer_);
+	
 	direction = reverseDirection(direction);
 	getField_(currentPosition_).setOccupied_(direction, false);
 	currentPosition_ = currentPosition_.getNeighbor(direction);
-	getField_(currentPosition_).setOccupied_(reverseDirection(direction), false);
+	getField_(currentPosition_).setOccupied_(reverseDirection(direction), false);	
+	
 	return *this;
 }
 	
@@ -138,6 +146,18 @@ std::vector<GameState::Move> GameState::getValidMoves() const
 	std::vector<Move> acc;
 	getValidMoves_(std::vector<Direction>(), acc);
 	return acc;
+}
+
+Player GameState::whoWon() const
+{
+	return currentPosition_.y == height_ / 2 ? PLAYER_1 :
+		   currentPosition_.y == -height_ / 2 ? PLAYER_2 :
+		   isBlocked() ? otherPlayer(currentPlayer_) : NO_PLAYER;
+}
+
+Player GameState::whoseTurn() const
+{
+	return currentPlayer_;
 }
 
 GameState::Field& GameState::getField_(Vector2 point)

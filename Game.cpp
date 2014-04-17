@@ -20,18 +20,36 @@ void Game::Run()
 	window_.Run();
 }
 
+const char* getPlayerIndicator(Player player)
+{
+	switch(player)
+	{
+	  case PLAYER_1:
+	  	return "Gracz";
+	  
+	  case PLAYER_2:
+	  	return "Komputer";
+	  
+	  default:
+	  	return "Błąd";
+	}
+}
+
 void Game::WhenFullMove_(GameState& state)
 {
-	do
+	window_.whoseTurn.SetLabel(getPlayerIndicator(state.whoseTurn()));
+	window_.ProcessEvents();
+	
+	while(state.whoseTurn() == PLAYER_2 && !state.isGameOver())
 	{
 		Direction direction = ai_->move(state, 0);
 		state.move(direction);
 	}
-	while(state.canRebound() && !state.isBlocked() &&
-		  std::abs(state.getCurrentPosition().y) != std::abs(playerGate_));
+	
+	window_.whoseTurn.SetLabel(getPlayerIndicator(state.whoseTurn()));
 }
 
-void Game::WhenGameOver_(const GameState& state, bool won)
+void Game::WhenGameOver_(const GameState& state)
 {
-	PromptOK(won ? "Wygrałeś!" : "Przegrałeś!");
+	PromptOK(state.whoWon() == PLAYER_1 ? "Wygrałeś!" : "Przegrałeś!");
 }

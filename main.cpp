@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "soccer/ai/Negamax.h"
+#include "soccer/ai/Random.h"
 
 double naiveHeuristic(const soccer::GameState& state)
 {
@@ -14,7 +15,7 @@ double naiveHeuristic(const soccer::GameState& state)
 
 GUI_APP_MAIN
 {
+	//soccer::ai::Random ai;
 	soccer::ai::Negamax ai(naiveHeuristic, 9);
-	//soccer::ai::Negamax ai(naiveHeuristic, 8);
 	Game(&ai).Run();
 }

@@ -14,7 +14,7 @@ class Game
   	
   private:
   	void WhenFullMove_(soccer::GameState& state);
-  	void WhenGameOver_(const soccer::GameState& state, bool won);
+  	void WhenGameOver_(const soccer::GameState& state);
   
   	MainWindow window_;
   	soccer::Ai* ai_;

@@ -4,6 +4,8 @@
 #include <CtrlLib/CtrlLib.h>
 #include "Board.h"
 
+using namespace Upp;
+
 #define LAYOUTFILE <Soccer/Main.lay>
 #include <CtrlCore/lay.h>
 
