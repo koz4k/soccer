@@ -1,21 +1,20 @@
-#include "Game.h"
+#include "PlayerVsAi.h"
 
 using namespace soccer;
 using namespace Upp;
 
-Game::Game(Ai* ai, int boardWidth, int boardHeight, bool playerDown):
+PlayerVsAi::PlayerVsAi(Ai* ai, int boardWidth, int boardHeight):
 	ai_(ai), finished_(false)
 {
-	window_.board.Initialize(Size(boardWidth, boardHeight), playerDown);
-	
-	playerGate_ = (playerDown ? -1 : 1) * (boardHeight / 2 + 1);
-	aiGate_ = -playerGate_;
+	window_.board.Initialize(Size(boardWidth, boardHeight));
 
 	window_.board.WhenFullMove = THISBACK(WhenFullMove_);
 	window_.board.WhenGameOver = THISBACK(WhenGameOver_);
+	
+	window_.whoseTurn.SetLabel("Gracz");
 }
 
-void Game::Run()
+void PlayerVsAi::Run()
 {
 	window_.Run();
 }
@@ -35,7 +34,7 @@ const char* getPlayerIndicator(Player player)
 	}
 }
 
-void Game::WhenFullMove_(GameState& state)
+void PlayerVsAi::WhenFullMove_(GameState& state)
 {
 	window_.whoseTurn.SetLabel(getPlayerIndicator(state.whoseTurn()));
 	window_.ProcessEvents();
@@ -49,7 +48,7 @@ void Game::WhenFullMove_(GameState& state)
 	window_.whoseTurn.SetLabel(getPlayerIndicator(state.whoseTurn()));
 }
 
-void Game::WhenGameOver_(const GameState& state)
+void PlayerVsAi::WhenGameOver_(const GameState& state)
 {
 	PromptOK(state.whoWon() == PLAYER_1 ? "Wygrałeś!" : "Przegrałeś!");
 }

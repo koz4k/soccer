@@ -1,5 +1,5 @@
 LAYOUT(MainLayout, 108, 148)
 	ITEM(Board, board, HSizePosZ(4, 4).VSizePosZ(24, 4))
-	ITEM(Label, whoseTurn, SetLabel(t_("Gracz")).SetAlign(ALIGN_CENTER).HSizePosZ(4, 4).TopPosZ(4, 15))
+	ITEM(Label, whoseTurn, SetAlign(ALIGN_CENTER).HSizePosZ(4, 4).TopPosZ(4, 15))
 END_LAYOUT
 

@@ -10,7 +10,7 @@ Board::Board():
 {
 }
 
-Board& Board::Initialize(Size size, bool playerDown)
+Board& Board::Initialize(Size size)
 {
 	state_ = GameState(size.cx, size.cy);
 	size_ = size;

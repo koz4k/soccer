@@ -1,15 +1,15 @@
-#ifndef _Soccer_Game_h_
-#define _Soccer_Game_h_
+#ifndef _Soccer_PlayerVsAi_h_
+#define _Soccer_PlayerVsAi_h_
 
 #include "MainWindow.h"
 #include "soccer/Ai.h"
 
-class Game
+class PlayerVsAi
 {
   public:
-  	typedef Game CLASSNAME;
+  	typedef PlayerVsAi CLASSNAME;
   
-  	Game(soccer::Ai* ai, int boardWidth = 8, int boardHeight = 10, bool playerDown = true);
+  	PlayerVsAi(soccer::Ai* ai, int boardWidth = 8, int boardHeight = 10);
   	void Run();
   	
   private:

@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "PlayerVsAi.h"
 #include "soccer/ai/Negamax.h"
 #include "soccer/ai/Random.h"
 
@@ -17,5 +17,5 @@ GUI_APP_MAIN
 {
 	//soccer::ai::Random ai;
 	soccer::ai::Negamax ai(naiveHeuristic, 9);
-	Game(&ai).Run();
+	PlayerVsAi(&ai).Run();
 }

@@ -8,7 +8,7 @@ class Board: public Upp::Ctrl
 {	
   public:
 	Board();
-	Board& Initialize(Upp::Size size, bool playerDown);
+	Board& Initialize(Upp::Size size);
 	Board& Freeze();
 	Board& Unfreeze();
 	virtual void Paint(Upp::Draw& w);

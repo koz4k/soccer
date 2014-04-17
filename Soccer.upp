@@ -32,8 +32,10 @@ file
 	Main.lay,
 	conversion.cpp,
 	conversion.h,
-	Game.h,
-	Game.cpp,
+	PlayerVsAi.h,
+	soccer/Judge.cpp,
+	soccer/Judge.h,
+	PlayerVsAi.cpp,
 	src.tpp;
 
 mainconfig
