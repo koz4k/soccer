@@ -32,6 +32,11 @@ Board& Board::Unfreeze()
 	return *this;
 }
 
+GameState& Board::GetGameState()
+{
+	return state_;
+}
+
 void Board::Paint(Draw& draw)
 {
 	draw.DrawRect(GetSize(), Green());

@@ -11,6 +11,7 @@ class Board: public Upp::Ctrl
 	Board& Initialize(Upp::Size size);
 	Board& Freeze();
 	Board& Unfreeze();
+	soccer::GameState& GetGameState();
 	virtual void Paint(Upp::Draw& w);
 	virtual void MouseMove(Upp::Point point, Upp::dword);
 	virtual void LeftDown(Upp::Point, Upp::dword);

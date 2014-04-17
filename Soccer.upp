@@ -32,6 +32,8 @@ file
 	Main.lay,
 	conversion.cpp,
 	conversion.h,
+	AiVsAi.cpp,
+	AiVsAi.h,
 	PlayerVsAi.h,
 	soccer/Judge.cpp,
 	soccer/Judge.h,

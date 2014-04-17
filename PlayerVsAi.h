@@ -18,8 +18,6 @@ class PlayerVsAi
   
   	MainWindow window_;
   	soccer::Ai* ai_;
-  	int playerGate_;
-  	int aiGate_;
   	bool finished_;
 };
 
