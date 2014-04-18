@@ -17,12 +17,19 @@ AiVsAi::AiVsAi(const char* ai1Name, Ai* ai1, const char* ai2Name, Ai* ai2,
 
 void AiVsAi::Run()
 {
+	window_.Open();
+	
 	GameState& state = window_.board.GetGameState();
 	while(!state.isGameOver())
 	{
 		window_.whoseTurn.SetLabel(aiNames_[state.whoseTurn() == PLAYER_2]);
+		window_.Refresh();
 		window_.ProcessEvents();
 		
 		state = judge_.oneMove();
 	}
+	
+	PromptOK("Wygrał " + String(state.whoWon() == PLAYER_1 ? aiNames_[0] : state.whoWon() == PLAYER_2 ? aiNames_[1] : "nikt"));
+	
+	window_.Run();
 }

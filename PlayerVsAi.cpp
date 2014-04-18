@@ -19,7 +19,7 @@ void PlayerVsAi::Run()
 	window_.Run();
 }
 
-const char* getPlayerIndicator(Player player)
+const char* GetPlayerIndicator(Player player)
 {
 	switch(player)
 	{
@@ -36,7 +36,7 @@ const char* getPlayerIndicator(Player player)
 
 void PlayerVsAi::WhenFullMove_(GameState& state)
 {
-	window_.whoseTurn.SetLabel(getPlayerIndicator(state.whoseTurn()));
+	window_.whoseTurn.SetLabel(GetPlayerIndicator(state.whoseTurn()));
 	window_.ProcessEvents();
 	
 	while(state.whoseTurn() == PLAYER_2 && !state.isGameOver())
@@ -45,7 +45,7 @@ void PlayerVsAi::WhenFullMove_(GameState& state)
 		state.move(direction);
 	}
 	
-	window_.whoseTurn.SetLabel(getPlayerIndicator(state.whoseTurn()));
+	window_.whoseTurn.SetLabel(GetPlayerIndicator(state.whoseTurn()));
 }
 
 void PlayerVsAi::WhenGameOver_(const GameState& state)

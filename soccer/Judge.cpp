@@ -1,5 +1,7 @@
 #include "Judge.h"
 
+#include <CtrlCore/CtrlCore.h>
+
 namespace soccer {
 
 Judge::Judge(Ai* player1, Ai* player2, int boardWidth, int boardHeight):
@@ -16,10 +18,10 @@ const GameState& Judge::getGameState() const
 const GameState& Judge::oneMove() // TODO: obsluga bledow, czas
 {
 	Direction direction = currentPlayer_->move(state_, 0);
-	if(state_.whoseTurn() == PLAYER_2)
-		direction = reverseDirection(direction);
 	if(state_.canMove(direction))
 		state_.move(direction);
+	//else
+	//	Upp::PromptOK("woot?! " + Upp::IntStr(direction));
 	currentPlayer_ = state_.whoseTurn() == PLAYER_1 ? player1_ : player2_;
 	return state_;
 }

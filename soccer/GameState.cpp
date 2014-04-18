@@ -78,16 +78,22 @@ inline const GameState::Field& GameState::getCurrentField() const
 
 Vector2 GameState::getCurrentPosition() const
 {
-	return currentPosition_;
+	return currentPlayer_ == PLAYER_1 ? currentPosition_ : Vector2(currentPosition_.x, -currentPosition_.y);
 }
 
 inline bool GameState::canMove(Direction direction) const
 {
+	if(currentPlayer_ == PLAYER_2)
+		direction = reverseDirection(direction);
+	
 	return !getCurrentField().isOccupied(direction);
 }
 
 GameState& GameState::move(Direction direction)
 {
+	if(currentPlayer_ == PLAYER_2)
+		direction = reverseDirection(direction);
+
 	getField_(currentPosition_).setOccupied_(direction);
 	currentPosition_ = currentPosition_.getNeighbor(direction);
 	getField_(currentPosition_).setOccupied_(reverseDirection(direction));
