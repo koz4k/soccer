@@ -78,22 +78,16 @@ inline const GameState::Field& GameState::getCurrentField() const
 
 Vector2 GameState::getCurrentPosition() const
 {
-	return currentPlayer_ == PLAYER_1 ? currentPosition_ : Vector2(currentPosition_.x, -currentPosition_.y);
+	return currentPosition_;
 }
 
 inline bool GameState::canMove(Direction direction) const
 {
-	if(currentPlayer_ == PLAYER_2)
-		direction = reverseDirection(direction);
-	
 	return !getCurrentField().isOccupied(direction);
 }
 
 GameState& GameState::move(Direction direction)
 {
-	if(currentPlayer_ == PLAYER_2)
-		direction = reverseDirection(direction);
-
 	getField_(currentPosition_).setOccupied_(direction);
 	currentPosition_ = currentPosition_.getNeighbor(direction);
 	getField_(currentPosition_).setOccupied_(reverseDirection(direction));
@@ -169,6 +163,9 @@ Player GameState::whoseTurn() const
 GameState::Field& GameState::getField_(Vector2 point)
 {
 	point = boardToStorage_(point);
+	
+	if(point.x < 0 || point.y < 0 || point.x >= width_ || point.y >= height_)
+		throw 123;
 	return fields_[point.y * width_ + point.x];
 }
 	

@@ -27,6 +27,7 @@ void AiVsAi::Run()
 		window_.ProcessEvents();
 		
 		state = judge_.oneMove();
+		Sleep(300);
 	}
 	
 	PromptOK("Wygrał " + String(state.whoWon() == PLAYER_1 ? aiNames_[0] : state.whoWon() == PLAYER_2 ? aiNames_[1] : "nikt"));

@@ -1,7 +1,7 @@
 #include "DeepMinimax.h"
 #include <algorithm>
 
-#include <CtrlLib/CtrlLib.h>
+//#include <CtrlLib/CtrlLib.h>
 
 namespace soccer { namespace ai {
 
@@ -25,7 +25,7 @@ Direction DeepMinimax::move(const GameState& state, int ms)
 	for(int i = 0; i < validMoves.size(); ++i)
 	{
 		double value = min_(validMoves[i].endState, maxDepth_);
-		if(value > bestValue)
+		if(value > bestValue || bestMove == -1)
 		{
 			bestMove = i;
 			bestValue = value;

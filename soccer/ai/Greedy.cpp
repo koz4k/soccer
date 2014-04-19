@@ -20,7 +20,7 @@ Direction Greedy::move(const GameState& state, int ms)
 		GameState currentState = state;
 		currentState.move(direction);
 		double value = heuristic_(currentState);
-		if(value > bestValue)
+		if(value > bestValue || bestMove == DIR_END)
 		{
 			bestMove = direction;
 			bestValue = value;

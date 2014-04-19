@@ -23,7 +23,7 @@ Direction DeepGreedy::move(const GameState& state, int ms)
 	for(int i = 0; i < validMoves.size(); ++i)
 	{
 		double value = heuristic_(validMoves[i].endState);
-		if(value > bestValue)
+		if(value > bestValue || bestMove == -1)
 		{
 			bestMove = i;
 			bestValue = value;

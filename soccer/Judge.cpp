@@ -1,6 +1,6 @@
 #include "Judge.h"
 
-#include <CtrlCore/CtrlCore.h>
+//#include <CtrlCore/CtrlCore.h>
 
 namespace soccer {
 

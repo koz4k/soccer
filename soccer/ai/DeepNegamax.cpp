@@ -23,7 +23,7 @@ Direction DeepNegamax::move(const GameState& state, int ms)
 	for(int i = 0; i < validMoves.size(); ++i)
 	{
 		double value = -negamax_(validMoves[i].endState, -1, maxDepth_);
-		if(value > bestValue)
+		if(value > bestValue || bestMove == -1)
 		{
 			bestMove = i;
 			bestValue = value;

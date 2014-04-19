@@ -1,7 +1,7 @@
 #include "Negamax.h"
 #include <algorithm>
 
-#include <CtrlLib/CtrlLib.h>
+//#include <CtrlLib/CtrlLib.h>
 
 namespace soccer { namespace ai {
 
@@ -9,6 +9,8 @@ Negamax::Negamax(Heuristic heuristic, int maxDepth):
 	HeuristicSearch(heuristic), maxDepth_(maxDepth)
 {
 }
+
+#include <cstdio>
 
 Direction Negamax::move(const GameState& state, int ms)
 {
@@ -18,7 +20,7 @@ Direction Negamax::move(const GameState& state, int ms)
 		negamax_(stateCopy, queue_, true, 1, maxDepth_);
 	}
 	
-	using namespace Upp;
+	//using namespace Upp;
 	//PromptOK("moves planned: " + FormatInt(queue_.size()) + ", first move: " + FormatInt(queue_.front()));
 
 	Direction direction = queue_.front();
@@ -50,7 +52,7 @@ double Negamax::negamax_(GameState& state, std::list<Direction>& sequence,
 			value = std::max(-negamax_(state, temp, false, -color, depth - 1), bestValue);
 		state.undo(direction);
 		
-		if(value > bestValue)
+		if(value > bestValue || bestSequence.empty())
 		{
 			bestValue = value;
 			bestSequence = std::move(temp);
