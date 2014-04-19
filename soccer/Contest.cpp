@@ -11,19 +11,23 @@ Contest::Contest():
 
 Contest::~Contest()
 {
-	for(int i = 0; i < ais_.size(); ++i)
-		delete ais_[i];
+	for(int i = 0; i < ais1_.size(); ++i)
+		delete ais1_[i];
+	
+	for(int i = 0; i < ais2_.size(); ++i)
+		delete ais2_[i];
 }
 
-void Contest::addAi(const char* name, Ai* ai)
+void Contest::addAi(const char* name, Ai* ai1, Ai* ai2)
 {
-	ais_.push_back(ai);
+	ais1_.push_back(ai1);
+	ais2_.push_back(ai2);
 	names_.push_back(name);
 }
 
 void Contest::run(int repetitions)
 {
-	int n = ais_.size();
+	int n = ais1_.size();
 	if(wins_.size() != n * n)
 	{
 		wins_.resize(n * n);
@@ -31,31 +35,29 @@ void Contest::run(int repetitions)
 		repetitions_ = 0;
 	}
 	
-	for(int i = 0; i < ais_.size(); ++i)
+	for(int i = 0; i < ais1_.size(); ++i)
 	{
-		for(int j = i + 1; j < ais_.size(); ++j)
-		{
-			Judge judge(*ais_[i], *ais_[j]);
+		for(int j = 0; j < ais2_.size(); ++j)
+		{			
+			Judge judge(*ais1_[i], *ais2_[j]);
 			for(int r = 0; r < repetitions; ++r)
 			{
 				GameState state = judge.run();
 				if(state.whoWon() == PLAYER_1)
 					++getWins_(i, j);
-				else if(state.whoWon() == PLAYER_2)
-					++getWins_(j, i);
 			}
 		}
 	}
 	
 	repetitions_ += repetitions;
 }
-  	
+
 std::ostream& operator<<(std::ostream& out, const Contest& contest)
 {
 	out << "contest report after " << contest.repetitions_ << " repetitions:" << std::endl;
-	for(int i = 0; i < contest.ais_.size(); ++i)
+	for(int i = 0; i < contest.ais1_.size(); ++i)
 	{
-		for(int j = i + 1; j < contest.ais_.size(); ++j)
+		for(int j = i; j < contest.ais2_.size(); ++j)
 		{
 			out << contest.names_[i] << " vs " << contest.names_[j] << ": "
 				<< contest.getWins_(i, j) << " / " << contest.getWins_(j, i) << std::endl;
@@ -66,13 +68,12 @@ std::ostream& operator<<(std::ostream& out, const Contest& contest)
 
 int& Contest::getWins_(int i, int j)
 {
-	return wins_[ais_.size() * i + j];
+	return wins_[ais1_.size() * i + j];
 }
-
 
 int Contest::getWins_(int i, int j) const
 {
-	return wins_[ais_.size() * i + j];
+	return wins_[ais1_.size() * i + j];
 }
 
 }
