@@ -18,11 +18,11 @@ Contest::~Contest()
 		delete ais2_[i];
 }
 
-void Contest::addAi(const char* name, Ai* ai1, Ai* ai2)
+void Contest::addAi(std::string name, Ai* ai1, Ai* ai2)
 {
 	ais1_.push_back(ai1);
 	ais2_.push_back(ai2);
-	names_.push_back(name);
+	names_.push_back(std::move(name));
 }
 
 void Contest::run(int repetitions)
@@ -57,13 +57,15 @@ std::ostream& operator<<(std::ostream& out, const Contest& contest)
 	out << "contest report after " << contest.repetitions_ << " repetitions:" << std::endl;
 	for(int i = 0; i < contest.ais1_.size(); ++i)
 	{
-		for(int j = i; j < contest.ais2_.size(); ++j)
+		for(int j = 0; j < contest.ais2_.size(); ++j)
 		{
 			out << contest.names_[i] << " vs " << contest.names_[j] << ": "
-				<< contest.getWins_(i, j) << " / " << contest.getWins_(j, i) << std::endl;
+				<< ((double) contest.getWins_(i, j)) / contest.repetitions_ << " / "
+				<< ((double) contest.getWins_(j, i)) / contest.repetitions_ << std::endl;
 		}
 	}
-	out << std::endl;
+	
+	return out;
 }
 
 int& Contest::getWins_(int i, int j)

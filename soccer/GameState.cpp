@@ -3,22 +3,22 @@
 
 namespace soccer {
 
-inline GameState::Field::Field():
+GameState::Field::Field():
 	links_(0)
 {
 }
 
-inline bool GameState::Field::isOccupied(Direction direction) const
+bool GameState::Field::isOccupied(Direction direction) const
 {
 	return (links_ >> ((u8) direction)) & 1;
 }
 
-inline bool GameState::Field::couldRebound() const
+bool GameState::Field::couldRebound() const
 {
 	return links_ != 0;
 }
 
-inline bool GameState::Field::isBlocked() const
+bool GameState::Field::isBlocked() const
 {
 	return links_ == 0xff;
 }
@@ -34,7 +34,7 @@ int GameState::Field::getOccupiedCount_() const
 	return count;
 }
 
-inline GameState::Field& GameState::Field::setOccupied_(Direction direction, bool occupied)
+GameState::Field& GameState::Field::setOccupied_(Direction direction, bool occupied)
 {
 	if(occupied)
 		links_ |= 1 << direction;
@@ -71,7 +71,7 @@ const GameState::Field& GameState::getField(Vector2 point) const
 	return fields_[point.y * width_ + point.x];
 }
 
-inline const GameState::Field& GameState::getCurrentField() const
+const GameState::Field& GameState::getCurrentField() const
 {
 	return getField(currentPosition_);
 }
@@ -81,7 +81,7 @@ Vector2 GameState::getCurrentPosition() const
 	return currentPosition_;
 }
 
-inline bool GameState::canMove(Direction direction) const
+bool GameState::canMove(Direction direction) const
 {
 	return !getCurrentField().isOccupied(direction);
 }
@@ -112,7 +112,7 @@ GameState& GameState::undo(Direction direction)
 }
 	
 
-inline bool GameState::canRebound() const
+bool GameState::canRebound() const
 {
 	return getCurrentField().getOccupiedCount_() > 1 && !isGameOver();
 }
@@ -169,7 +169,7 @@ GameState::Field& GameState::getField_(Vector2 point)
 	return fields_[point.y * width_ + point.x];
 }
 	
-inline Vector2 GameState::boardToStorage_(Vector2 board) const
+Vector2 GameState::boardToStorage_(Vector2 board) const
 {
 	return Vector2(board.x + (width_ - 1) / 2, board.y + (height_ - 1) / 2);
 }
@@ -200,7 +200,7 @@ bool GameState::isOnBorder_(Vector2 point) const
 		   (std::abs(point.y) == height_ / 2 - 1 && point.x);
 }
 
-inline _Move::_Move(std::vector<Direction>&& sequence, GameState&& endState):
+_Move::_Move(std::vector<Direction>&& sequence, GameState&& endState):
 	sequence(sequence), endState(endState)
 {
 }

@@ -13,7 +13,7 @@ class Contest
   public:
   	Contest();
   	~Contest();
-  	void addAi(const char* name, Ai* ai1, Ai* ai2);
+  	void addAi(std::string name, Ai* ai1, Ai* ai2);
   	void run(int repetitions);
   	
 	friend std::ostream& operator<<(std::ostream& out, const Contest& contest);
@@ -26,7 +26,7 @@ class Contest
   	std::vector<Ai*> ais2_;
   	std::vector<int> wins_;
   	int repetitions_;
-  	std::vector<const char*> names_;
+  	std::vector<std::string> names_;
 };
   	
 std::ostream& operator<<(std::ostream& out, const Contest& contest);
