@@ -7,8 +7,8 @@
 class AiVsAi
 {
   public:
-  	AiVsAi(const char* ai1Name, soccer::Ai* ai1,
-  		   const char* ai2Name, soccer::Ai* ai2,
+  	AiVsAi(const char* ai1Name, soccer::Ai& ai1,
+  		   const char* ai2Name, soccer::Ai& ai2,
   		   int boardWidth = 8, int boardHeight = 10);
   	void Run();
   	

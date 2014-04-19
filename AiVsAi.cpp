@@ -3,7 +3,7 @@
 using namespace soccer;
 using namespace Upp;
 
-AiVsAi::AiVsAi(const char* ai1Name, Ai* ai1, const char* ai2Name, Ai* ai2,
+AiVsAi::AiVsAi(const char* ai1Name, Ai& ai1, const char* ai2Name, Ai& ai2,
 			   int boardWidth, int boardHeight):
 	judge_(ai1, ai2, boardWidth, boardHeight)
 {

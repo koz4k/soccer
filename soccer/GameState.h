@@ -30,7 +30,7 @@ class GameState
 	
 	typedef _Move Move;
 
-	GameState(int width, int height);
+	GameState(int width = 10, int height = 8);
 	const Field& getField(Vector2 point) const;
 	const Field& getCurrentField() const;
 	Vector2 getCurrentPosition() const;
