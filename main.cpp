@@ -14,6 +14,6 @@ double naiveHeuristic(const soccer::GameState& state)
 
 GUI_APP_MAIN
 {
-	soccer::ai::Negamax ai(naiveHeuristic, 8);
+	soccer::ai::Negamax ai(naiveHeuristic, 7);
 	PlayerVsAi(&ai).Run();
 }

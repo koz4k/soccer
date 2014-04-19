@@ -1,16 +1,15 @@
 #include "Negamax.h"
 #include <algorithm>
-
-//#include <CtrlLib/CtrlLib.h>
+#include <cstdlib>
+#include <ctime>
 
 namespace soccer { namespace ai {
 
 Negamax::Negamax(Heuristic heuristic, int maxDepth):
 	HeuristicSearch(heuristic), maxDepth_(maxDepth)
 {
+	srand(time(NULL));
 }
-
-#include <cstdio>
 
 Direction Negamax::move(const GameState& state, int ms)
 {
@@ -20,9 +19,6 @@ Direction Negamax::move(const GameState& state, int ms)
 		negamax_(stateCopy, queue_, true, 1, maxDepth_);
 	}
 	
-	//using namespace Upp;
-	//PromptOK("moves planned: " + FormatInt(queue_.size()) + ", first move: " + FormatInt(queue_.front()));
-
 	Direction direction = queue_.front();
 	queue_.pop_front();
 	return direction;
@@ -36,8 +32,16 @@ double Negamax::negamax_(GameState& state, std::list<Direction>& sequence,
 	
 	double bestValue = -INFINITY;
 	std::list<Direction> bestSequence;
-	for(int direction = DIR_BEGIN; direction < DIR_END; ++direction)
+	
+	Direction dirs[DIR_END];
+	for(int i = 0; i < DIR_END; ++i)
+		dirs[i] = i;
+	std::random_shuffle(dirs, dirs + DIR_END);
+	
+	for(int i = 0; i < DIR_END; ++i)
 	{
+		Direction direction = dirs[i];
+		
 		if(!state.canMove(direction))
 			continue;
 		
