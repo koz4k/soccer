@@ -28,6 +28,8 @@ file
 	Board.usc,
 	MainWindow.h,
 	MainWindow.cpp,
+	soccer/Contest.cpp,
+	soccer/Contest.h,
 	main.cpp,
 	Main.lay,
 	conversion.cpp,
