@@ -9,7 +9,7 @@ class PlayerVsAi
   public:
   	typedef PlayerVsAi CLASSNAME;
   
-  	PlayerVsAi(soccer::Ai* ai, int boardWidth = 8, int boardHeight = 10);
+  	PlayerVsAi(soccer::Ai& ai, int boardWidth = 8, int boardHeight = 10);
   	void Run();
   	
   private:
@@ -17,7 +17,7 @@ class PlayerVsAi
   	void WhenGameOver_(const soccer::GameState& state);
   
   	MainWindow window_;
-  	soccer::Ai* ai_;
+  	soccer::Ai& ai_;
   	bool finished_;
 };
 

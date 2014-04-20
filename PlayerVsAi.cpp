@@ -3,7 +3,7 @@
 using namespace soccer;
 using namespace Upp;
 
-PlayerVsAi::PlayerVsAi(Ai* ai, int boardWidth, int boardHeight):
+PlayerVsAi::PlayerVsAi(Ai& ai, int boardWidth, int boardHeight):
 	ai_(ai), finished_(false)
 {
 	window_.board.Initialize(Size(boardWidth, boardHeight));
@@ -41,7 +41,7 @@ void PlayerVsAi::WhenFullMove_(GameState& state)
 	
 	while(state.whoseTurn() == PLAYER_2 && !state.isGameOver())
 	{
-		Direction direction = ai_->move(state, 0);
+		Direction direction = ai_.move(state, 0);
 		state.move(direction);
 	}
 	

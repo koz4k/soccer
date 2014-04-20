@@ -3,16 +3,16 @@
 using namespace soccer;
 using namespace Upp;
 
-AiVsAi::AiVsAi(const char* ai1Name, Ai& ai1, const char* ai2Name, Ai& ai2,
+AiVsAi::AiVsAi(std::string ai1Name, Ai& ai1, std::string ai2Name, Ai& ai2,
 			   int boardWidth, int boardHeight):
 	judge_(ai1, ai2, boardWidth, boardHeight)
 {
-	aiNames_[0] = ai1Name;
-	aiNames_[1] = ai2Name;
+	aiNames_[0] = std::move(ai1Name);
+	aiNames_[1] = std::move(ai2Name);
 	window_.board.Initialize(Upp::Size(boardWidth, boardHeight));
 	window_.board.Freeze();
 	
-	window_.whoseTurn.SetLabel(ai1Name);
+	window_.whoseTurn.SetLabel(aiNames_[0].c_str());
 }
 
 void AiVsAi::Run()
@@ -22,7 +22,7 @@ void AiVsAi::Run()
 	GameState& state = window_.board.GetGameState();
 	while(!state.isGameOver())
 	{
-		window_.whoseTurn.SetLabel(aiNames_[state.whoseTurn() == PLAYER_2]);
+		window_.whoseTurn.SetLabel(aiNames_[state.whoseTurn() == PLAYER_2].c_str());
 		window_.Refresh();
 		window_.ProcessEvents();
 		

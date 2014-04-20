@@ -38,7 +38,7 @@ void Contest::run(int repetitions)
 	for(int i = 0; i < ais1_.size(); ++i)
 	{
 		for(int j = 0; j < ais2_.size(); ++j)
-		{			
+		{
 			Judge judge(*ais1_[i], *ais2_[j]);
 			for(int r = 0; r < repetitions; ++r)
 			{
