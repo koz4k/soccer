@@ -28,7 +28,7 @@ double Negamax::negamax_(GameState& state, std::list<Direction>& sequence,
 						 bool saveSequence, int color, int depth)
 {
 	if(state.isGameOver() || !depth)
-		return heuristic_(state) * color;
+		return heuristic_(state, 0) * color;
 	
 	double bestValue = -INFINITY;
 	std::list<Direction> bestSequence;

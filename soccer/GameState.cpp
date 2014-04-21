@@ -10,7 +10,8 @@ GameState::Field::Field():
 
 bool GameState::Field::isOccupied(Direction direction) const
 {
-	return (links_ >> ((u8) direction)) & 1;
+	return direction >= DIR_BEGIN && direction < DIR_END ?
+		   (links_ >> ((u8) direction)) & 1 : false;
 }
 
 bool GameState::Field::couldRebound() const

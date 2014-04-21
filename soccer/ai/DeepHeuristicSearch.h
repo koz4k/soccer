@@ -1,14 +1,14 @@
-#ifndef _Soccer_DeepGreedy_h_
-#define _Soccer_DeepGreedy_h_
+#ifndef _Soccer_DeepHeuristicSearch_h_
+#define _Soccer_DeepHeuristicSearch_h_
 
 #include "HeuristicSearch.h"
 
 namespace soccer { namespace ai {
 
-class DeepGreedy: public HeuristicSearch
+class DeepHeuristicSearch: public HeuristicSearch
 {
   public:
-  	DeepGreedy(Heuristic heuristic);
+  	DeepHeuristicSearch(Heuristic heuristic);
   	virtual Direction move(const GameState& state, int ms);
   
   private:

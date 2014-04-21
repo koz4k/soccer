@@ -1,19 +1,10 @@
 #include "PlayerVsAi.h"
-#include "soccer/ai/Negamax.h"
-
-double naiveHeuristic(const soccer::GameState& state)
-{
-	soccer::Vector2 position = state.getCurrentPosition();
-	
-	if(state.isGameOver())
-		return position.y == -6 ? INFINITY : -INFINITY;
-	
-	return std::max(6 - position.y, -std::abs(position.x)) -
-		   std::max(6 + position.y, -std::abs(position.x));
-}
+#include "soccer/ai/ShallowHeuristicSearch.h"
+#include "soccer/ai/heur/Negamax.h"
+#include "soccer/ai/heur/naive.h"
 
 GUI_APP_MAIN
 {
-	soccer::ai::Negamax ai(naiveHeuristic, 7);
+	soccer::ai::ShallowHeuristicSearch ai(soccer::ai::heur::Negamax(soccer::ai::heur::naive2, 6));
 	PlayerVsAi(ai).Run();
 }

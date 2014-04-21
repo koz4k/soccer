@@ -6,11 +6,11 @@
 
 namespace soccer { namespace ai {
 
+typedef std::function<double(const GameState& state, int ms)> Heuristic;
+
 class HeuristicSearch: public Ai
 {
-  public:
-  	typedef std::function<double(const GameState&)> Heuristic;
-  
+  public:  
   	HeuristicSearch(Heuristic heuristic);
   	
   protected:

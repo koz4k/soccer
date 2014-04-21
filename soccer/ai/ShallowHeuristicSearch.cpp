@@ -1,19 +1,20 @@
-#include "Greedy.h"
+#include "ShallowHeuristicSearch.h"
 #include <algorithm>
 
 namespace soccer { namespace ai {
 
-Greedy::Greedy(Heuristic heuristic):
+ShallowHeuristicSearch::ShallowHeuristicSearch(Heuristic heuristic):
 	HeuristicSearch(heuristic)
 {
-	srand(time(NULL));
 }
 
-Direction Greedy::move(const GameState& state, int ms)
-{
-	Direction bestMove = DIR_END;
-	double bestValue = -INFINITY;
+#include <cstdio>
 
+Direction ShallowHeuristicSearch::move(const GameState& state, int ms)
+{
+	int bestMove = DIR_END;
+	double bestValue = -INFINITY;
+	
 	Direction dirs[DIR_END];
 	for(int i = 0; i < DIR_END; ++i)
 		dirs[i] = i;
@@ -28,13 +29,17 @@ Direction Greedy::move(const GameState& state, int ms)
 		
 		GameState currentState = state;
 		currentState.move(direction);
-		double value = heuristic_(currentState);
+//printf("%d: ", direction);
+//fflush(stdout);
+		double value = heuristic_(currentState, 0);
 		if(value > bestValue || bestMove == DIR_END)
 		{
 			bestMove = direction;
 			bestValue = value;
 		}
 	}
+	
+//printf("\n");
 	
 	return bestMove;
 }

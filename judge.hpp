@@ -1,31 +1,12 @@
 #include "AiVsAi.h"
+#include "soccer/ai/ShallowHeuristicSearch.h"
 #include "soccer/ai/Negamax.h"
-
-double naiveHeuristic1(const soccer::GameState& state)
-{
-	soccer::Vector2 position = state.getCurrentPosition();
-	
-	if(state.isGameOver())
-		return position.y == 6 ? INFINITY : -INFINITY;
-	
-	return std::max(6 + position.y, -std::abs(position.x)) -
-		   std::max(6 - position.y, -std::abs(position.x));
-}
-
-double naiveHeuristic2(const soccer::GameState& state)
-{
-	soccer::Vector2 position = state.getCurrentPosition();
-	
-	if(state.isGameOver())
-		return position.y == -6 ? INFINITY : -INFINITY;
-	
-	return std::max(6 - position.y, -std::abs(position.x)) -
-		   std::max(6 + position.y, -std::abs(position.x));
-}
+#include "soccer/ai/heur/Negamax.h"
+#include "soccer/ai/heur/naive.h"
 
 GUI_APP_MAIN
 {
-	soccer::ai::Negamax ai1(naiveHeuristic1, 7);
-	soccer::ai::Negamax ai2(naiveHeuristic2, 6);
-	AiVsAi("negamax 7", ai1, "negamax 6", ai2).Run();
+	soccer::ai::ShallowHeuristicSearch ai1(soccer::ai::heur::Negamax(soccer::ai::heur::naive1, 7));
+	soccer::ai::Negamax ai2(soccer::ai::heur::naive2, 8);
+	AiVsAi("new negamax", ai1, "old negamax", ai2).Run();
 }

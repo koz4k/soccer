@@ -41,8 +41,13 @@ void PlayerVsAi::WhenFullMove_(GameState& state)
 	
 	while(state.whoseTurn() == PLAYER_2 && !state.isGameOver())
 	{
+		window_.Refresh();
+		window_.ProcessEvents();
+		
 		Direction direction = ai_.move(state, 0);
 		state.move(direction);
+
+		Sleep(300);
 	}
 	
 	window_.whoseTurn.SetLabel(GetPlayerIndicator(state.whoseTurn()));

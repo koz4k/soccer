@@ -1,15 +1,15 @@
-#include "DeepGreedy.h"
+#include "DeepHeuristicSearch.h"
 #include <algorithm>
 
 namespace soccer { namespace ai {
 
-DeepGreedy::DeepGreedy(Heuristic heuristic):
+DeepHeuristicSearch::DeepHeuristicSearch(Heuristic heuristic):
 	HeuristicSearch(heuristic)
 {
 }
 
-Direction DeepGreedy::move(const GameState& state, int ms)
-{	
+Direction DeepHeuristicSearch::move(const GameState& state, int ms)
+{
 	if(!queue_.empty())
 	{
 		Direction direction = queue_.back();
@@ -18,14 +18,20 @@ Direction DeepGreedy::move(const GameState& state, int ms)
 	}
 	
 	std::vector<GameState::Move> validMoves = state.getValidMoves();
+	std::vector<int> permutation(validMoves.size());
+	for(int i = 0; i < validMoves.size(); ++i)
+		permutation[i] = i;
+	std::random_shuffle(permutation.begin(), permutation.end());
+	
 	int bestMove = -1;
 	double bestValue = -INFINITY;
 	for(int i = 0; i < validMoves.size(); ++i)
 	{
-		double value = heuristic_(validMoves[i].endState);
+		int index = permutation[i];
+		double value = heuristic_(validMoves[index].endState, 0);
 		if(value > bestValue || bestMove == -1)
 		{
-			bestMove = i;
+			bestMove = index;
 			bestValue = value;
 		}
 	}
