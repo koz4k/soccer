@@ -1,3 +1,5 @@
+#undef DEBUG
+
 #include "Judge.h"
 
 namespace soccer {

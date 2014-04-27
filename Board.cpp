@@ -37,6 +37,16 @@ GameState& Board::GetGameState()
 	return state_;
 }
 
+void Board::AddDebugLine(soccer::Vector2 p1, soccer::Vector2 p2, Upp::Color color)
+{
+	debugLines_.push_back(DebugLine_(p1, p2, color));
+}
+
+void Board::ClearDebug()
+{
+	debugLines_.clear();
+}
+
 void Board::Paint(Draw& draw)
 {
 	draw.DrawRect(GetSize(), Green());
@@ -65,23 +75,6 @@ void Board::Paint(Draw& draw)
 	DrawLine_(draw, Vector2(halfX, -halfY + 1), Vector2(halfX, halfY - 1), 2, White());
 	DrawLine_(draw, Vector2(-1, halfY), Vector2(-1, halfY - 1), 2, White());
 	
-	/*std::vector<GameState::Move> validMoves = state_.getValidMoves();
-	for(int i = 0; i < validMoves.size(); ++i)
-	{
-		Vector2 p;
-		for(p.y = -halfY; p.y <= halfY; ++p.y)
-		{
-			for(p.x = -halfX; p.x <= halfX; ++p.x)
-			{
-				for(int dir = DIR_BEGIN; dir < DIR_END / 2; ++dir)
-				{
-					if(validMoves[i].endState.getField(p).isOccupied(dir) && !state_.isOnBorder(p, dir))
-						DrawLine_(draw, p, p.getNeighbor(dir), 1, Red());
-				}
-			}
-		}
-	}*/
-	
 	Vector2 p;
 	for(p.y = -halfY; p.y <= halfY; ++p.y)
 	{
@@ -106,6 +99,9 @@ void Board::Paint(Draw& draw)
 	DrawLine_(draw, p, target_, 2, White());
 	
 	DrawCircle_(draw, target_, 8, White());
+	
+	for(int i = 0; i < debugLines_.size(); ++i)
+		DrawLine_(draw, debugLines_[i].p1, debugLines_[i].p2, 1, debugLines_[i].color);
 }
 
 void Board::MouseMove(Point point, dword)
@@ -149,6 +145,11 @@ void Board::LeftDown(Point point, dword)
 	WhenMove_(direction);
 }
 
+Board::DebugLine_::DebugLine_(Vector2 p1, Vector2 p2, Color color):
+	p1(p1), p2(p2), color(color)
+{
+}
+
 Point Board::BoardToPixel_(Vector2 point)
 {	
 	// TODO: do skladowych prywatnych
@@ -165,8 +166,9 @@ Point Board::BoardToPixel_(Vector2 point)
 	// TODO: skorzystac z Vector2
 	
 	Point upoint = ConvertVector(point);
-	
-	upoint.y *= -1;
+
+	upoint.y = -upoint.y;
+	//upoint.y *= -1;
 	upoint += fullSize / 2;
 	upoint *= tile;
 	upoint += start;

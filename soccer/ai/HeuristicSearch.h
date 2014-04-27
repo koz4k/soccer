@@ -4,6 +4,8 @@
 #include "../Ai.h"
 #include <functional>
 
+#include <list>
+
 namespace soccer { namespace ai {
 
 typedef std::function<double(const GameState& state, int ms)> Heuristic;

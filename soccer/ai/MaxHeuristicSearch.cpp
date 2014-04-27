@@ -1,20 +1,22 @@
-#include "ShallowHeuristicSearch.h"
+#include "MaxHeuristicSearch.h"
 #include <algorithm>
 
 namespace soccer { namespace ai {
 
-ShallowHeuristicSearch::ShallowHeuristicSearch(Heuristic heuristic):
+MaxHeuristicSearch::MaxHeuristicSearch(Heuristic heuristic):
 	HeuristicSearch(heuristic)
 {
 }
 
-#include <cstdio>
-
-Direction ShallowHeuristicSearch::move(const GameState& state, int ms)
+Direction MaxHeuristicSearch::move(const GameState& state, int ms
+#ifdef DEBUG
+		, std::list<Direction>& moveSequence
+#endif
+  		)
 {
 	int bestMove = DIR_END;
 	double bestValue = -INFINITY;
-	
+		
 	Direction dirs[DIR_END];
 	for(int i = 0; i < DIR_END; ++i)
 		dirs[i] = i;
@@ -29,8 +31,7 @@ Direction ShallowHeuristicSearch::move(const GameState& state, int ms)
 		
 		GameState currentState = state;
 		currentState.move(direction);
-//printf("%d: ", direction);
-//fflush(stdout);
+
 		double value = heuristic_(currentState, 0);
 		if(value > bestValue || bestMove == DIR_END)
 		{
@@ -39,7 +40,10 @@ Direction ShallowHeuristicSearch::move(const GameState& state, int ms)
 		}
 	}
 	
-//printf("\n");
+#ifdef DEBUG
+	moveSequence.clear();
+	moveSequence.push_front(bestMove);
+#endif
 	
 	return bestMove;
 }

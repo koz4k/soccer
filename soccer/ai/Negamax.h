@@ -1,8 +1,7 @@
-#ifndef _Soccer_Negamax__h_
-#define _Soccer_Negamax__h_
+#ifndef _Soccer_Negamax_h_
+#define _Soccer_Negamax_h_
 
 #include "HeuristicSearch.h"
-#include <list>
 
 namespace soccer { namespace ai {
 
@@ -10,14 +9,20 @@ class Negamax: public HeuristicSearch
 {
   public:
   	Negamax(Heuristic heuristic, int maxDepth);
-  	virtual Direction move(const GameState& state, int ms);
+  	virtual Direction move(const GameState& state, int ms
+#ifdef DEBUG
+		, std::list<Direction>& moveSequence
+#endif
+  		);
   
   private:
-  	double negamax_(GameState& state, std::list<Direction>& sequence,
-  					bool saveSequence, int color, int depth);
+  	double negamax_(GameState& state, int color, int depth, Direction& move
+#ifdef DEBUG
+  					, std::list<Direction>& sequence
+#endif
+  				   );
   
   	int maxDepth_;
-  	std::list<Direction> queue_;
 };
 	
 } }

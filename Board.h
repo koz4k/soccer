@@ -5,13 +5,15 @@
 #include "soccer/GameState.h"
 
 class Board: public Upp::Ctrl
-{	
+{
   public:
 	Board();
 	Board& Initialize(Upp::Size size);
 	Board& Freeze();
 	Board& Unfreeze();
 	soccer::GameState& GetGameState();
+	void AddDebugLine(soccer::Vector2 p1, soccer::Vector2 p2, Upp::Color color);
+	void ClearDebug();
 	virtual void Paint(Upp::Draw& w);
 	virtual void MouseMove(Upp::Point point, Upp::dword);
 	virtual void LeftDown(Upp::Point, Upp::dword);
@@ -21,6 +23,15 @@ class Board: public Upp::Ctrl
 	Upp::Callback1<const soccer::GameState&> WhenGameOver;
 	
   private:
+  
+  	struct DebugLine_
+  	{
+  		soccer::Vector2 p1, p2;
+  		Upp::Color color;
+  		
+  		DebugLine_(soccer::Vector2 p1, soccer::Vector2 p2, Upp::Color color);
+  	};
+  
   	Upp::Point BoardToPixel_(soccer::Vector2 point);
 	soccer::Vector2 PixelToBoard_(Upp::Point point);
   	void DrawLine_(Upp::Draw& draw, soccer::Vector2 from, soccer::Vector2 to,
@@ -38,6 +49,7 @@ class Board: public Upp::Ctrl
 	soccer::Vector2 target_;
 	bool freezed_;
 	bool finished_;
+	std::vector<DebugLine_> debugLines_;
 };
 
 #endif

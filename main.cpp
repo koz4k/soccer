@@ -1,5 +1,5 @@
 #ifndef MAIN
-#define MAIN contest
+#define MAIN play
 #endif
 
 #define QUOTEME(x) QUOTEME_1(x)
