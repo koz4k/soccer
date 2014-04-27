@@ -62,8 +62,12 @@ void PlayerVsAi::WhenFullMove_(GameState& state)
 			p1 = p2;
 		}
 #endif
-		
-		state.move(direction);
+	
+	
+		if(state.canMove(direction))
+			state.move(direction);
+		else
+			PromptOK("nieprawidłowy ruch: " + FormatInt(direction));
 
 		Sleep(300);
 	}

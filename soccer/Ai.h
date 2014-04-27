@@ -9,11 +9,12 @@ namespace soccer {
 class Ai
 {
   public:
-  	virtual Direction move(const GameState& state, int ms
-#ifdef DEBUG
-						   , std::list<Direction>& moveSequence
-#endif
-  		                  ) = 0;
+#ifndef DEBUG
+  	virtual Direction move(const GameState& state, int ms) = 0;
+#else
+  	virtual Direction move(const GameState& state, int ms, std::list<Direction>& moveSequence) = 0;
+ 	Direction move(const GameState& state, int ms);
+ #endif
 };
 
 }

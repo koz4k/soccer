@@ -10,9 +10,9 @@ MaxHeuristicSearch::MaxHeuristicSearch(Heuristic heuristic):
 
 Direction MaxHeuristicSearch::move(const GameState& state, int ms
 #ifdef DEBUG
-		, std::list<Direction>& moveSequence
+								   , std::list<Direction>& moveSequence
 #endif
-  		)
+  		                          )
 {
 	int bestMove = DIR_END;
 	double bestValue = -INFINITY;

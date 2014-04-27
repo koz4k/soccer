@@ -3,11 +3,16 @@ uses
 
 file
 	soccer/ai/heur/uniform.cpp,
+	soccer/ai/heur/smartUniform.cpp,
+	soccer/ai/heur/smartUniform.h,
 	soccer/ai/heur/uniform.h,
+	soccer/Ai.cpp,
 	soccer/Ai.h,
 	soccer/ai/HeuristicSearch.cpp,
 	soccer/ai/HeuristicSearch.h,
+	soccer/ai/RandomHeuristicSearch.cpp,
 	soccer/ai/MaxHeuristicSearch.cpp,
+	soccer/ai/RandomHeuristicSearch.h,
 	soccer/ai/MaxHeuristicSearch.h,
 	soccer/ai/heur/naive.cpp,
 	soccer/ai/heur/naive.h,
