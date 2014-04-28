@@ -6,7 +6,7 @@
 namespace soccer { namespace ai {
 
 Negamax::Negamax(Heuristic heuristic, int maxDepth):
-	HeuristicSearch(heuristic), maxDepth_(maxDepth)
+	HeuristicSearch(std::move(heuristic)), maxDepth_(maxDepth)
 {
 }
 

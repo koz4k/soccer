@@ -41,11 +41,7 @@ void Contest::run(int repetitions)
 		{
 			Judge judge(ais1_[i], ais2_[j]);
 			for(int r = 0; r < repetitions; ++r)
-			{
-				GameState state = judge.run();
-				if(state.whoWon() == PLAYER_1)
-					++getWins_(i, j);
-			}
+				getWins_(i, j) += judge.run().whoWon() == PLAYER_1;
 		}
 	}
 	

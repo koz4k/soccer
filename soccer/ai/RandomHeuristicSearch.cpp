@@ -7,7 +7,7 @@
 namespace soccer { namespace ai {
 
 RandomHeuristicSearch::RandomHeuristicSearch(Heuristic heuristic, double lambda):
-	HeuristicSearch(heuristic), lambda_(lambda)
+	HeuristicSearch(std::move(heuristic)), lambda_(lambda)
 {
 	srand(time(NULL));
 }

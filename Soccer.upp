@@ -41,6 +41,8 @@ file
 	AiVsAi.cpp,
 	AiVsAi.h,
 	PlayerVsAi.h,
+	soccer/ai/heur/SimpleMonteCarlo.cpp,
+	soccer/ai/heur/SimpleMonteCarlo.h,
 	soccer/Judge.cpp,
 	soccer/Judge.h,
 	PlayerVsAi.cpp,

@@ -4,7 +4,7 @@
 namespace soccer { namespace ai {
 
 MaxHeuristicSearch::MaxHeuristicSearch(Heuristic heuristic):
-	HeuristicSearch(heuristic)
+	HeuristicSearch(std::move(heuristic))
 {
 }
 
