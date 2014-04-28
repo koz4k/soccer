@@ -7,7 +7,6 @@
 
 GUI_APP_MAIN
 {
-	soccer::ai::Negamax ai(soccer::ai::heur::naive2, 8);
-	//soccer::ai::RandomHeuristicSearch ai(soccer::ai::heur::naive2, 0.4);
+	soccer::Ai* ai = new soccer::ai::Negamax(soccer::ai::heur::naive2, 8);
 	PlayerVsAi(ai).Run();
 }

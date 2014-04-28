@@ -39,7 +39,7 @@ void Contest::run(int repetitions)
 	{
 		for(int j = 0; j < ais2_.size(); ++j)
 		{
-			Judge judge(*ais1_[i], *ais2_[j]);
+			Judge judge(ais1_[i], ais2_[j]);
 			for(int r = 0; r < repetitions; ++r)
 			{
 				GameState state = judge.run();

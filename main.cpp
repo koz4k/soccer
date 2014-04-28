@@ -1,5 +1,5 @@
 #ifndef MAIN
-#define MAIN play
+#define MAIN judge
 #endif
 
 #define QUOTEME(x) QUOTEME_1(x)

@@ -16,7 +16,7 @@ int main()
 {
 	Contest contest;
 	
-	for(int i = 1; i <= 2; ++i)
+	for(int i = 1; i <= 5; ++i)
 	{
 		std::stringstream str;
 		str << "negamax " << i;
@@ -30,7 +30,7 @@ int main()
 	contest.addAi("smart random", new ai::MaxHeuristicSearch(ai::heur::smartUniform1),
 								  new ai::MaxHeuristicSearch(ai::heur::smartUniform2));
 	
-	const double LAMBDAS[] = {0.1, 0.2, 0.3, 0.5, 0.8, 1.2, 1.6, 2.0, 2.5, 3.0};	
+	/*const double LAMBDAS[] = {0.1, 0.2, 0.3, 0.5, 0.8, 1.2, 1.6, 2.0, 2.5, 3.0};	
 	const int LAMBDA_COUNT = 10;
 	for(int i = 0; i < LAMBDA_COUNT; ++i)
 	{
@@ -38,9 +38,9 @@ int main()
 		str << "naive random " << LAMBDAS[i];
 		contest.addAi(str.str(), new ai::RandomHeuristicSearch(ai::heur::naive1, LAMBDAS[i]),
 		              			 new ai::RandomHeuristicSearch(ai::heur::naive2, LAMBDAS[i]));
-	}
+	}*/
 	
-	contest.run(256);
+	contest.run(100);
 	std::cout << contest << std::endl;
 	
 	return 0;

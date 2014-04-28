@@ -3,7 +3,7 @@
 using namespace soccer;
 using namespace Upp;
 
-PlayerVsAi::PlayerVsAi(Ai& ai, int boardWidth, int boardHeight):
+PlayerVsAi::PlayerVsAi(Ai* ai, int boardWidth, int boardHeight):
 	ai_(ai), finished_(false)
 {
 	window_.board.Initialize(Size(boardWidth, boardHeight));
@@ -12,6 +12,11 @@ PlayerVsAi::PlayerVsAi(Ai& ai, int boardWidth, int boardHeight):
 	window_.board.WhenGameOver = THISBACK(WhenGameOver_);
 	
 	window_.whoseTurn.SetLabel("Gracz");
+}
+
+PlayerVsAi::~PlayerVsAi()
+{
+	delete ai_;
 }
 
 void PlayerVsAi::Run()
@@ -45,10 +50,10 @@ void PlayerVsAi::WhenFullMove_(GameState& state)
 		window_.ProcessEvents();
 		
 #ifndef DEBUG
-		Direction direction = ai_.move(state, 0);
+		Direction direction = ai_->move(state, 0);
 #else
 		std::list<Direction> moveSequence;
-		Direction direction = ai_.move(state, 0, moveSequence);
+		Direction direction = ai_->move(state, 0, moveSequence);
 		
 		window_.board.ClearDebug();
 		GameState stateCopy = state;

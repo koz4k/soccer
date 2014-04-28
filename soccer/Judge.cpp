@@ -2,11 +2,11 @@
 
 namespace soccer {
 
-Judge::Judge(Ai& player1, Ai& player2, int boardWidth, int boardHeight):
+Judge::Judge(Ai* player1, Ai* player2, int boardWidth, int boardHeight):
 	player1_(player1), player2_(player2),
 	state_(boardWidth, boardHeight)
 {
-	currentPlayer_ = &player1_;
+	currentPlayer_ = player1_;
 }
 
 const GameState& Judge::getGameState() const
@@ -20,7 +20,7 @@ const GameState& Judge::oneMove() // TODO: obsluga bledow, czas
 	if(state_.canMove(direction))
 	{
 		state_.move(direction);
-		currentPlayer_ = state_.whoseTurn() == PLAYER_1 ? &player1_ : &player2_;
+		currentPlayer_ = state_.whoseTurn() == PLAYER_1 ? player1_ : player2_;
 	}
 	return state_;
 }

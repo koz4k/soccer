@@ -4,7 +4,7 @@
 
 GUI_APP_MAIN
 {
-	soccer::ai::Negamax ai1(soccer::ai::heur::naive1, 7);
-	soccer::ai::Negamax ai2(soccer::ai::heur::naive2, 8);
+	soccer::Ai* ai1 = new soccer::ai::Negamax(soccer::ai::heur::naive1, 7);
+	soccer::Ai* ai2 = new soccer::ai::Negamax(soccer::ai::heur::naive2, 8);
 	AiVsAi("negamax7", ai1, "negamax8", ai2).Run();
 }
