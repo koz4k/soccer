@@ -19,12 +19,12 @@ class Contest
 	friend std::ostream& operator<<(std::ostream& out, const Contest& contest);
  
   private:
-  	int& getWins_(int i, int j);
-  	int getWins_(int i, int j) const;
+  	std::pair<int, int>& getData_(int i, int j);
+  	std::pair<int, int> getData_(int i, int j) const;
   
   	std::vector<Ai*> ais1_;
   	std::vector<Ai*> ais2_;
-  	std::vector<int> wins_;
+  	std::vector<std::pair<int, int>> data_;
   	int repetitions_;
   	std::vector<std::string> names_;
 };

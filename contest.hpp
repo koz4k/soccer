@@ -16,7 +16,7 @@ int main()
 {
 	Contest contest;
 	
-	for(int i = 1; i <= 5; ++i)
+	for(int i = 1; i <= 4; ++i)
 	{
 		std::stringstream str;
 		str << "negamax " << i;

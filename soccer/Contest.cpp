@@ -1,6 +1,7 @@
 #include "Contest.h"
 #include "Judge.h"
 #include <algorithm>
+#include <ctime>
 
 namespace soccer {
 
@@ -28,10 +29,10 @@ void Contest::addAi(std::string name, Ai* ai1, Ai* ai2)
 void Contest::run(int repetitions)
 {
 	int n = ais1_.size();
-	if(wins_.size() != n * n)
+	if(data_.size() != n * n)
 	{
-		wins_.resize(n * n);
-		std::fill(wins_.begin(), wins_.end(), 0);
+		data_.resize(n * n);
+		std::fill(data_.begin(), data_.end(), std::make_pair(0, 0));
 		repetitions_ = 0;
 	}
 	
@@ -40,8 +41,13 @@ void Contest::run(int repetitions)
 		for(int j = 0; j < ais2_.size(); ++j)
 		{
 			Judge judge(ais1_[i], ais2_[j]);
+			int wins = 0;
+			clock_t t = clock();
 			for(int r = 0; r < repetitions; ++r)
-				getWins_(i, j) += judge.run().whoWon() == PLAYER_1;
+				wins += judge.run().whoWon() == PLAYER_1;
+			t = clock() - t;
+			getData_(i, j).first += wins;
+			getData_(i, j).second += t;
 		}
 	}
 	
@@ -55,23 +61,28 @@ std::ostream& operator<<(std::ostream& out, const Contest& contest)
 	{
 		for(int j = 0; j < contest.ais2_.size(); ++j)
 		{
+			std::pair<int, int> data1 = contest.getData_(i, j);
+			std::pair<int, int> data2 = contest.getData_(j, i);
 			out << contest.names_[i] << " vs " << contest.names_[j] << ": "
-				<< ((double) contest.getWins_(i, j)) / contest.repetitions_ << " / "
-				<< ((double) contest.getWins_(j, i)) / contest.repetitions_ << std::endl;
+				<< ((double) data1.first) / contest.repetitions_ << " / "
+				<< ((double) data2.first) / contest.repetitions_ << ", time in ms: "
+				<< ((double) data1.second) / CLOCKS_PER_SEC * 1000 / contest.repetitions_ << " / "
+				<< ((double) data2.second) / CLOCKS_PER_SEC * 1000 / contest.repetitions_
+				<< std::endl;
 		}
 	}
 	
 	return out;
 }
 
-int& Contest::getWins_(int i, int j)
+std::pair<int, int>& Contest::getData_(int i, int j)
 {
-	return wins_[ais1_.size() * i + j];
+	return data_[ais1_.size() * i + j];
 }
 
-int Contest::getWins_(int i, int j) const
+std::pair<int, int> Contest::getData_(int i, int j) const
 {
-	return wins_[ais1_.size() * i + j];
+	return data_[ais1_.size() * i + j];
 }
 
 }
