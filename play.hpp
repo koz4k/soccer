@@ -1,4 +1,5 @@
 #include "PlayerVsAi.h"
+#include "soccer/ai/MonteCarloTreeSearch.h"
 #include "soccer/ai/Negamax.h"
 #include "soccer/ai/MaxHeuristicSearch.h"
 #include "soccer/ai/RandomHeuristicSearch.h"
@@ -13,9 +14,7 @@ using namespace heur;
 
 GUI_APP_MAIN
 {
-	//Ai* ai = new Negamax(naive2, 8);
-	Ai* ai = new MaxHeuristicSearch(SimpleMonteCarlo(new Negamax(naive1, 4),
-													 new Negamax(naive2, 4),
-													 10, PLAYER_2));
+	Ai* ai = new MonteCarloTreeSearch(new RandomHeuristicSearch(naive1, 1.6),
+	                                  new RandomHeuristicSearch(naive2, 1.6), 10000, 3, 2.0);
 	PlayerVsAi(ai).Run();
 }

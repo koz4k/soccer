@@ -9,6 +9,7 @@ namespace soccer {
 class Ai
 {
   public:
+	virtual ~Ai() {}
 #ifndef DEBUG
   	virtual Direction move(const GameState& state, int ms) = 0;
 #else

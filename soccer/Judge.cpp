@@ -31,10 +31,10 @@ GameState Judge::run()
 	while(!state_.isGameOver())
 		oneMove();
 	
-	GameState copy = state_;
+	GameState state = std::move(state_);
 	state_ = GameState();
 	
-	return copy;
+	return state;
 }
 	
 }
