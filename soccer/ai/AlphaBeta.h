@@ -1,14 +1,14 @@
-#ifndef _Soccer_Negamax_h_
-#define _Soccer_Negamax_h_
+#ifndef _Soccer_AlphaBeta_h_
+#define _Soccer_AlphaBeta_h_
 
 #include "HeuristicSearch.h"
 
 namespace soccer { namespace ai {
 
-class Negamax: public HeuristicSearch
+class AlphaBeta: public HeuristicSearch
 {
   public:
-  	Negamax(Heuristic heuristic, int maxDepth);
+  	AlphaBeta(Heuristic heuristic, int maxDepth);
   	virtual Direction move(const GameState& state, int ms
 #ifdef DEBUG
 		, std::list<Direction>& moveSequence
@@ -16,7 +16,8 @@ class Negamax: public HeuristicSearch
   		);
   
   private:
-  	double negamax_(GameState& state, int color, int depth, Direction& move
+  	double alphaBeta_(GameState& state, int color, int depth,
+  					  double alpha, double beta, Direction& move
 #ifdef DEBUG
   					, std::list<Direction>& sequence
 #endif
