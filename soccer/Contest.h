@@ -3,6 +3,7 @@
 
 #include "Judge.h"
 #include "Ai.h"
+#include <functional>
 #include <vector>
 #include <ostream>
 
@@ -11,8 +12,10 @@ namespace soccer {
 class Contest
 {
   public:
-  	Contest();
-  	~Contest();
+  	typedef std::function<bool(int, int)> Matches;
+  
+  	Contest(Matches matches, bool verbose = false);
+  	virtual ~Contest();
   	void addAi(std::string name, Ai* ai1, Ai* ai2);
   	void run(int repetitions);
   	
@@ -24,6 +27,8 @@ class Contest
   
   	std::vector<Ai*> ais1_;
   	std::vector<Ai*> ais2_;
+  	Matches matches_;
+	bool verbose_;
   	std::vector<std::pair<int, int>> data_;
   	int repetitions_;
   	std::vector<std::string> names_;

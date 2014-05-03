@@ -15,6 +15,6 @@ using namespace heur;
 GUI_APP_MAIN
 {
 	Ai* ai = new MonteCarloTreeSearch(new RandomHeuristicSearch(naive1, 1.6),
-	                                  new RandomHeuristicSearch(naive2, 1.6), 10000, 3, 2.0);
+	                                  new RandomHeuristicSearch(naive2, 1.6), 10000, 5, 1.4);
 	PlayerVsAi(ai).Run();
 }

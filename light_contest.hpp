@@ -1,4 +1,6 @@
-#include "soccer/Contest.h"
+#include "soccer/FullContest.h"
+#include "soccer/TwoTeamContest.h"
+#include "soccer/ai/MonteCarloTreeSearch.h"
 #include "soccer/ai/Negamax.h"
 #include "soccer/ai/MaxHeuristicSearch.h"
 #include "soccer/ai/RandomHeuristicSearch.h"
@@ -17,45 +19,29 @@ using namespace heur;
 
 int main()
 {
-	Contest contest;
+	TwoTeamContest contest(1, true);
 	
-	for(int i = 1; i <= 3; ++i)
+	for(int d = 8; d <= 8; ++d)
 	{
 		std::stringstream str;
-		str << "negamax " << i;
-		contest.addAi(str.str(), new Negamax(naive1, i),
-						 		 new Negamax(naive2, i));
+		str << "negamax " << d;
+		contest.addAi(str.str(), new Negamax(naive1, d),
+						 		 new Negamax(naive2, d));
 	}
-	const double LAMBDAS[] = {1.2, 1.6, 2.0};	
-	const int LAMBDA_COUNT = 3;
-	for(int i = 0; i < LAMBDA_COUNT; ++i)
+	
+	for(int n0 = 1; n0 <= 7; ++n0)
 	{
-		std::stringstream str1, str2;
-		/*str1 << "monte carlo " << LAMBDAS[i];
-		contest.addAi(str1.str(), new MaxHeuristicSearch(SimpleMonteCarlo(new RandomHeuristicSearch(naive1, LAMBDAS[i]),
-	                                                                      new RandomHeuristicSearch(naive2, LAMBDAS[i]),
-	                                                                      20, PLAYER_1)),
-	                              new MaxHeuristicSearch(SimpleMonteCarlo(new RandomHeuristicSearch(naive1, LAMBDAS[i]),
-	                                                                      new RandomHeuristicSearch(naive2, LAMBDAS[i]),
-	                                                                      20, PLAYER_2)));*/
-		
-		str2 << "negamax monte carlo " << LAMBDAS[i];
-		contest.addAi(str2.str(), new Negamax(SimpleMonteCarlo(new RandomHeuristicSearch(naive1, LAMBDAS[i]),
-		                                                       new RandomHeuristicSearch(naive2, LAMBDAS[i]),
-		                                                       20, PLAYER_1), 2),
-		                          new Negamax(SimpleMonteCarlo(new RandomHeuristicSearch(naive1, LAMBDAS[i]),
-		                                                       new RandomHeuristicSearch(naive2, LAMBDAS[i]),
-		                                                       20, PLAYER_2), 2));
+		std::stringstream str;
+		str << "mcts " << n0;
+		contest.addAi(str.str(), new MonteCarloTreeSearch(new RandomHeuristicSearch(naive1, 1.6),
+	                              		  				  new RandomHeuristicSearch(naive2, 1.6),
+	                              		  				  10000, n0, 1.4),
+	                             new MonteCarloTreeSearch(new RandomHeuristicSearch(naive1, 1.6),
+	                              		  				  new RandomHeuristicSearch(naive2, 1.6),
+	                              		  				  10000, n0, 1.4));
 	}
 	
-	contest.addAi("negamax monte carlo smart uniform", new Negamax(SimpleMonteCarlo(new RandomHeuristicSearch(smartUniform1, 1),
-					                                                                new RandomHeuristicSearch(smartUniform2, 1),
-                                                                      				20, PLAYER_1), 2),
-                              					 	   new Negamax(SimpleMonteCarlo(new RandomHeuristicSearch(smartUniform1, 1),
-                                                                      				new RandomHeuristicSearch(smartUniform2, 1),
-	                                                                      			20, PLAYER_2), 2));
-	
-	contest.run(3);
+	contest.run(10);
 	std::cout << contest << std::endl;
 	
 	return 0;

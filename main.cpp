@@ -1,5 +1,5 @@
 #ifndef MAIN
-#define MAIN judge
+#define MAIN light_contest
 #endif
 
 #define QUOTEME(x) QUOTEME_1(x)

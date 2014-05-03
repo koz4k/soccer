@@ -1,12 +1,13 @@
 #include "Contest.h"
 #include "Judge.h"
 #include <algorithm>
+#include <iostream>
 #include <ctime>
 
 namespace soccer {
 
-Contest::Contest():
-	repetitions_(0)
+Contest::Contest(Matches matches, bool verbose):
+	matches_(matches), verbose_(verbose), repetitions_(0)
 {
 }
 
@@ -32,7 +33,7 @@ void Contest::run(int repetitions)
 	if(data_.size() != n * n)
 	{
 		data_.resize(n * n);
-		std::fill(data_.begin(), data_.end(), std::make_pair(0, 0));
+		std::fill(data_.begin(), data_.end(), std::make_pair(-1, -1));
 		repetitions_ = 0;
 	}
 	
@@ -40,11 +41,35 @@ void Contest::run(int repetitions)
 	{
 		for(int j = 0; j < ais2_.size(); ++j)
 		{
+			if(!matches_(i, j))
+				continue;
+			
+			if(getData_(i, j) == std::make_pair(-1, -1))
+				getData_(i, j) = std::make_pair(0, 0);
+			
 			Judge judge(ais1_[i], ais2_[j]);
 			int wins = 0;
 			clock_t t = clock();
-			for(int r = 0; r < repetitions; ++r)
-				wins += judge.run().whoWon() == PLAYER_1;
+			
+			if(!verbose_)
+			{
+				for(int r = 0; r < repetitions; ++r)
+					wins += judge.run().whoWon() == PLAYER_1;
+			}
+			else
+			{
+				for(int r = 0; r < repetitions; ++r)
+				{
+					bool won = judge.run().whoWon() == PLAYER_1;
+					wins += won;
+					std::cout << names_[i] << " vs " << names_[j] << ", rep " << r << ": "
+							  << (won ? names_[i] : names_[j]) << " won, stats: "
+							  << ((double) wins) / (r + 1) << ", "
+							  << ((double) clock() - t) / CLOCKS_PER_SEC * 1000 << "ms"
+							  << std::endl;
+				}
+			}
+			
 			t = clock() - t;
 			getData_(i, j).first += wins;
 			getData_(i, j).second += t;
@@ -63,12 +88,16 @@ std::ostream& operator<<(std::ostream& out, const Contest& contest)
 		{
 			std::pair<int, int> data1 = contest.getData_(i, j);
 			std::pair<int, int> data2 = contest.getData_(j, i);
-			out << contest.names_[i] << " vs " << contest.names_[j] << ": "
-				<< ((double) data1.first) / contest.repetitions_ << " / "
-				<< ((double) data2.first) / contest.repetitions_ << ", time in ms: "
-				<< ((double) data1.second) / CLOCKS_PER_SEC * 1000 / contest.repetitions_ << " / "
-				<< ((double) data2.second) / CLOCKS_PER_SEC * 1000 / contest.repetitions_
-				<< std::endl;
+			
+			if(data1 != std::make_pair(-1, -1) && data2 != std::make_pair(-1, -1))
+			{
+				out << contest.names_[i] << " vs " << contest.names_[j] << ": "
+					<< ((double) data1.first) / contest.repetitions_ << " / "
+					<< ((double) data2.first) / contest.repetitions_ << ", time in ms: "
+					<< ((double) data1.second) / CLOCKS_PER_SEC * 1000 / contest.repetitions_ << " / "
+					<< ((double) data2.second) / CLOCKS_PER_SEC * 1000 / contest.repetitions_
+					<< std::endl;
+			}
 		}
 	}
 	

@@ -1,4 +1,4 @@
-#include "soccer/Contest.h"
+#include "soccer/FullContest.h"
 #include "soccer/ai/Negamax.h"
 #include "soccer/ai/MaxHeuristicSearch.h"
 #include "soccer/ai/RandomHeuristicSearch.h"
@@ -17,7 +17,7 @@ using namespace heur;
 
 int main()
 {
-	Contest contest;
+	FullContest contest;
 	
 	for(int i = 1; i <= 4; ++i)
 	{
