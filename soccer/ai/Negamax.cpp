@@ -8,9 +8,10 @@ namespace soccer { namespace ai {
 Negamax::Negamax(Heuristic heuristic, int maxDepth):
 	HeuristicSearch(std::move(heuristic)), maxDepth_(maxDepth)
 {
+	srand(time(nullptr));
 }
 
-Direction Negamax::move(const GameState& state, int ms
+Direction Negamax::move(GameState& state, int ms
 #ifdef DEBUG
 		, std::list<Direction>& moveSequence
 #endif
@@ -35,7 +36,7 @@ double Negamax::negamax_(GameState& state, int color, int depth, Direction& move
 						)
 {
 	if(state.isGameOver() || !depth)
-		return heuristic_(state, 0) * color;
+		return heuristic_(state) * color;
 
 	double bestValue = -INFINITY;
 	move = DIR_END;

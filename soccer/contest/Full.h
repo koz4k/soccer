@@ -8,7 +8,7 @@ namespace soccer { namespace contest {
 class Full: public Contest
 {
   public:
-  	Full(bool fightSelf = false, bool verbose = false);
+  	Full(int matchTime, bool fightSelf = false, bool verbose = false);
 };
 	
 } }

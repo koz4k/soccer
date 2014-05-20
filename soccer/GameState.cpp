@@ -45,7 +45,8 @@ GameState::Field& GameState::Field::setOccupied_(Direction direction, bool occup
 }
 
 GameState::GameState(int width, int height):
-	width_(width + 1), height_(height + 3), currentPosition_(0, 0), currentPlayer_(PLAYER_1)
+	width_(width + 1), height_(height + 3), currentPosition_(0, 0), currentPlayer_(PLAYER_1),
+	turnNumber_(0), moveNumber_(0), lastMoveCode_(-1)
 {
 	fields_.resize(width_ * height_);
 		
@@ -68,8 +69,7 @@ GameState::GameState(int width, int height):
 	
 const GameState::Field& GameState::getField(Vector2 point) const
 {
-	point = boardToStorage_(point);
-	return fields_[point.y * width_ + point.x];
+	return fields_[boardToStorageIndex_(point)];
 }
 
 const GameState::Field& GameState::getCurrentField() const
@@ -89,25 +89,43 @@ bool GameState::canMove(Direction direction) const
 
 GameState& GameState::move(Direction direction)
 {
+	lastMoveCode_ = getMoveCode(direction);
+	
 	getField_(currentPosition_).setOccupied_(direction);
 	currentPosition_ = currentPosition_.getNeighbor(direction);
 	getField_(currentPosition_).setOccupied_(reverseDirection(direction));
 	
 	if(!canRebound() && !isBlocked())
+	{
 		currentPlayer_ = otherPlayer(currentPlayer_);
+		
+		if(currentPlayer_ == PLAYER_1)
+			++turnNumber_;
+	}
+	
+	++moveNumber_;
 	
 	return *this;
 }
 
 GameState& GameState::undo(Direction direction)
 {
+	lastMoveCode_ = -1;
+	
 	if(!canRebound() && !isBlocked())
+	{
+		if(currentPlayer_ == PLAYER_1)
+			--turnNumber_;
+		
 		currentPlayer_ = otherPlayer(currentPlayer_);
+	}
 	
 	direction = reverseDirection(direction);
 	getField_(currentPosition_).setOccupied_(direction, false);
 	currentPosition_ = currentPosition_.getNeighbor(direction);
-	getField_(currentPosition_).setOccupied_(reverseDirection(direction), false);	
+	getField_(currentPosition_).setOccupied_(reverseDirection(direction), false);
+	
+	--moveNumber_;
 	
 	return *this;
 }
@@ -161,18 +179,50 @@ Player GameState::whoseTurn() const
 	return currentPlayer_;
 }
 
+void GameState::setWhoseTurn(Player player)
+{
+	currentPlayer_ = player;
+}
+
+int GameState::whichTurn() const
+{
+	return turnNumber_;
+}
+
+int GameState::whichMove() const
+{
+	return moveNumber_;
+}
+
+int GameState::getMoveCode(Direction direction) const
+{
+	return (boardToStorageIndex_(currentPosition_) << 4) | (direction << 1) | // zahardcodowane z koniecznosci :(
+		   ((int) currentPlayer_ == PLAYER_2);
+}
+
+int GameState::getLastMoveCode() const
+{
+	return lastMoveCode_;
+}
+
 GameState::Field& GameState::getField_(Vector2 point)
 {
-	point = boardToStorage_(point);
-	
-	if(point.x < 0 || point.y < 0 || point.x >= width_ || point.y >= height_)
-		throw 123;
-	return fields_[point.y * width_ + point.x];
+	return fields_[boardToStorageIndex_(point)];
 }
 	
 Vector2 GameState::boardToStorage_(Vector2 board) const
 {
-	return Vector2(board.x + (width_ - 1) / 2, board.y + (height_ - 1) / 2);
+	//return Vector2(board.x + (width_ - 1) / 2, board.y + (height_ - 1) / 2);
+	Vector2 p(board.x + (width_ - 1) / 2, board.y + (height_ - 1) / 2);
+	if(p.x < 0 || p.y < 0 || p.x >= width_ || p.y >= height_)
+		throw 123;
+	return p;
+}
+
+int GameState::boardToStorageIndex_(Vector2 board) const
+{
+	Vector2 point = boardToStorage_(board);
+	return point.y * width_ + point.x;	
 }
 
 void GameState::getValidMoves_(const std::vector<Direction>& prepend,

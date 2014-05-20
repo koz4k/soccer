@@ -14,6 +14,7 @@ class PlayerVsAi
   	void Run();
   	
   private:
+  	void WhenMove_(const soccer::GameState& state, soccer::Direction direction);
   	void WhenFullMove_(soccer::GameState& state);
   	void WhenGameOver_(const soccer::GameState& state);
   

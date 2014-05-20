@@ -8,6 +8,7 @@ PlayerVsAi::PlayerVsAi(Ai* ai, int boardWidth, int boardHeight):
 {
 	window_.board.Initialize(Size(boardWidth, boardHeight));
 
+	window_.board.WhenMove = THISBACK(WhenMove_);
 	window_.board.WhenFullMove = THISBACK(WhenFullMove_);
 	window_.board.WhenGameOver = THISBACK(WhenGameOver_);
 	
@@ -39,6 +40,11 @@ const char* GetPlayerIndicator(Player player)
 	}
 }
 
+void PlayerVsAi::WhenMove_(const GameState& state, Direction direction)
+{
+	ai_->opponentMoved(direction);
+}
+
 void PlayerVsAi::WhenFullMove_(GameState& state)
 {
 	window_.whoseTurn.SetLabel(GetPlayerIndicator(state.whoseTurn()));
@@ -50,10 +56,10 @@ void PlayerVsAi::WhenFullMove_(GameState& state)
 		window_.ProcessEvents();
 		
 #ifndef DEBUG
-		Direction direction = ai_->move(state, 0);
+		Direction direction = ai_->move(state, 20000);
 #else
 		std::list<Direction> moveSequence;
-		Direction direction = ai_->move(state, 0, moveSequence);
+		Direction direction = ai_->move(state, 20000, moveSequence);
 		
 		window_.board.ClearDebug();
 		GameState stateCopy = state;

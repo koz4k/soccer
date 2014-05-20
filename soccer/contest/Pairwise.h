@@ -8,7 +8,7 @@ namespace soccer { namespace contest {
 class Pairwise: public Contest
 {
   public:
-  	Pairwise(bool dense = false, bool verbose = false);
+  	Pairwise(int matchTime, bool dense = false, bool verbose = false);
 };
 
 } }

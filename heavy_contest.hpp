@@ -1,7 +1,7 @@
 #include "soccer/contest/Full.h"
 #include "soccer/ai/Negamax.h"
-#include "soccer/ai/MaxHeuristicSearch.h"
-#include "soccer/ai/RandomHeuristicSearch.h"
+#include "soccer/ai/MaxSearch.h"
+#include "soccer/ai/RouletteSearch.h"
 #include "soccer/ai/heur/SimpleMonteCarlo.h"
 #include "soccer/ai/heur/naive.h"
 #include "soccer/ai/heur/smartUniform.h"
@@ -27,8 +27,8 @@ int main()
 				    		 		new Negamax(naive2, i));
 	}
 	
-	theContest.addAi("uniform random", new MaxHeuristicSearch(uniform),
-			    				       new MaxHeuristicSearch(uniform));
+	theContest.addAi("uniform random", new MaxSearch(uniform),
+			    				       new MaxSearch(uniform));
 	
 	theContest.addAi("smart random", new MaxHeuristicSearch(smartUniform1),
 								     new MaxHeuristicSearch(smartUniform2));
@@ -41,19 +41,19 @@ int main()
 	{
 		std::stringstream str;
 		str << "monte carlo " << LAMBDAS[i];
-		theContest.addAi(str.str(), new MaxHeuristicSearch(SimpleMonteCarlo(new RandomHeuristicSearch(naive1, LAMBDAS[i]),
-	                                                                     	new RandomHeuristicSearch(naive2, LAMBDAS[i]),
+		theContest.addAi(str.str(), new MaxHeuristicSearch(SimpleMonteCarlo(new RouletteSearch(naive1, LAMBDAS[i]),
+	                                                                     	new RouletteSearch(naive2, LAMBDAS[i]),
 	                                                                     	100, PLAYER_1)),
-	                           	    new MaxHeuristicSearch(SimpleMonteCarlo(new RandomHeuristicSearch(naive1, LAMBDAS[i]),
-	                                                                        new RandomHeuristicSearch(naive2, LAMBDAS[i]),
+	                           	    new MaxHeuristicSearch(SimpleMonteCarlo(new RouletteSearch(naive1, LAMBDAS[i]),
+	                                                                        new RouletteSearch(naive2, LAMBDAS[i]),
 	                                                                        100, PLAYER_2)));
 	}
 	
-	theContest.addAi("monte carlo greedy", new MaxHeuristicSearch(SimpleMonteCarlo(new MaxHeuristicSearch(naive1),
-                                                                        		   new MaxHeuristicSearch(naive2),
+	theContest.addAi("monte carlo greedy", new MaxHeuristicSearch(SimpleMonteCarlo(new MaxSearch(naive1),
+                                                                        		   new MaxSearch(naive2),
 			                                                                       100, PLAYER_1)),
-                             			   new MaxHeuristicSearch(SimpleMonteCarlo(new MaxHeuristicSearch(naive1),
-                                           		                                   new MaxHeuristicSearch(naive2),
+                             			   new MaxHeuristicSearch(SimpleMonteCarlo(new MaxSearch(naive1),
+                                           		                                   new MaxSearch(naive2),
                                                    			                       100, PLAYER_2)));
 	
 	theContest.run(100);

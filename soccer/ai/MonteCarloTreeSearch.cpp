@@ -1,51 +1,101 @@
 #include "MonteCarloTreeSearch.h"
 #include "mcts/Tree.h"
+#include <cstdlib>
+#include <ctime>
+
+#include <cstdio>
 
 namespace soccer { namespace ai {
 
 using namespace mcts;
 
 MonteCarloTreeSearch::MonteCarloTreeSearch(Ai* playoutAi1, Ai* playoutAi2,
-										   int playoutCount, int n0, double c):
-	playoutAi1_(playoutAi1), playoutAi2_(playoutAi2), playoutCount_(playoutCount), n0_(n0), c_(c)
+										   int n0, double c, Heuristic heuristic,
+										   double w, double lambda, double b,
+										   TimingStrategy* timing):
+	playoutAi1_(playoutAi1), playoutAi2_(playoutAi2), n0_(n0), c_(c), heuristic_(heuristic),
+	w_(w), lambda_(lambda), b_(b), tree_(nullptr), timing_(timing)
 {
+	srand(time(nullptr));
 }
 
 MonteCarloTreeSearch::~MonteCarloTreeSearch()
 {
 	delete playoutAi1_;
 	delete playoutAi2_;
+	delete tree_;
+	delete timing_;
 }
 
-Direction MonteCarloTreeSearch::move(const GameState& state, int ms
+Direction MonteCarloTreeSearch::move(GameState& state, int ms
 #ifdef DEBUG
 		, std::list<Direction>& moveSequence
 #endif
 	)
 {
-	int oldN0 = Tree::n0;
+	timing_->setGameState(state);
+	timing_->start(ms);
+	
 	Tree::n0 = n0_;
-	double oldC = Tree::c;
 	Tree::c = c_;
+	Tree::heuristic = heuristic_;
+	Tree::w = w_;
+	Tree::lambda = lambda_;
+	Tree::b = b_;
+
+delete tree_;
+	
+	//if(!tree_)
+		tree_ = new Tree(state.whoseTurn());
 
 	GameState stateCopy = state;
-	Tree* tree = new Tree(state.whoseTurn());
-	for(int i = 0; i < playoutCount_; ++i)
-		tree->playout(stateCopy, playoutAi1_, playoutAi2_);
-	Direction direction = tree->chooseMove();
-//tree->print();
+	int i = 0;
+	for(; timing_->haveTime() && !tree_->isSolved(); ++i)
+	//for(int i = 0; i < 2000; ++i)
+		tree_->playout(stateCopy, playoutAi1_, playoutAi2_);
+	Direction direction = tree_->chooseMove();
 	
+	if(tree_->getMe() != PLAYER_1)
+		throw false;
+	
+	//printf("playouts: %d, direction: %d\n", i, direction);
+	//fflush(stdout);
+	
+	// duct tape fix (to sie nie powinno zdarzyc, ale na wszelki wypadek)
+	if(direction == DIR_END)
+		for(direction = DIR_BEGIN; direction < DIR_END && !state.canMove(direction); ++direction);
+	// duct tape fix #2 (gdy wszystkie srodki zawioda, robimy cokolwiek)
+	if(direction == DIR_END)
+		direction = rand() % DIR_END;
+	
+//tree->print();
+
 #ifdef DEBUG
 	moveSequence.clear();
-	tree->chooseMoveSequence(moveSequence);
+	tree_->chooseMoveSequence(moveSequence);
 #endif
 
-	delete tree;
+	//tree_ = tree_->move(direction);
 	
-	Tree::n0 = oldN0;
-	Tree::c = oldC;
+	//printf("time left: %d\n", timing_->getTimeAvailable());
+	//fflush(stdout);
+	if(tree_->isSolved())
+		printf("solved: %d\n", tree_->isWinning()), fflush(stdout);
+	timing_->stop();
 	
 	return direction;
+}
+
+void MonteCarloTreeSearch::opponentMoved(Direction direction)
+{
+	if(tree_)
+		tree_ = tree_->move(direction);
+}
+
+void MonteCarloTreeSearch::reset()
+{
+	delete tree_;
+	tree_ = nullptr;
 }
 	
 } }

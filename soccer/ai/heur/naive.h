@@ -7,8 +7,8 @@
 
 namespace soccer { namespace ai { namespace heur {
 	
-double naive1(const GameState& state, int ms);
-double naive2(const GameState& state, int ms);
+double naive1(const GameState& state);
+double naive2(const GameState& state);
 	
 } } }
 

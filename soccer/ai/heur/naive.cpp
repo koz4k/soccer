@@ -4,7 +4,7 @@
 
 namespace soccer { namespace ai { namespace heur {
 
-double naive1(const GameState& state, int ms)
+double naive1(const GameState& state)
 {
 	Vector2 position = state.getCurrentPosition();
 	
@@ -15,7 +15,7 @@ double naive1(const GameState& state, int ms)
 		   std::max(6 - position.y, -std::abs(position.x));
 }
 
-double naive2(const GameState& state, int ms)
+double naive2(const GameState& state)
 {
 	Vector2 position = state.getCurrentPosition();
 	

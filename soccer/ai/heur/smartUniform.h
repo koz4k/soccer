@@ -5,8 +5,8 @@
 
 namespace soccer { namespace ai { namespace heur {
 	
-double smartUniform1(const GameState& state, int ms);
-double smartUniform2(const GameState& state, int ms);
+double smartUniform1(const GameState& state);
+double smartUniform2(const GameState& state);
 
 } } }
 

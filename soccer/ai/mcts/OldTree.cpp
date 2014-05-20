@@ -1,38 +1,33 @@
-#include "Tree.h"
+#include "OldTree.h"
 #include "../../Judge.h"
 #include <algorithm>
 #include <cmath>
-#include <cstdlib>
-#include <ctime>
 #include <cstdio>
 
 namespace soccer { namespace ai { namespace mcts {
 	
-Tree::Tree(Player me):
-	wins_(0), plays_(0), raveWins_(0), ravePlays_(0), bias_(NAN), me_(me)
+OldTree::OldTree(Player me):
+	wins_(0), plays_(0), me_(me)
 {
-	srand(time(nullptr));
-	
 	for(Direction i = 0; i < DIR_END; ++i)
 		sons_[i] = nullptr;
 }
 
-Tree::~Tree()
+OldTree::~OldTree()
 {
 	for(Direction i = 0; i < DIR_END; ++i)
 		delete sons_[i];
 }
 
-void Tree::playout(GameState& state, Ai* ai1, Ai* ai2)
+void OldTree::playout(GameState& state, Ai* ai1, Ai* ai2)
 {
-	std::unordered_set<int> moveCodes;
-	treePolicy_(state, ai1, ai2, moveCodes);
+	treePolicy_(state, ai1, ai2);
 }
 
-Direction Tree::chooseMove()
+Direction OldTree::chooseMove()
 {
 	Direction bestMove = DIR_END;
-	double bestValue = -INFINITY;
+	double bestValue = 0;
 	for(Direction dir = 0; dir < DIR_END; ++dir)
 	{
 		if(!sons_[dir])
@@ -45,14 +40,13 @@ Direction Tree::chooseMove()
 			bestValue = value;
 		}
 	}
-	
 	return bestMove;
 }
 
-void Tree::chooseMoveSequence(std::list<Direction>& moveSequence)
+void OldTree::chooseMoveSequence(std::list<Direction>& moveSequence)
 {
-	//printf("%u:\n", moveSequence.size());
-	//print();
+	printf("%u:\n", moveSequence.size());
+	print();
 	
 	Direction bestMove = DIR_END;
 	double bestValue = 0;
@@ -76,7 +70,7 @@ void Tree::chooseMoveSequence(std::list<Direction>& moveSequence)
 	sons_[bestMove]->chooseMoveSequence(moveSequence);
 }
 
-/*void Tree::print()
+void OldTree::print()
 {
 	const char* DIRECTIONS[] = {"right", "up-right", "up", "up-left", "left", "down-left", "down", "down-right"};
 	printf("root me: %u, wins: %u, plays: %u, value: %f\n", me_ == PLAYER_1 ? 1 : 2, wins_, plays_, getValue_(me_));
@@ -90,38 +84,9 @@ void Tree::chooseMoveSequence(std::list<Direction>& moveSequence)
 	}
 	printf("\n");
 	fflush(stdout);
-}*/
-
-bool Tree::isSolved() const
-{
-	return plays_ == -1;
 }
 
-Tree* Tree::releaseSon(Direction direction)
-{
-	Tree* son = nullptr;
-	std::swap(son, sons_[direction]);
-	return son;
-}
-
-Tree* Tree::move(Direction direction)
-{
-	Tree* son = releaseSon(direction);
-	delete this;
-	return son;
-}
-
-bool Tree::isWinning() const
-{
-	return isWinning_(me_);
-}
-
-Player Tree::getMe() const
-{
-	return me_;
-}
-
-bool Tree::treePolicy_(GameState& state, Ai* ai1, Ai* ai2, std::unordered_set<int>& moveCodes)
+bool OldTree::treePolicy_(GameState& state, Ai* ai1, Ai* ai2)
 {
 	if(plays_ == -1)
 		return wins_;
@@ -132,18 +97,13 @@ bool Tree::treePolicy_(GameState& state, Ai* ai1, Ai* ai2, std::unordered_set<in
 		return wins_ = state.whoWon() == me_;
 	}
 	
-Vector2 p = state.getCurrentPosition();
-	
 	Direction direction = DIR_END;
-	Tree* son = chooseSon_(state, direction);
-	/*state.undo(direction);
-	moveCodes.insert(state.getMoveCode(direction));
-	state.move(direction);*/
+	OldTree* son = chooseSon_(state, direction);
 	bool win = false;
 	if(son->plays_ >= n0)
-		win = son->treePolicy_(state, ai1, ai2, moveCodes);
+		win = son->treePolicy_(state, ai1, ai2);
 	else
-		win = son->defaultPolicy_(state, ai1, ai2, moveCodes);
+		win = son->defaultPolicy_(state, ai1, ai2);
 	
 	if(son->plays_ == -1)
 	{
@@ -187,47 +147,26 @@ Vector2 p = state.getCurrentPosition();
 	plays_ += 1;
 	
 	state.undo(direction);
-	
-	if(state.getCurrentPosition() != p)
-		throw 0.0;
-	
-	/*for(Direction dir = DIR_BEGIN; dir < DIR_END; ++dir)
-	{
-		if(!sons_[dir])
-			continue;
-		
-		int code = state.getMoveCode(dir);
-		if(moveCodes.find(code) != moveCodes.end()) // to dziala, bo kody zawieraja informacje o graczu ktory wykonuje ruch
-		{
-			sons_[dir]->raveWins_ += win;
-			sons_[dir]->ravePlays_ += 1;
-		}
-	}*/
-	
 	return win;
 }
 
-bool Tree::defaultPolicy_(GameState& state, Ai* ai1, Ai* ai2, std::unordered_set<int>& moveCodes)
+bool OldTree::defaultPolicy_(GameState& state, Ai* ai1, Ai* ai2)
 {
 	if(state.isGameOver())
 	{
+		wins_ = state.whoWon() == me_;
 		plays_ = -1;
-		return wins_ = state.whoWon() == me_;
+		return wins_;
 	}
 	
-	Judge judge(ai1, ai2, state);
-	//while(!judge.getGameState().isGameOver())
-	//	moveCodes.insert(judge.oneMove().getLastMoveCode());
-	
 	bool won = Judge(ai1, ai2, state).run().whoWon() == me_;
-	//bool won = judge.getGameState().whoWon() == me_;
 	wins_ += won;
 	plays_ += 1;
 	return won;
 }
 
-Tree* Tree::chooseSon_(GameState& state, Direction& direction)
-{	
+OldTree* OldTree::chooseSon_(GameState& state, Direction& direction)
+{
 	Direction dirs[DIR_END];
 	for(int i = 0; i < DIR_END; ++i)
 		dirs[i] = i;
@@ -241,13 +180,13 @@ Tree* Tree::chooseSon_(GameState& state, Direction& direction)
 		if(!sons_[direction] && state.canMove(direction))
 		{
 			state.move(direction);
-			return sons_[direction] = new Tree(state.isGameOver() ? me_ : state.whoseTurn());
+			return sons_[direction] = new OldTree(state.isGameOver() ? me_ : state.whoseTurn());
 		}
 	}
 	
 	direction = DIR_END;
 	double bestUct = -INFINITY;
-	Tree* son = nullptr;
+	OldTree* son = nullptr;
 	for(int i = 0; i < DIR_END; ++i)
 	{
 		Direction dir = dirs[i];
@@ -255,7 +194,7 @@ Tree* Tree::chooseSon_(GameState& state, Direction& direction)
 		if(!state.canMove(dir))
 			continue;
 		
-		double uct = sons_[dir]->getUct_(state, plays_, me_);
+		double uct = sons_[dir]->getUct_(plays_, me_);
 		if(uct > bestUct || direction == DIR_END)
 		{
 			son = sons_[dir];
@@ -263,46 +202,28 @@ Tree* Tree::chooseSon_(GameState& state, Direction& direction)
 			bestUct = uct;
 		}
 	}
-
+	
 	state.move(direction);
 	return son;
 }
 
-bool Tree::isWinning_(Player player) const
+bool OldTree::isWinning_(Player player) const
 {
 	return plays_ == -1 && (wins_ == 1) == (player == me_);
 }
 
-double Tree::getValue_(Player player) const
+double OldTree::getValue_(Player player) const
 {
 	double value = ((double) wins_) / abs(plays_);
 	return player == me_ ? value : 1 - value;
 }
 
-double Tree::getRaveValue_(Player player) const
+double OldTree::getUct_(int parentPlays, Player player) const
 {
-	double value = ((double) raveWins_) / abs(ravePlays_);
-	return player == me_ ? value : 1 - value;
+	return plays_ != -1 ? getValue_(player) + c * sqrt(log(parentPlays) / plays_) : -INFINITY;
 }
 
-double Tree::getUct_(GameState& state, int parentPlays, Player player) const
-{
-	if(isnan(bias_))
-		bias_ = w / (1 + exp(-lambda * heuristic(state)));
-	double beta = ravePlays_ / (plays_ + ravePlays_ + 4 * b * b * plays_ * ravePlays_);
-//printf("beta: %f, rave: %f\n", beta, getRaveValue_(player));
-//fflush(stdout);
-	/*return plays_ != -1 ? (1 - beta) * getValue_(player) + beta * getRaveValue_(player) +
-		   c * sqrt(log(parentPlays) / plays_) + bias_ / (plays_ - wins_ + 1) : -INFINITY;*/
-	return plays_ != -1 ? getValue_(player) +
-		   c * sqrt(log(parentPlays) / plays_) + bias_ / (plays_ - wins_ + 1) : -INFINITY;
-}
-
-int Tree::n0 = 1;
-double Tree::c = 1;
-double Tree::w = 0;
-double Tree::lambda = 1;
-Heuristic Tree::heuristic;
-double Tree::b = 1000000000;
+int OldTree::n0 = 1;
+double OldTree::c = 1;
 	
 } } }

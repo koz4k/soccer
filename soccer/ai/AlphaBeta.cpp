@@ -8,9 +8,10 @@ namespace soccer { namespace ai {
 AlphaBeta::AlphaBeta(Heuristic heuristic, int maxDepth):
 	HeuristicSearch(std::move(heuristic)), maxDepth_(maxDepth)
 {
+	srand(time(nullptr));
 }
 
-Direction AlphaBeta::move(const GameState& state, int ms
+Direction AlphaBeta::move(GameState& state, int ms
 #ifdef DEBUG
 		, std::list<Direction>& moveSequence
 #endif
@@ -36,7 +37,7 @@ double AlphaBeta::alphaBeta_(GameState& state, int color, int depth,
 						)
 {
 	if(state.isGameOver() || !depth)
-		return heuristic_(state, 0) * color;
+		return heuristic_(state) * color;
 
 	double bestValue = -INFINITY;
 	move = DIR_END;

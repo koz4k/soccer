@@ -1,4 +1,4 @@
-#include "RandomHeuristicSearch.h"
+#include "RouletteSearch.h"
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
@@ -6,17 +6,17 @@
 
 namespace soccer { namespace ai {
 
-RandomHeuristicSearch::RandomHeuristicSearch(Heuristic heuristic, double lambda):
+RouletteSearch::RouletteSearch(Heuristic heuristic, double lambda):
 	HeuristicSearch(std::move(heuristic)), lambda_(lambda)
 {
-	srand(time(NULL));
+	srand(time(nullptr));
 }
 
-Direction RandomHeuristicSearch::move(const GameState& state, int ms
+Direction RouletteSearch::move(GameState& state, int ms
 #ifdef DEBUG
-								      , std::list<Direction>& moveSequence
+							   , std::list<Direction>& moveSequence
 #endif
-  								     )
+  							  )
 {
 	Direction dirs[DIR_END];
 	for(int i = 0; i < DIR_END; ++i)
@@ -24,17 +24,16 @@ Direction RandomHeuristicSearch::move(const GameState& state, int ms
 	std::random_shuffle(dirs, dirs + DIR_END);
 	
 	Direction move = DIR_END;
-	GameState stateCopy = state;
 	double cumProbs[DIR_END];
 	double cumProb = 0;
 	for(int i = 0; i < DIR_END && move == DIR_END; ++i)
 	{
 		double prob = 0;
-		if(stateCopy.canMove(dirs[i]))
+		if(state.canMove(dirs[i]))
 		{
-			stateCopy.move(dirs[i]);
-			prob = exp(lambda_ * heuristic_(stateCopy, 0));
-			stateCopy.undo(dirs[i]);
+			state.move(dirs[i]);
+			prob = exp(lambda_ * heuristic_(state));
+			state.undo(dirs[i]);
 		}
 
 		if(prob == INFINITY)

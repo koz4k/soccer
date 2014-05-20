@@ -1,6 +1,8 @@
 #ifndef _Soccer_core_h_
 #define _Soccer_core_h_
 
+#include <functional>
+
 namespace soccer {
 
 typedef unsigned int u32;
@@ -29,6 +31,10 @@ enum Player
 	PLAYER_1,
 	PLAYER_2
 };
+
+class GameState;
+
+typedef std::function<double(const GameState& state)> Heuristic;
 
 Direction reverseDirection(Direction direction);
 Player otherPlayer(Player player);

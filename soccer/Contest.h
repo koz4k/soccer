@@ -14,7 +14,7 @@ class Contest
   public:
   	typedef std::function<bool(int, int)> Matches;
   
-  	Contest(Matches matches, bool verbose = false);
+  	Contest(Matches matches, int matchTime, bool verbose = false);
   	virtual ~Contest();
   	void addAi(std::string name, Ai* ai1, Ai* ai2);
   	void run(int repetitions);
@@ -28,6 +28,7 @@ class Contest
   	std::vector<Ai*> ais1_;
   	std::vector<Ai*> ais2_;
   	Matches matches_;
+	int time_;
 	bool verbose_;
   	std::vector<std::pair<int, int>> data_;
   	int repetitions_;

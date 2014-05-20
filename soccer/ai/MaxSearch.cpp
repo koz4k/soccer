@@ -1,18 +1,19 @@
-#include "MaxHeuristicSearch.h"
+#include "MaxSearch.h"
 #include <algorithm>
 
 namespace soccer { namespace ai {
 
-MaxHeuristicSearch::MaxHeuristicSearch(Heuristic heuristic):
+MaxSearch::MaxSearch(Heuristic heuristic):
 	HeuristicSearch(std::move(heuristic))
 {
+	srand(time(nullptr));
 }
 
-Direction MaxHeuristicSearch::move(const GameState& state, int ms
+Direction MaxSearch::move(GameState& state, int ms
 #ifdef DEBUG
-								   , std::list<Direction>& moveSequence
+						  , std::list<Direction>& moveSequence
 #endif
-  		                          )
+  		                 )
 {
 	int bestMove = DIR_END;
 	double bestValue = -INFINITY;
@@ -29,10 +30,10 @@ Direction MaxHeuristicSearch::move(const GameState& state, int ms
 		if(!state.canMove(direction))
 			continue;
 		
-		GameState currentState = state;
-		currentState.move(direction);
-
-		double value = heuristic_(currentState, 0);
+		state.move(direction);
+		double value = heuristic_(state);
+		state.undo(direction);
+		
 		if(value > bestValue || bestMove == DIR_END)
 		{
 			bestMove = direction;

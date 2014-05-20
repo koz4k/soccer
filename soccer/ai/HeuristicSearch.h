@@ -2,13 +2,12 @@
 #define _Soccer_HeuristicSearch_h_
 
 #include "../Ai.h"
+#include "../core.h"
 #include <functional>
 
 #include <list>
 
 namespace soccer { namespace ai {
-
-typedef std::function<double(const GameState& state, int ms)> Heuristic;
 
 class HeuristicSearch: public Ai
 {

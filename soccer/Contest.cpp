@@ -6,8 +6,8 @@
 
 namespace soccer {
 
-Contest::Contest(Matches matches, bool verbose):
-	matches_(matches), verbose_(verbose), repetitions_(0)
+Contest::Contest(Matches matches, int matchTime, bool verbose):
+	matches_(matches), time_(matchTime), verbose_(verbose), repetitions_(0)
 {
 }
 
@@ -47,7 +47,7 @@ void Contest::run(int repetitions)
 			if(getData_(i, j) == std::make_pair(-1, -1))
 				getData_(i, j) = std::make_pair(0, 0);
 			
-			Judge judge(ais1_[i], ais2_[j]);
+			Judge judge(ais1_[i], ais2_[j], time_);
 			int wins = 0;
 			clock_t t = clock();
 			

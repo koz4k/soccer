@@ -9,7 +9,7 @@ class AlphaBeta: public HeuristicSearch
 {
   public:
   	AlphaBeta(Heuristic heuristic, int maxDepth);
-  	virtual Direction move(const GameState& state, int ms
+  	virtual Direction move(GameState& state, int ms
 #ifdef DEBUG
 		, std::list<Direction>& moveSequence
 #endif

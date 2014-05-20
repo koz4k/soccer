@@ -9,13 +9,15 @@ namespace soccer {
 class Ai
 {
   public:
-	virtual ~Ai() {}
+	virtual ~Ai();
 #ifndef DEBUG
-  	virtual Direction move(const GameState& state, int ms) = 0;
+  	virtual Direction move(GameState& state, int ms) = 0;
 #else
-  	virtual Direction move(const GameState& state, int ms, std::list<Direction>& moveSequence) = 0;
- 	Direction move(const GameState& state, int ms);
+  	virtual Direction move(GameState& state, int ms, std::list<Direction>& moveSequence) = 0;
+ 	Direction move(GameState& state, int ms);
  #endif
+ 	virtual void opponentMoved(Direction direction);
+ 	virtual void reset();
 };
 
 }

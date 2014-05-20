@@ -8,7 +8,7 @@ namespace soccer { namespace contest {
 class TwoTeam: public Contest
 {
   public:
-  	TwoTeam(int separator, bool verbose = false);
+  	TwoTeam(int matchTime, int separator, bool verbose = false);
 };
 
 } }

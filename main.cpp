@@ -1,5 +1,5 @@
 #ifndef MAIN
-#define MAIN ab_contest
+#define MAIN standalone_mcts
 #endif
 
 #define QUOTEME(x) QUOTEME_1(x)
