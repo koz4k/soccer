@@ -2,6 +2,11 @@
 
 namespace soccer {
 	
+Ai::Ai():
+	confidence_(0)
+{
+}
+	
 Ai::~Ai()
 {
 }
@@ -22,6 +27,11 @@ void Ai::opponentMoved(Direction direction)
 
 void Ai::reset()
 {
+}
+
+double Ai::getConfidence() const
+{
+	return confidence_;
 }
 	
 }

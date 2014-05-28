@@ -12,9 +12,9 @@ using namespace mcts;
 MonteCarloTreeSearch::MonteCarloTreeSearch(Ai* playoutAi1, Ai* playoutAi2,
 										   int n0, double c, Heuristic heuristic,
 										   double w, double lambda, double b,
-										   TimingStrategy* timing):
+										   TimingStrategy* timing, int playoutCount):
 	playoutAi1_(playoutAi1), playoutAi2_(playoutAi2), n0_(n0), c_(c), heuristic_(heuristic),
-	w_(w), lambda_(lambda), b_(b), tree_(nullptr), timing_(timing)
+	w_(w), lambda_(lambda), b_(b), tree_(nullptr), timing_(timing), playoutCount_(playoutCount)
 {
 	srand(time(nullptr));
 }
@@ -43,20 +43,17 @@ Direction MonteCarloTreeSearch::move(GameState& state, int ms
 	Tree::lambda = lambda_;
 	Tree::b = b_;
 
-delete tree_;
+//delete tree_;
 	
-	//if(!tree_)
+	if(!tree_)
 		tree_ = new Tree(state.whoseTurn());
 
 	GameState stateCopy = state;
 	int i = 0;
-	for(; timing_->haveTime() && !tree_->isSolved(); ++i)
-	//for(int i = 0; i < 2000; ++i)
+	//for(; timing_->haveTime() && !tree_->isSolved(); ++i)
+	for(int i = 0; (playoutCount_ > 0 ? i < playoutCount_ : timing_->haveTime()) && !tree_->isSolved(); ++i)
 		tree_->playout(stateCopy, playoutAi1_, playoutAi2_);
 	Direction direction = tree_->chooseMove();
-	
-	if(tree_->getMe() != PLAYER_1)
-		throw false;
 	
 	//printf("playouts: %d, direction: %d\n", i, direction);
 	//fflush(stdout);
@@ -75,12 +72,12 @@ delete tree_;
 	tree_->chooseMoveSequence(moveSequence);
 #endif
 
-	//tree_ = tree_->move(direction);
+	tree_ = tree_->move(direction);
 	
 	//printf("time left: %d\n", timing_->getTimeAvailable());
 	//fflush(stdout);
-	if(tree_->isSolved())
-		printf("solved: %d\n", tree_->isWinning()), fflush(stdout);
+	//if(tree_->isSolved())
+	//	printf("solved: %d\n", tree_->isWinning()), fflush(stdout);
 	timing_->stop();
 	
 	return direction;

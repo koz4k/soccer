@@ -11,9 +11,9 @@ class MonteCarloTreeSearch: public Ai
 {
   public:
   	MonteCarloTreeSearch(Ai* playoutAi1, Ai* playoutAi2,
-  						 /*int playoutCount,*/ int n0, double c,
+  						 int n0, double c,
   						 Heuristic heuristic, double w, double lambda, double b,
-  						 TimingStrategy* timing);
+  						 TimingStrategy* timing, int playoutCount);
   	~MonteCarloTreeSearch();
   	virtual Direction move(GameState& state, int ms
 #ifdef DEBUG
@@ -34,6 +34,7 @@ class MonteCarloTreeSearch: public Ai
   	double b_;
   	mcts::Tree* tree_;
   	TimingStrategy* timing_;
+  int playoutCount_;
 };
 	
 } }

@@ -22,6 +22,7 @@ class Tree
 	Tree* move(Direction direction);
 	bool isWinning() const;
 	Player getMe() const;
+	void contribute(double* results);
   	
 	static int n0;
   	static double c;
@@ -29,11 +30,12 @@ class Tree
 	static double w;
 	static double lambda;
 	static double b;
+	static int threads;
   
   private:
-  	bool treePolicy_(GameState& state, Ai* ai1, Ai* ai2,
+  	int treePolicy_(GameState& state, Ai* ai1, Ai* ai2,
   					 std::unordered_set<int>& moveCodes); // zwraca czy wygrana
-  	bool defaultPolicy_(GameState& state, Ai* ai1, Ai* ai2,
+  	int defaultPolicy_(GameState& state, Ai* ai1, Ai* ai2,
   						std::unordered_set<int>& moveCodes); // j.w.
   	Tree* chooseSon_(GameState& state, Direction& direction);
   	bool isWinning_(Player player) const;

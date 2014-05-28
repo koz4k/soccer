@@ -22,6 +22,9 @@ file
 	soccer/ai/heur/ReboundAwareNaive.cpp,
 	soccer/ai/heur/ReboundAwareNaive.h,
 	soccer/ai/heur/naive.h,
+	soccer/ai/open/AlphaBetaGenerator.cpp,
+	generator.hpp,
+	soccer/ai/open/AlphaBetaGenerator.h,
 	soccer/ai/AlphaBeta.cpp,
 	soccer/ai/Negamax.cpp,
 	soccer/ai/AlphaBeta.h,
@@ -48,7 +51,12 @@ file
 	ab_contest.hpp,
 	soccer/AiStandalone.cpp,
 	soccer/AiStandalone.h,
+	sanity_old_contest.hpp,
 	sanity_contest.hpp,
+	soccer/ai/open/io.cpp,
+	soccer/ai/open/io.h,
+	soccer/ai/WithOpenings.cpp,
+	soccer/ai/WithOpenings.h,
 	mcts_contest.hpp,
 	heavy_contest.hpp,
 	play.hpp,
@@ -59,6 +67,12 @@ file
 	soccer/ai/MonteCarloTreeSearch.h,
 	soccer/Timer.cpp,
 	soccer/Timer.h,
+	soccer/ai/ab_boosters_contest.hpp,
+	soccer/ai/open/MyMove.cpp,
+	soccer/ai/open/YourMove.cpp,
+	soccer/ai/open/YourMove.h,
+	soccer/ai/open/MyMove.h,
+	soccer/ai/open/Move.h,
 	main.cpp,
 	Main.lay,
 	k_tuning.hpp,
@@ -84,7 +98,8 @@ file
 	time_contest.hpp,
 	soccer/TimingStrategy.cpp,
 	timing_test.hpp,
-	src.tpp;
+	src.tpp,
+	srcimp.tpp;
 
 mainconfig
 	"" = "GUI SSE2";

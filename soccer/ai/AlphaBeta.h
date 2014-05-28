@@ -14,6 +14,7 @@ class AlphaBeta: public HeuristicSearch
 		, std::list<Direction>& moveSequence
 #endif
   		);
+  	void setDepth(int depth);
   
   private:
   	double alphaBeta_(GameState& state, int color, int depth,

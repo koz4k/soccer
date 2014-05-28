@@ -9,6 +9,7 @@ namespace soccer {
 class Ai
 {
   public:
+	Ai();
 	virtual ~Ai();
 #ifndef DEBUG
   	virtual Direction move(GameState& state, int ms) = 0;
@@ -18,6 +19,10 @@ class Ai
  #endif
  	virtual void opponentMoved(Direction direction);
  	virtual void reset();
+ 	double getConfidence() const; // zwraca miare "pewnosci" ostatniego ruchu - do otwarc
+ 	
+  protected:
+  	double confidence_;
 };
 
 }

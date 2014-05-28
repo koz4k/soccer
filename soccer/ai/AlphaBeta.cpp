@@ -19,14 +19,19 @@ Direction AlphaBeta::move(GameState& state, int ms
 {
 	GameState stateCopy = state;
 	Direction move = DIR_END;
-	alphaBeta_(stateCopy, 1, maxDepth_, -INFINITY, INFINITY, move
+	confidence_ = alphaBeta_(stateCopy, 1, maxDepth_, -INFINITY, INFINITY, move
 #ifdef DEBUG
-			 , moveSequence
+			 				 , moveSequence
 #endif
 
-			);
+							);
 
 	return move;
+}
+
+void AlphaBeta::setDepth(int depth)
+{
+	maxDepth_ = depth;
 }
 
 double AlphaBeta::alphaBeta_(GameState& state, int color, int depth,

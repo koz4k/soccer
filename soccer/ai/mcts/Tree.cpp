@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cstdio>
+#include <cassert>
 
 namespace soccer { namespace ai { namespace mcts {
 	
@@ -121,7 +122,13 @@ Player Tree::getMe() const
 	return me_;
 }
 
-bool Tree::treePolicy_(GameState& state, Ai* ai1, Ai* ai2, std::unordered_set<int>& moveCodes)
+void Tree::contribute(double* results)
+{
+	for(Direction dir = 0; dir < DIR_END; ++dir)
+		results[dir] += sons_[dir] ? sons_[dir]->getValue_(me_) : 0;
+}
+
+int Tree::treePolicy_(GameState& state, Ai* ai1, Ai* ai2, std::unordered_set<int>& moveCodes)
 {
 	if(plays_ == -1)
 		return wins_;
@@ -139,7 +146,7 @@ Vector2 p = state.getCurrentPosition();
 	/*state.undo(direction);
 	moveCodes.insert(state.getMoveCode(direction));
 	state.move(direction);*/
-	bool win = false;
+	int win = 0;
 	if(son->plays_ >= n0)
 		win = son->treePolicy_(state, ai1, ai2, moveCodes);
 	else
@@ -182,14 +189,14 @@ Vector2 p = state.getCurrentPosition();
 		}
 	}
 	
-	win = win == (me_ == son->me_);
+	win = me_ == son->me_ ? win : !win;
+	//win = win == (me_ == son->me_);
 	wins_ += win;
 	plays_ += 1;
 	
 	state.undo(direction);
 	
-	if(state.getCurrentPosition() != p)
-		throw 0.0;
+	assert(state.getCurrentPosition() == p);
 	
 	/*for(Direction dir = DIR_BEGIN; dir < DIR_END; ++dir)
 	{
@@ -207,7 +214,7 @@ Vector2 p = state.getCurrentPosition();
 	return win;
 }
 
-bool Tree::defaultPolicy_(GameState& state, Ai* ai1, Ai* ai2, std::unordered_set<int>& moveCodes)
+int Tree::defaultPolicy_(GameState& state, Ai* ai1, Ai* ai2, std::unordered_set<int>& moveCodes)
 {
 	if(state.isGameOver())
 	{
@@ -215,15 +222,13 @@ bool Tree::defaultPolicy_(GameState& state, Ai* ai1, Ai* ai2, std::unordered_set
 		return wins_ = state.whoWon() == me_;
 	}
 	
-	Judge judge(ai1, ai2, state);
-	//while(!judge.getGameState().isGameOver())
-	//	moveCodes.insert(judge.oneMove().getLastMoveCode());
+	/*Judge judge(ai1, ai2, state);
+	while(!judge.getGameState().isGameOver())
+		moveCodes.insert(judge.oneMove().getLastMoveCode());*/
 	
-	bool won = Judge(ai1, ai2, state).run().whoWon() == me_;
-	//bool won = judge.getGameState().whoWon() == me_;
-	wins_ += won;
+	wins_ += Judge(ai1, ai2, state).run().whoWon() == me_;
 	plays_ += 1;
-	return won;
+	return wins_;
 }
 
 Tree* Tree::chooseSon_(GameState& state, Direction& direction)
@@ -289,9 +294,12 @@ double Tree::getUct_(GameState& state, int parentPlays, Player player) const
 {
 	if(isnan(bias_))
 		bias_ = w / (1 + exp(-lambda * heuristic(state)));
-	double beta = ravePlays_ / (plays_ + ravePlays_ + 4 * b * b * plays_ * ravePlays_);
-//printf("beta: %f, rave: %f\n", beta, getRaveValue_(player));
-//fflush(stdout);
+	/*double beta = ravePlays_ / (plays_ + ravePlays_ + 4 * b * b * plays_ * ravePlays_);
+	if(plays_ != -1)
+	{
+		printf("beta: %f, rave: %f\n", beta, getRaveValue_(player));
+		fflush(stdout);
+	}*/
 	/*return plays_ != -1 ? (1 - beta) * getValue_(player) + beta * getRaveValue_(player) +
 		   c * sqrt(log(parentPlays) / plays_) + bias_ / (plays_ - wins_ + 1) : -INFINITY;*/
 	return plays_ != -1 ? getValue_(player) +
