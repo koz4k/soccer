@@ -1,5 +1,5 @@
-#ifndef _Soccer_core_h_
-#define _Soccer_core_h_
+#ifndef _soccer_core_h_
+#define _soccer_core_h_
 
 #include <functional>
 
@@ -49,8 +49,8 @@ Player otherPlayer(Player player);
 #include "Vector2.h"
 
 #endif
-#ifndef _Soccer_core_h_
-#define _Soccer_core_h_
+#ifndef _soccer_core_h_
+#define _soccer_core_h_
 
 #include <functional>
 
@@ -100,8 +100,8 @@ Player otherPlayer(Player player);
 #include "Vector2.h"
 
 #endif
-#ifndef _Soccer_core_h_
-#define _Soccer_core_h_
+#ifndef _soccer_core_h_
+#define _soccer_core_h_
 
 #include <functional>
 
@@ -151,8 +151,8 @@ Player otherPlayer(Player player);
 #include "Vector2.h"
 
 #endif
-#ifndef _Soccer_core_h_
-#define _Soccer_core_h_
+#ifndef _soccer_core_h_
+#define _soccer_core_h_
 
 #include <functional>
 
@@ -202,8 +202,8 @@ Player otherPlayer(Player player);
 #include "Vector2.h"
 
 #endif
-#ifndef _Soccer_core_h_
-#define _Soccer_core_h_
+#ifndef _soccer_core_h_
+#define _soccer_core_h_
 
 #include <functional>
 
@@ -253,8 +253,8 @@ Player otherPlayer(Player player);
 #include "Vector2.h"
 
 #endif
-#ifndef _Soccer_core_h_
-#define _Soccer_core_h_
+#ifndef _soccer_core_h_
+#define _soccer_core_h_
 
 #include <functional>
 

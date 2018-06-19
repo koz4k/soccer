@@ -1,5 +1,5 @@
-#ifndef _Soccer_YourMove_h_
-#define _Soccer_YourMove_h_
+#ifndef _soccer_YourMove_h_
+#define _soccer_YourMove_h_
 
 #include "Move.h"
 #include "../../core.h"

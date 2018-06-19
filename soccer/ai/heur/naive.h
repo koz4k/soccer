@@ -1,5 +1,5 @@
-#ifndef _Soccer_Naive_h_
-#define _Soccer_Naive_h_
+#ifndef _soccer_Naive_h_
+#define _soccer_Naive_h_
 
 #include "../../GameState.h"
 

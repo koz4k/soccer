@@ -1,6 +1,6 @@
 ctrl Board
 {
-	group "Soccer";
+	group "soccer";
 
 	GetMinSize()
 	{

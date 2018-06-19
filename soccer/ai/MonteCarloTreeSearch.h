@@ -1,5 +1,5 @@
-#ifndef _Soccer_MonteCarloTreeSearch_h_
-#define _Soccer_MonteCarloTreeSearch_h_
+#ifndef _soccer_MonteCarloTreeSearch_h_
+#define _soccer_MonteCarloTreeSearch_h_
 
 #include "../Ai.h"
 #include "mcts/Tree.h"

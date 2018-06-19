@@ -1,5 +1,5 @@
-#ifndef _Soccer_Board_h_
-#define _Soccer_Board_h_
+#ifndef _soccer_Board_h_
+#define _soccer_Board_h_
 
 #include <CtrlLib/CtrlLib.h>
 #include "soccer/GameState.h"

@@ -1,5 +1,5 @@
-#ifndef _Soccer_SimpleMonteCarlo_h_
-#define _Soccer_SimpleMonteCarlo_h_
+#ifndef _soccer_SimpleMonteCarlo_h_
+#define _soccer_SimpleMonteCarlo_h_
 
 #include "../../GameState.h"
 #include "../../Ai.h"

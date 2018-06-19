@@ -1,5 +1,5 @@
-#ifndef _Soccer_uniform_h_
-#define _Soccer_uniform_h_
+#ifndef _soccer_uniform_h_
+#define _soccer_uniform_h_
 
 #include "../../GameState.h"
 

@@ -1,5 +1,5 @@
-#ifndef _Soccer_AlphaBeta_h_
-#define _Soccer_AlphaBeta_h_
+#ifndef _soccer_AlphaBeta_h_
+#define _soccer_AlphaBeta_h_
 
 #include "HeuristicSearch.h"
 

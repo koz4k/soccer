@@ -1,5 +1,5 @@
-#ifndef _Soccer_WithOpenings_h_
-#define _Soccer_WithOpenings_h_
+#ifndef _soccer_WithOpenings_h_
+#define _soccer_WithOpenings_h_
 
 #include "../Ai.h"
 #include "open/Move.h"

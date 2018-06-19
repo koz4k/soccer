@@ -1,5 +1,5 @@
-#ifndef _Soccer_AiVsAi_h_
-#define _Soccer_AiVsAi_h_
+#ifndef _soccer_AiVsAi_h_
+#define _soccer_AiVsAi_h_
 
 #include "MainWindow.h"
 #include "soccer/Judge.h"

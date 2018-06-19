@@ -1,5 +1,5 @@
-#ifndef _Soccer_Ai_h_
-#define _Soccer_Ai_h_
+#ifndef _soccer_Ai_h_
+#define _soccer_Ai_h_
 
 #include "GameState.h"
 #include <list>

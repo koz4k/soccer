@@ -1,5 +1,5 @@
-#ifndef _Soccer_ReboundAwareNaive_h_
-#define _Soccer_ReboundAwareNaive_h_
+#ifndef _soccer_ReboundAwareNaive_h_
+#define _soccer_ReboundAwareNaive_h_
 
 #include "../../GameState.h"
 

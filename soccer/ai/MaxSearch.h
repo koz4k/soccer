@@ -1,5 +1,5 @@
-#ifndef _Soccer_MaxSearch_h_
-#define _Soccer_MaxSearch_h_
+#ifndef _soccer_MaxSearch_h_
+#define _soccer_MaxSearch_h_
 
 #include "HeuristicSearch.h"
 

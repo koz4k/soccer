@@ -1,5 +1,5 @@
-#ifndef _Soccer_PlayerVsAi_h_
-#define _Soccer_PlayerVsAi_h_
+#ifndef _soccer_PlayerVsAi_h_
+#define _soccer_PlayerVsAi_h_
 
 #include "MainWindow.h"
 #include "soccer/Ai.h"

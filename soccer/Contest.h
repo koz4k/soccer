@@ -1,5 +1,5 @@
-#ifndef _Soccer_Contest_h_
-#define _Soccer_Contest_h_
+#ifndef _soccer_Contest_h_
+#define _soccer_Contest_h_
 
 #include "Judge.h"
 #include "Ai.h"

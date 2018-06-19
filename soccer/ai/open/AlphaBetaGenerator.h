@@ -1,5 +1,5 @@
-#ifndef _Soccer_AlphaBetaGenerator_h_
-#define _Soccer_AlphaBetaGenerator_h_
+#ifndef _soccer_AlphaBetaGenerator_h_
+#define _soccer_AlphaBetaGenerator_h_
 
 #include "Move.h"
 #include "MyMove.h"

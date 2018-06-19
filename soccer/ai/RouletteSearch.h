@@ -1,5 +1,5 @@
-#ifndef _Soccer_RouletteSearch_h_
-#define _Soccer_RouletteSearch_h_
+#ifndef _soccer_RouletteSearch_h_
+#define _soccer_RouletteSearch_h_
 
 #include "HeuristicSearch.h"
 

@@ -1,5 +1,5 @@
-#ifndef _Soccer_OldMcts_h_
-#define _Soccer_OldMcts_h_
+#ifndef _soccer_OldMcts_h_
+#define _soccer_OldMcts_h_
 
 #include "../Ai.h"
 

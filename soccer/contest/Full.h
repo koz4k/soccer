@@ -1,5 +1,5 @@
-#ifndef _Soccer_Full_h_
-#define _Soccer_Full_h_
+#ifndef _soccer_Full_h_
+#define _soccer_Full_h_
 
 #include "../Contest.h"
 

@@ -1,4 +1,4 @@
-#ifndef _Soccer_icpp_init_stub
-#define _Soccer_icpp_init_stub
+#ifndef _soccer_icpp_init_stub
+#define _soccer_icpp_init_stub
 #include "CtrlLib/init"
 #endif

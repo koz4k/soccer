@@ -1,5 +1,5 @@
-#ifndef _Soccer_Timer_h_
-#define _Soccer_Timer_h_
+#ifndef _soccer_Timer_h_
+#define _soccer_Timer_h_
 
 namespace soccer {
 

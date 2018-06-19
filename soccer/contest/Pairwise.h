@@ -1,5 +1,5 @@
-#ifndef _Soccer_Pairwise_h_
-#define _Soccer_Pairwise_h_
+#ifndef _soccer_Pairwise_h_
+#define _soccer_Pairwise_h_
 
 #include "../Contest.h"
 

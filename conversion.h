@@ -1,5 +1,5 @@
-#ifndef _Soccer_upp_h_
-#define _Soccer_upp_h_
+#ifndef _soccer_upp_h_
+#define _soccer_upp_h_
 
 #include "soccer/core.h"
 #include <Core/Core.h>

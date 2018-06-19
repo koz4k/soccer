@@ -1,5 +1,5 @@
-#ifndef _Soccer_GameState_h_
-#define _Soccer_GameState_h_
+#ifndef _soccer_GameState_h_
+#define _soccer_GameState_h_
 
 #include "core.h"
 #include <vector>

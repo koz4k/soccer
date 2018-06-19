@@ -1,5 +1,5 @@
-#ifndef _Soccer_Judge_h_
-#define _Soccer_Judge_h_
+#ifndef _soccer_Judge_h_
+#define _soccer_Judge_h_
 
 #include "Ai.h"
 

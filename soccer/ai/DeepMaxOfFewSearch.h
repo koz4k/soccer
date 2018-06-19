@@ -1,5 +1,5 @@
-#ifndef _Soccer_DeepMaxOfFewSearch_h_
-#define _Soccer_DeepMaxOfFewSearch_h_
+#ifndef _soccer_DeepMaxOfFewSearch_h_
+#define _soccer_DeepMaxOfFewSearch_h_
 
 #include "HeuristicSearch.h"
 #include <queue>

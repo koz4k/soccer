@@ -1,5 +1,5 @@
-#ifndef _Soccer_Tree_h_
-#define _Soccer_Tree_h_
+#ifndef _soccer_Tree_h_
+#define _soccer_Tree_h_
 
 #include "../../GameState.h"
 #include "../../Ai.h"
