@@ -1,0 +1,15 @@
+description "BMP image file format\3770,128,128";
+
+uses
+	Draw;
+
+file
+	bmp.h,
+	bmphdr.h,
+	Bmp.cpp,
+	BmpWrite.cpp,
+	Icon.cpp,
+	BmpReg.icpp,
+	Info readonly separator,
+	Copying;
+

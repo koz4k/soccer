@@ -1,0 +1,87 @@
+description "Fundamental graphics operations, including raster image processing\377B128,0,255";
+
+charset "UTF-8";
+
+acceptflags
+	NOGTK;
+
+uses
+	Core;
+
+library(WIN32 !MSC8ARM) "user32 gdi32";
+
+library(LINUX) "dl freetype";
+
+library(BSD !XLFD) "fontconfig freetype expat";
+
+library(LINUX !XLFD) "fontconfig expat";
+
+library(OSX11) "fontconfig freetype expat";
+
+library(FREEBSD) xcb;
+
+file
+	Draw.h options(BUILDER_OPTION) PCH,
+	FontInt.h,
+	Font.cpp,
+	FontCR.cpp,
+	FontWin32.cpp,
+	FontFc.cpp,
+	Draw.cpp,
+	DrawText.cpp,
+	DrawData.cpp,
+	Drawing.cpp,
+	ImageAnyDraw.cpp,
+	DrawUtil.cpp,
+	DrawTextUtil.cpp,
+	Display.h,
+	Display.cpp,
+	Image readonly separator,
+	Image.h,
+	Image.cpp,
+	ImageBlit.cpp,
+	Raster.h,
+	RasterFormat.cpp,
+	RasterWrite.cpp,
+	Palette.cpp,
+	Raster.cpp,
+	RasterEncoder.cpp,
+	ImageOp.h,
+	ImageOp.cpp,
+	ImageChOp.cpp,
+	ImageScale.cpp,
+	BiCubic.cpp,
+	RescaleFilter.cpp,
+	MakeCache.cpp,
+	DrawRasterData.cpp,
+	Uhd.cpp,
+	Iml.cpp,
+	iml.h,
+	iml_header.h,
+	iml_source.h,
+	DrawImg.iml,
+	DDA readonly separator,
+	DDARasterizer.h,
+	DDARasterizer.cpp,
+	SDraw readonly separator,
+	SDraw.h,
+	SDrawClip.cpp,
+	SDrawPut.cpp,
+	SDrawText.cpp,
+	SDraw.cpp,
+	SImageDraw.cpp,
+	Chameleon readonly separator,
+	Cham.h,
+	Cham.cpp,
+	SSettings.cpp,
+	GTK-dli readonly separator,
+	gobj.dli,
+	gdk.dli,
+	gpixbuf.dli,
+	gtk.dli,
+	gnome.dli,
+	Info readonly separator,
+	src.tpp,
+	srcdoc.tpp,
+	Copying;
+

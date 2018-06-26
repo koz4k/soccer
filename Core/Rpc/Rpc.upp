@@ -1,0 +1,10 @@
+description "XML-RPC support package (both server and client stuff)\3770,128,128";
+
+file
+	Rpc.h,
+	imp\Value.cpp,
+	imp\Xml.cpp,
+	imp\Client.cpp,
+	imp\Server.cpp,
+	legacy.h;
+

@@ -1,0 +1,40 @@
+description "Rich-text data structures and painting, including RTF and HTML export/import\3770,0,128";
+
+uses
+	plugin\png,
+	Draw;
+
+file
+	RichText.h options(BUILDER_OPTION) PCH,
+	Object.cpp,
+	RichImage.cpp,
+	Para.h,
+	ParaData.cpp,
+	ParaType.cpp,
+	ParaPaint.cpp,
+	Txt.h,
+	HeaderFooter.cpp,
+	TxtData.cpp,
+	TxtPaint.cpp,
+	TxtOp.cpp,
+	Format.cpp,
+	Table.h,
+	TableCell.cpp,
+	TableLayout.cpp,
+	TablePaint.cpp,
+	TableData.cpp,
+	Text.h,
+	TextPaint.cpp,
+	TextStyle.cpp,
+	TextData.cpp,
+	TextTable.cpp,
+	EncodeQtf.cpp,
+	ParseQtf.cpp,
+	EncodeHTML.cpp,
+	Util.cpp,
+	RichText.iml,
+	Info readonly separator,
+	srcdoc.tpp,
+	src.tpp,
+	Copying;
+
