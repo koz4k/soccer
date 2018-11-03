@@ -3,14 +3,14 @@
 
 #include "../Ai.h"
 #include "open/Move.h"
+#include <memory>
 
 namespace soccer { namespace ai {
 
 class WithOpenings: public Ai
 {
   public:
-  	WithOpenings(const std::string& file1, const std::string& file2, Ai* mainAi);
-  	~WithOpenings();
+  	WithOpenings(const std::string& file1, const std::string& file2, std::unique_ptr<Ai> mainAi);
   	virtual Direction move(GameState& state, int ms
 #ifdef DEBUG
 		, std::list<Direction>& moveSequence
@@ -20,10 +20,10 @@ class WithOpenings: public Ai
 	virtual void reset();
 
   private:
-  	const open::Move* move1_;
-  	const open::Move* move2_;
-  	const open::Move* move_;
-  	Ai* mainAi_;
+    std::unique_ptr<open::Move> move1_;
+    std::unique_ptr<open::Move> move2_;
+    std::unique_ptr<open::Move> move_;
+    std::unique_ptr<Ai> mainAi_;
 	bool initialized_;
 };
 	

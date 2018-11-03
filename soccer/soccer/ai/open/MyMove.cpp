@@ -2,14 +2,9 @@
 
 namespace soccer { namespace ai { namespace open {
 
-MyMove::MyMove(Direction direction, const Move* move):
-	direction_(direction), move_(move)
+MyMove::MyMove(Direction direction, std::unique_ptr<Move> move):
+	direction_(direction), move_(std::move(move))
 {
-}
-
-MyMove::~MyMove()
-{
-	delete move_;
 }
 
 bool MyMove::isMyTurn() const
@@ -22,9 +17,9 @@ Direction MyMove::getDirection() const
 	return direction_;
 }
 
-const Move* MyMove::advance() const
+std::unique_ptr<Move> MyMove::advance()
 {
-	return move_;
+	return std::move(move_);
 }
 
 } } }

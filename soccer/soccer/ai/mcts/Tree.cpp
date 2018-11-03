@@ -14,15 +14,6 @@ Tree::Tree(Player me):
 	wins_(0), plays_(0), raveWins_(0), ravePlays_(0), bias_(NAN), me_(me)
 {
 	srand(time(nullptr));
-	
-	for(Direction i = 0; i < DIR_END; ++i)
-		sons_[i] = nullptr;
-}
-
-Tree::~Tree()
-{
-	for(Direction i = 0; i < DIR_END; ++i)
-		delete sons_[i];
 }
 
 void Tree::playout(GameState& state, Ai* ai1, Ai* ai2)
@@ -99,18 +90,9 @@ bool Tree::isSolved() const
 	return plays_ == -1;
 }
 
-Tree* Tree::releaseSon(Direction direction)
+std::unique_ptr<Tree> Tree::move(Direction direction)
 {
-	Tree* son = nullptr;
-	std::swap(son, sons_[direction]);
-	return son;
-}
-
-Tree* Tree::move(Direction direction)
-{
-	Tree* son = releaseSon(direction);
-	delete this;
-	return son;
+    return std::move(sons_[direction]);
 }
 
 bool Tree::isWinning() const
@@ -140,7 +122,7 @@ int Tree::treePolicy_(GameState& state, Ai* ai1, Ai* ai2, std::unordered_set<int
 		return wins_ = state.whoWon() == me_;
 	}
 	
-Vector2 p = state.getCurrentPosition();
+    Vector2 p = state.getCurrentPosition();
 	
 	Direction direction = DIR_END;
 	Tree* son = chooseSon_(state, direction);
@@ -247,7 +229,8 @@ Tree* Tree::chooseSon_(GameState& state, Direction& direction)
 		if(!sons_[direction] && state.canMove(direction))
 		{
 			state.move(direction);
-			return sons_[direction] = new Tree(state.isGameOver() ? me_ : state.whoseTurn());
+            sons_[direction] = std::make_unique<Tree>(state.isGameOver() ? me_ : state.whoseTurn());
+            return sons_[direction].get();
 		}
 	}
 	
@@ -264,7 +247,7 @@ Tree* Tree::chooseSon_(GameState& state, Direction& direction)
 		double uct = sons_[dir]->getUct_(state, plays_, me_);
 		if(uct > bestUct || direction == DIR_END)
 		{
-			son = sons_[dir];
+			son = sons_[dir].get();
 			direction = dir;
 			bestUct = uct;
 		}

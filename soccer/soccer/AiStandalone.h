@@ -2,14 +2,14 @@
 #define _soccer_AiStandalone_h_
 
 #include "Ai.h"
+#include <memory>
 
 namespace soccer {
 
 class AiStandalone
 {
   public:
-  	AiStandalone(Ai* ai);
-  	~AiStandalone();
+  	AiStandalone(std::unique_ptr<Ai> ai);
   	void run();
   	
   private:
@@ -19,7 +19,7 @@ class AiStandalone
   	int genmove_();
 	int getTimeLeft_() const;
   	
-  	Ai* ai_;
+    std::unique_ptr<Ai> ai_;
   	GameState state_;
   	int endTime_;
 	bool initialized_;

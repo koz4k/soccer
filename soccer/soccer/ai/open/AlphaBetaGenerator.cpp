@@ -8,26 +8,20 @@
 namespace soccer { namespace ai { namespace open {
 	
 AlphaBetaGenerator::AlphaBetaGenerator(int depth, int limit, Heuristic heuristic):
-	depth_(depth), limit_(limit), confidence_(std::numeric_limits<double>::infinity())
+	ai_(std::make_unique<AlphaBeta>(heuristic, depth_)), depth_(depth), limit_(limit), confidence_(std::numeric_limits<double>::infinity())
 {
-	ai_ = new AlphaBeta(heuristic, depth_);
 }
 
-AlphaBetaGenerator::~AlphaBetaGenerator()
-{
-	delete ai_;
-}
-
-Move* AlphaBetaGenerator::generate(bool meFirst, double confidence)
+std::unique_ptr<Move> AlphaBetaGenerator::generate(bool meFirst, double confidence)
 {
 	confidence_ = confidence;
 	
 	GameState state;
-	return meFirst ? (Move*) generateMyMove_(state, limit_) :
-					 (Move*) generateYourMove_(state, limit_);
+	return meFirst ? generateMyMove_(state, limit_) :
+					 generateYourMove_(state, limit_);
 }
 
-MyMove* AlphaBetaGenerator::generateMyMove_(GameState& state, int depth)
+std::unique_ptr<Move> AlphaBetaGenerator::generateMyMove_(GameState& state, int depth)
 {
 	if(state.isGameOver() || depth <= 0)
 		return nullptr;
@@ -39,22 +33,22 @@ MyMove* AlphaBetaGenerator::generateMyMove_(GameState& state, int depth)
 		return nullptr;
 	
 	state.move(direction);
-	Move* nextMove = nullptr;
+    std::unique_ptr<Move> nextMove;
 	if(state.whoseTurn() == me)
 		nextMove = generateMyMove_(state, depth);
 	else if(ai_->getConfidence() < confidence_)
 		nextMove = generateYourMove_(state, depth);
 	state.undo(direction);
-	return new MyMove(direction, nextMove);
+	return std::make_unique<MyMove>(direction, std::move(nextMove));
 }
 
-YourMove* AlphaBetaGenerator::generateYourMove_(GameState& state, int depth)
+std::unique_ptr<Move> AlphaBetaGenerator::generateYourMove_(GameState& state, int depth)
 {
 	if(state.isGameOver() || depth <= 0)
 		return nullptr;
 	
 	Player you = state.whoseTurn();
-	YourMove* move = new YourMove();
+    auto move = std::make_unique<YourMove>();
 	bool plug = true;
 	for(Direction direction = 0; direction < DIR_END; ++direction)
 	{
@@ -62,22 +56,19 @@ YourMove* AlphaBetaGenerator::generateYourMove_(GameState& state, int depth)
 			continue;
 		
 		state.move(direction);
-		Move* nextMove = state.whoseTurn() == you ?
-						 (Move*) generateYourMove_(state, depth - 1) :
-						 (Move*) generateMyMove_(state, depth - 1);
+        std::unique_ptr<Move> nextMove = state.whoseTurn() == you ?
+						                 generateYourMove_(state, depth - 1) :
+						                 generateMyMove_(state, depth - 1);
 		if(nextMove)
 			plug = false;
-		move->setMove(direction, nextMove);
+		move->setMove(direction, std::move(nextMove));
 		state.undo(direction);
 	}
 	
 	if(!plug)
 		return move;
 	else
-	{
-		delete move;
 		return nullptr;
-	}
 }
 	
 } } }

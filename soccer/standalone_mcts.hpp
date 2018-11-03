@@ -13,14 +13,14 @@ using namespace heur;
 
 int main()
 {
-	/*AiStandalone(new MonteCarloTreeSearch(new RouletteSearch(ReboundAwareNaive(10.0, PLAYER_1), 1.6),
-	                              		  new RouletteSearch(ReboundAwareNaive(10.0, PLAYER_2), 1.6),
+	/*AiStandalone(std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(ReboundAwareNaive(10.0, PLAYER_1), 1.6),
+	                              		  std::make_unique<RouletteSearch>(ReboundAwareNaive(10.0, PLAYER_2), 1.6),
 	                              		  1, 0.5, ReboundAwareNaive(36.0, PLAYER_1), 0.02, 0.3, 1e9,
-	                              		  new timing::Uniform(3.0, 3))).run();*/
+	                              		  std::make_unique<timing::Uniform>(3.0, 3))).run();*/
 	                              		  
-	AiStandalone(/*new WithOpenings("pk346962-openings1.dat", "pk346962-openings2.dat",*/ new MonteCarloTreeSearch(new RouletteSearch(naive1, 1),
-                  		  			new RouletteSearch(naive2, 1),
+	AiStandalone(/*std::make_unique<WithOpenings>("pk346962-openings1.dat", "pk346962-openings2.dat",*/ std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1),
+                  		  			std::make_unique<RouletteSearch>(naive2, 1),
                   		  			1, 1, naive1, 0.0, 0.0, 10000.0,
-                  		  			new timing::Uniform(3.0, 30), 0))/*)*/.run();
+                  		  			std::make_unique<timing::Uniform>(3.0, 30), 0))/*)*/.run();
 	return 0;
 }

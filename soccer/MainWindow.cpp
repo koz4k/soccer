@@ -2,6 +2,6 @@
 
 MainWindow::MainWindow()
 {
-	CtrlLayout(*this, "Piłka");
+	CtrlLayout(*this, "Paper soccer");
 	Sizeable();
 }

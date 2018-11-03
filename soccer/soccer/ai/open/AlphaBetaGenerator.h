@@ -6,6 +6,7 @@
 #include "YourMove.h"
 #include "../../core.h"
 #include "../AlphaBeta.h"
+#include <memory>
 
 namespace soccer { namespace ai { namespace open {
 	
@@ -13,14 +14,13 @@ class AlphaBetaGenerator
 {
   public:
   	AlphaBetaGenerator(int depth, int limit, Heuristic heuristic);
-  	~AlphaBetaGenerator();
-  	Move* generate(bool meFirst, double confidence);
+    std::unique_ptr<Move> generate(bool meFirst, double confidence);
   	
   private:
-  	MyMove* generateMyMove_(GameState& state, int depth);
-  	YourMove* generateYourMove_(GameState& state, int depth);
+    std::unique_ptr<Move> generateMyMove_(GameState& state, int depth);
+  	std::unique_ptr<Move> generateYourMove_(GameState& state, int depth);
   
-  	AlphaBeta* ai_;
+    std::unique_ptr<AlphaBeta> ai_;
   	int depth_;
   	int limit_;
   	double confidence_;

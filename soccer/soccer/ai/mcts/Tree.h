@@ -5,6 +5,7 @@
 #include "../../Ai.h"
 #include "../../core.h"
 #include <unordered_set>
+#include <memory>
 
 namespace soccer { namespace ai { namespace mcts {
 	
@@ -12,14 +13,13 @@ class Tree
 {
   public:
   	Tree(Player me);
-  	~Tree();
   	void playout(GameState& state, Ai* ai1, Ai* ai2);
   	Direction chooseMove();
   	void chooseMoveSequence(std::list<Direction>& moveSequence);
 	//void print();
 	bool isSolved() const;
-	Tree* releaseSon(Direction direction);
-	Tree* move(Direction direction);
+    std::unique_ptr<Tree> releaseSon(Direction direction);
+    std::unique_ptr<Tree> move(Direction direction);
 	bool isWinning() const;
 	Player getMe() const;
 	void contribute(double* results);
@@ -49,7 +49,7 @@ class Tree
   	int ravePlays_;
   	mutable double bias_;
   	Player me_;
-  	Tree* sons_[DIR_END];
+    std::unique_ptr<Tree> sons_[DIR_END];
 };
 	
 } } }

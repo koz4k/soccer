@@ -4,14 +4,9 @@
 
 namespace soccer {
 
-AiStandalone::AiStandalone(Ai* ai):
-	ai_(ai), endTime_(0), initialized_(false)
+AiStandalone::AiStandalone(std::unique_ptr<Ai> ai):
+	ai_(std::move(ai)), endTime_(0), initialized_(false)
 {
-}
-
-AiStandalone::~AiStandalone()
-{
-	delete ai_;
 }
 
 void AiStandalone::run()

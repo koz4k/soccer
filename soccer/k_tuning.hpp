@@ -20,10 +20,9 @@ using namespace heur;
 int main()
 {
 	contest::TwoTeam theContest(2500, 1, true);
-	//contest::Full theContest(true, true);
 	
-	theContest.addAi("alpha beta 10", new AlphaBeta(naive1, 10),
-					 		    	  new AlphaBeta(naive2, 10));
+	theContest.addAi("alpha beta 10", std::make_unique<AlphaBeta>(naive1, 10),
+					 		    	  std::make_unique<AlphaBeta>(naive2, 10));
 	
 	/*const double RS[] = {0, 10, 20, 30, 50, 100}; // najlepsze: 10
 	const int R_COUNT = 6;*/
@@ -37,17 +36,17 @@ int main()
 	{
 		std::stringstream str;
 		str << "mcts " << KS[i];
-		theContest.addAi(str.str(), new MonteCarloTreeSearch(new DeepMaxOfFewSearch(naive1, KS[i]),
-	                              		  				     new DeepMaxOfFewSearch(naive2, KS[i]),
-	                              		  				     1, 0.5, ReboundAwareNaive(36.0, PLAYER_1), 0.02, 0.3,
-	                              		  				     new timing::Uniform(4.0, 2)),
-	                                new MonteCarloTreeSearch(new DeepMaxOfFewSearch(naive1, KS[i]),
-	                              		  				     new DeepMaxOfFewSearch(naive2, KS[i]),
-	                              		  				     1, 0.5, ReboundAwareNaive(36.0, PLAYER_2), 0.02, 0.3,
-	                              		  				     new timing::Uniform(4.0, 2)));
+		theContest.addAi(str.str(), std::make_unique<MonteCarloTreeSearch>(std::make_unique<DeepMaxOfFewSearch>(naive1, KS[i]),
+	                              		  				     std::make_unique<DeepMaxOfFewSearch>(naive2, KS[i]),
+	                              		  				     1, 0.5, ReboundAwareNaive(36.0, PLAYER_1), 0.02, 0.3, 1e5,
+	                              		  				     std::make_unique<timing::Uniform>(4.0, 2), 0),
+	                                std::make_unique<MonteCarloTreeSearch>(std::make_unique<DeepMaxOfFewSearch>(naive1, KS[i]),
+	                              		  				     std::make_unique<DeepMaxOfFewSearch>(naive2, KS[i]),
+	                              		  				     1, 0.5, ReboundAwareNaive(36.0, PLAYER_2), 0.02, 0.3, 1e5,
+	                              		  				     std::make_unique<timing::Uniform>(4.0, 2), 0));
 	}
 	
-	theContest.run(100);
+	theContest.run(10);
 	std::cout << theContest << std::endl;
 	
 	return 0;

@@ -3,11 +3,12 @@
 
 #include "Move.h"
 #include <string>
+#include <memory>
 
 namespace soccer { namespace ai { namespace open {
 
-const Move* load(const std::string& fileName);
-void save(Move* move, const std::string& fileName);
+std::unique_ptr<Move> load(const std::string& fileName);
+void save(std::unique_ptr<Move> move, const std::string& fileName);
 
 } } }
 

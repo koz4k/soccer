@@ -7,7 +7,6 @@
 #include "soccer/ai/heur/ReboundAwareNaive.h"
 #include "soccer/ai/heur/naive.h"
 #include "soccer/timing/Uniform.h"
-#include "soccer/ai/OldMcts.h"
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -19,20 +18,20 @@ using namespace soccer;
 using namespace ai;
 using namespace heur;
 
-Ai* buildMcts1(double param, int playouts)
+std::unique_ptr<Ai> buildMcts1(double param, int playouts)
 {
-	return new MonteCarloTreeSearch(new RouletteSearch(naive1, 1),
-                  		  			new RouletteSearch(naive2, 1),
+	return std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1),
+                  		  			std::make_unique<RouletteSearch>(naive2, 1),
                   		  			1, 1, naive1, 0.01, 0.1, 1e5,
-                  		  			new timing::Uniform(param, 2), playouts);
+                  		  			std::make_unique<timing::Uniform>(param, 2), playouts);
 }
 
-Ai* buildMcts2(double param, int playouts)
+std::unique_ptr<Ai> buildMcts2(double param, int playouts)
 {
-	return new MonteCarloTreeSearch(new RouletteSearch(naive1, 1),
-                  		  			new RouletteSearch(naive2, 1),
+	return std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1),
+                  		  			std::make_unique<RouletteSearch>(naive2, 1),
                   		  			1, 1, naive2, 0.01, 0.1, 1e5,
-                  		  			new timing::Uniform(param, 2), playouts);
+                  		  			std::make_unique<timing::Uniform>(param, 2), playouts);
 }
 
 void runContest(int t, int depth, int playouts, int repetitions)
@@ -40,8 +39,8 @@ void runContest(int t, int depth, int playouts, int repetitions)
 	contest::TwoTeam theContest(t, 1, true);
 	/*std::stringstream str;
 	str << "alpha beta " << depth;
-	theContest.addAi(str.str(), new AlphaBeta(naive1, depth),
-					 		   	new AlphaBeta(naive2, depth));*/
+	theContest.addAi(str.str(), std::make_unique<AlphaBeta>(naive1, depth),
+					 		   	std::make_unique<AlphaBeta>(naive2, depth));*/
 	
 	const double PARAMS[] = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0};
 	const int PARAM_COUNT = 6;

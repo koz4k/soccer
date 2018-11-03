@@ -2,32 +2,19 @@
 
 namespace soccer { namespace ai { namespace open {
 
-YourMove::YourMove()
-{
-	for(int i = 0; i < DIR_END; ++i)
-		moves_[i] = nullptr;
-}
-
-YourMove::~YourMove()
-{
-	for(int i = 0; i < DIR_END; ++i)
-		delete moves_[i];
-}
-
 bool YourMove::isMyTurn() const
 {
 	return false;
 }
 
-void YourMove::setMove(Direction direction, const Move* move)
+void YourMove::setMove(Direction direction, std::unique_ptr<Move> move)
 {
-	delete moves_[direction];
-	moves_[direction] = move;
+	moves_[direction] = std::move(move);
 }
 
-const Move* YourMove::advance(Direction direction) const
+std::unique_ptr<Move> YourMove::advance(Direction direction)
 {
-	return moves_[direction];
+	return std::move(moves_[direction]);
 }
 	
 } } }

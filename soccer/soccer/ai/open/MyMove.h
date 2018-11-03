@@ -3,21 +3,21 @@
 
 #include "Move.h"
 #include "../../core.h"
+#include <memory>
 
 namespace soccer { namespace ai { namespace open {
 	
 class MyMove: public Move
 {
   public:
-  	MyMove(Direction direction, const Move* move);
-  	virtual ~MyMove();
+  	MyMove(Direction direction, std::unique_ptr<Move> move);
   	virtual bool isMyTurn() const;
   	Direction getDirection() const;
-  	const Move* advance() const;
+    std::unique_ptr<Move> advance();
   	
   private:
   	Direction direction_;
-  	const Move* move_;
+    std::unique_ptr<Move> move_;
 };
 	
 } } }

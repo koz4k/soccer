@@ -68,8 +68,6 @@ list ( APPEND HEADER_LIST
       conversion.h
       AiVsAi.h
       PlayerVsAi.h
-      soccer/ai/mcts/OldTree.h
-      soccer/ai/OldMcts.h
       soccer/ai/heur/SimpleMonteCarlo.h
       soccer/timing/Uniform.h
       soccer/TimingStrategy.h
@@ -114,8 +112,6 @@ list ( APPEND SOURCE_LIST_CPP
       main.cpp
       conversion.cpp
       AiVsAi.cpp
-      soccer/ai/mcts/OldTree.cpp
-      soccer/ai/OldMcts.cpp
       soccer/ai/heur/SimpleMonteCarlo.cpp
       soccer/timing/Uniform.cpp
       soccer/Judge.cpp

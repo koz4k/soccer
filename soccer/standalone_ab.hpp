@@ -9,6 +9,6 @@ using namespace heur;
 
 int main()
 {
-	AiStandalone(new AlphaBeta(naive1, 13)).run();
+	AiStandalone(std::make_unique<AlphaBeta>(naive1, 13)).run();
 	return 0;
 }

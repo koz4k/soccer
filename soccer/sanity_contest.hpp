@@ -21,18 +21,18 @@ int main()
 	{
 		contest::TwoTeam theContest(6000, 1, true);
 		
-		theContest.addAi("mcts 10000", new MonteCarloTreeSearch(new RouletteSearch(naive1, 1.6),
-		                              		  			  new RouletteSearch(naive2, 1.6),
+		theContest.addAi("mcts 10000", std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1.6),
+		                              		  			  std::make_unique<RouletteSearch>(naive2, 1.6),
 		                              		  			  1, 0.5, naive1, 0, 1, 1e9,
-		                              		  			  new timing::Uniform(5.0, 2), 10000),
-		                         new MonteCarloTreeSearch(new RouletteSearch(naive1, 1.6),
-		                              		  			  new RouletteSearch(naive2, 1.6),
+		                              		  			  std::make_unique<timing::Uniform>(5.0, 2), 10000),
+		                         std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1.6),
+		                              		  			  std::make_unique<RouletteSearch>(naive2, 1.6),
 		                              		  			  1, 0.5, naive2, 0, 1, 1e9,
-		                              		  			  new timing::Uniform(5.0, 2), 10000));
+		                              		  			  std::make_unique<timing::Uniform>(5.0, 2), 10000));
 		
-		theContest.addAi("alpha beta 5", new AlphaBeta(naive1, 5), new AlphaBeta(naive2, 5));
-		theContest.addAi("alpha beta 8", new AlphaBeta(naive1, 8), new AlphaBeta(naive2, 8));
-		theContest.addAi("alpha beta 10", new AlphaBeta(naive1, 10), new AlphaBeta(naive2, 10));
+		theContest.addAi("alpha beta 5", std::make_unique<AlphaBeta>(naive1, 5), std::make_unique<AlphaBeta>(naive2, 5));
+		theContest.addAi("alpha beta 8", std::make_unique<AlphaBeta>(naive1, 8), std::make_unique<AlphaBeta>(naive2, 8));
+		theContest.addAi("alpha beta 10", std::make_unique<AlphaBeta>(naive1, 10), std::make_unique<AlphaBeta>(naive2, 10));
 		
 		theContest.run(100);
 		std::cout << theContest << std::endl;
@@ -41,16 +41,16 @@ int main()
 	{
 		contest::TwoTeam theContest(6000, 1, true);
 		
-		theContest.addAi("mcts 10000", new MonteCarloTreeSearch(new RouletteSearch(naive1, 1.6),
-		                              		  			  new RouletteSearch(naive2, 1.6),
+		theContest.addAi("mcts 10000", std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1.6),
+		                              		  			  std::make_unique<RouletteSearch>(naive2, 1.6),
 		                              		  			  1, 0.5, naive1, 0, 1, 1e9,
-		                              		  			  new timing::Uniform(5.0, 2), 10000),
-		                         new MonteCarloTreeSearch(new RouletteSearch(naive1, 1.6),
-		                              		  			  new RouletteSearch(naive2, 1.6),
+		                              		  			  std::make_unique<timing::Uniform>(5.0, 2), 10000),
+		                         std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1.6),
+		                              		  			  std::make_unique<RouletteSearch>(naive2, 1.6),
 		                              		  			  1, 0.5, naive2, 0, 1, 1e9,
-		                              		  			  new timing::Uniform(5.0, 2), 10000));
+		                              		  			  std::make_unique<timing::Uniform>(5.0, 2), 10000));
 		
-		theContest.addAi("alpha beta 13", new AlphaBeta(naive1, 13), new AlphaBeta(naive2, 13));
+		theContest.addAi("alpha beta 13", std::make_unique<AlphaBeta>(naive1, 13), std::make_unique<AlphaBeta>(naive2, 13));
 		
 		theContest.run(50);
 		std::cout << theContest << std::endl;
@@ -59,16 +59,16 @@ int main()
 	{
 		contest::TwoTeam theContest(6000, 1, true);
 		
-		theContest.addAi("mcts 20000", new MonteCarloTreeSearch(new RouletteSearch(naive1, 1.6),
-		                              		  			  new RouletteSearch(naive2, 1.6),
+		theContest.addAi("mcts 20000", std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1.6),
+		                              		  			  std::make_unique<RouletteSearch>(naive2, 1.6),
 		                              		  			  1, 0.5, naive1, 0, 1, 1e9,
-		                              		  			  new timing::Uniform(5.0, 2), 20000),
-		                         new MonteCarloTreeSearch(new RouletteSearch(naive1, 1.6),
-		                              		  			  new RouletteSearch(naive2, 1.6),
+		                              		  			  std::make_unique<timing::Uniform>(5.0, 2), 20000),
+		                         std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1.6),
+		                              		  			  std::make_unique<RouletteSearch>(naive2, 1.6),
 		                              		  			  1, 0.5, naive2, 0, 1, 1e9,
-		                              		  			  new timing::Uniform(5.0, 2), 20000));
+		                              		  			  std::make_unique<timing::Uniform>(5.0, 2), 20000));
 		
-		theContest.addAi("alpha beta 13", new AlphaBeta(naive1, 13), new AlphaBeta(naive2, 13));
+		theContest.addAi("alpha beta 13", std::make_unique<AlphaBeta>(naive1, 13), std::make_unique<AlphaBeta>(naive2, 13));
 		
 		theContest.run(30);
 		std::cout << theContest << std::endl;

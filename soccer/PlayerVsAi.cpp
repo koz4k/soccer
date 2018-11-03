@@ -3,8 +3,8 @@
 using namespace soccer;
 using namespace Upp;
 
-PlayerVsAi::PlayerVsAi(Ai* ai, int boardWidth, int boardHeight):
-	ai_(ai), finished_(false)
+PlayerVsAi::PlayerVsAi(std::unique_ptr<Ai> ai, int boardWidth, int boardHeight):
+	ai_(std::move(ai)), finished_(false)
 {
 	window_.board.Initialize(Size(boardWidth, boardHeight));
 
@@ -12,12 +12,7 @@ PlayerVsAi::PlayerVsAi(Ai* ai, int boardWidth, int boardHeight):
 	window_.board.WhenFullMove = THISBACK(WhenFullMove_);
 	window_.board.WhenGameOver = THISBACK(WhenGameOver_);
 	
-	window_.whoseTurn.SetLabel("Gracz");
-}
-
-PlayerVsAi::~PlayerVsAi()
-{
-	delete ai_;
+	window_.whoseTurn.SetLabel("Player");
 }
 
 void PlayerVsAi::Run()
@@ -30,13 +25,13 @@ const char* GetPlayerIndicator(Player player)
 	switch(player)
 	{
 	  case PLAYER_1:
-	  	return "Gracz";
+	  	return "Player";
 	  
 	  case PLAYER_2:
-	  	return "Komputer";
+	  	return "Computer";
 	  
 	  default:
-	  	return "Błąd";
+	  	return "Error";
 	}
 }
 
@@ -78,7 +73,7 @@ void PlayerVsAi::WhenFullMove_(GameState& state)
 		if(state.canMove(direction))
 			state.move(direction);
 		else
-			PromptOK("nieprawidłowy ruch: " + FormatInt(direction));
+			PromptOK("illegal move: " + FormatInt(direction));
 
 		Sleep(300);
 	}
@@ -88,5 +83,5 @@ void PlayerVsAi::WhenFullMove_(GameState& state)
 
 void PlayerVsAi::WhenGameOver_(const GameState& state)
 {
-	PromptOK(state.whoWon() == PLAYER_1 ? "Wygrałeś!" : "Przegrałeś!");
+	PromptOK(state.whoWon() == PLAYER_1 ? "You won!" : "You lost!");
 }

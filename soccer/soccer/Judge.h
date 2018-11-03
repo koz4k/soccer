@@ -16,7 +16,6 @@ class Judge
   	void reset();
   
   private:
-  	// nie zwalnia Ai-ow
   	Ai* player1_;
   	Ai* player2_;
   	int matchTime_;

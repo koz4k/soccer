@@ -3,10 +3,13 @@
 using namespace soccer;
 using namespace Upp;
 
-AiVsAi::AiVsAi(std::string ai1Name, Ai* ai1, std::string ai2Name, Ai* ai2,
+AiVsAi::AiVsAi(std::string ai1Name, std::unique_ptr<Ai> ai1,
+        std::string ai2Name, std::unique_ptr<Ai> ai2,
 			   int boardWidth, int boardHeight):
-	judge_(ai1, ai2, boardWidth, boardHeight)
+	judge_(ai1.get(), ai2.get(), boardWidth, boardHeight)
 {
+    ais_[0] = std::move(ai1);
+    ais_[1] = std::move(ai2);
 	aiNames_[0] = std::move(ai1Name);
 	aiNames_[1] = std::move(ai2Name);
 	window_.board.Initialize(Upp::Size(boardWidth, boardHeight));
@@ -30,7 +33,7 @@ void AiVsAi::Run()
 		Sleep(300);
 	}
 	
-	PromptOK("Wygrał " + String(state.whoWon() == PLAYER_1 ? aiNames_[0] : state.whoWon() == PLAYER_2 ? aiNames_[1] : "nikt"));
+	PromptOK(String(state.whoWon() == PLAYER_1 ? aiNames_[0] : state.whoWon() == PLAYER_2 ? aiNames_[1] : "no one") + " won");
 	
 	window_.Run();
 }

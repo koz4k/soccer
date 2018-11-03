@@ -17,28 +17,28 @@ using namespace soccer;
 using namespace ai;
 using namespace heur;
 
-Ai* buildNaiveMcts(int playouts)
+std::unique_ptr<Ai> buildNaiveMcts(int playouts)
 {
-	return new MonteCarloTreeSearch(new RouletteSearch(naive1, 1),
-                  		  			new RouletteSearch(naive2, 1),
+	return std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1),
+                  		  			std::make_unique<RouletteSearch>(naive2, 1),
                   		  			1, 1, naive1, 0, 0, 1e9,
-                  		  			new timing::Uniform(4.0, 2), playouts);
+                  		  			std::make_unique<timing::Uniform>(4.0, 2), playouts);
 }
 
-Ai* buildSafeMcts(int playouts)
+std::unique_ptr<Ai> buildSafeMcts(int playouts)
 {
-	return new MonteCarloTreeSearch(new RouletteSearch(naive1, 1),
-                  		  			new RouletteSearch(naive2, 1),
+	return std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1),
+                  		  			std::make_unique<RouletteSearch>(naive2, 1),
                   		  			1, 1, safe1, 0, 0, 1e9,
-                  		  			new timing::Uniform(4.0, 2), playouts);
+                  		  			std::make_unique<timing::Uniform>(4.0, 2), playouts);
 }
 
-Ai* buildRiskyMcts(int playouts)
+std::unique_ptr<Ai> buildRiskyMcts(int playouts)
 {
-	return new MonteCarloTreeSearch(new RouletteSearch(risky1, 1),
-                  		  			new RouletteSearch(risky2, 1),
+	return std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(risky1, 1),
+                  		  			std::make_unique<RouletteSearch>(risky2, 1),
                   		  			1, 1, risky1, 0, 0, 1e9,
-                  		  			new timing::Uniform(4.0, 2), playouts);
+                  		  			std::make_unique<timing::Uniform>(4.0, 2), playouts);
 }
 
 int main()
@@ -57,12 +57,12 @@ int main()
 	{
 		contest::Full theContest(1000000, false, true);
 		
-		theContest.addAi("naive", new AlphaBeta(naive1, 13),
-						 		  new AlphaBeta(naive2, 13));
-		theContest.addAi("safe", new AlphaBeta(safe1, 13),
-						 		 new AlphaBeta(safe2, 13));
-		theContest.addAi("risky", new AlphaBeta(risky1, 13),
-						 		  new AlphaBeta(risky2, 13));
+		theContest.addAi("naive", std::make_unique<AlphaBeta>(naive1, 13),
+						 		  std::make_unique<AlphaBeta>(naive2, 13));
+		theContest.addAi("safe", std::make_unique<AlphaBeta>(safe1, 13),
+						 		 std::make_unique<AlphaBeta>(safe2, 13));
+		theContest.addAi("risky", std::make_unique<AlphaBeta>(risky1, 13),
+						 		  std::make_unique<AlphaBeta>(risky2, 13));
 		
 		theContest.run(32);
 		std::cout << theContest << std::endl;

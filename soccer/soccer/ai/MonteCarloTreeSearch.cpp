@@ -9,22 +9,16 @@ namespace soccer { namespace ai {
 
 using namespace mcts;
 
-MonteCarloTreeSearch::MonteCarloTreeSearch(Ai* playoutAi1, Ai* playoutAi2,
+MonteCarloTreeSearch::MonteCarloTreeSearch(std::unique_ptr<Ai> playoutAi1,
+                                           std::unique_ptr<Ai> playoutAi2,
 										   int n0, double c, Heuristic heuristic,
 										   double w, double lambda, double b,
-										   TimingStrategy* timing, int playoutCount):
-	playoutAi1_(playoutAi1), playoutAi2_(playoutAi2), n0_(n0), c_(c), heuristic_(heuristic),
-	w_(w), lambda_(lambda), b_(b), tree_(nullptr), timing_(timing), playoutCount_(playoutCount)
+										   std::unique_ptr<TimingStrategy> timing,
+                                           int playoutCount):
+	playoutAi1_(std::move(playoutAi1)), playoutAi2_(std::move(playoutAi2)), n0_(n0), c_(c), heuristic_(heuristic),
+	w_(w), lambda_(lambda), b_(b), timing_(std::move(timing)), playoutCount_(playoutCount)
 {
 	srand(time(nullptr));
-}
-
-MonteCarloTreeSearch::~MonteCarloTreeSearch()
-{
-	delete playoutAi1_;
-	delete playoutAi2_;
-	delete tree_;
-	delete timing_;
 }
 
 Direction MonteCarloTreeSearch::move(GameState& state, int ms
@@ -43,16 +37,14 @@ Direction MonteCarloTreeSearch::move(GameState& state, int ms
 	Tree::lambda = lambda_;
 	Tree::b = b_;
 
-//delete tree_;
-	
 	if(!tree_)
-		tree_ = new Tree(state.whoseTurn());
+		tree_ = std::make_unique<Tree>(state.whoseTurn());
 
 	GameState stateCopy = state;
 	int i = 0;
 	//for(; timing_->haveTime() && !tree_->isSolved(); ++i)
 	for(int i = 0; (playoutCount_ > 0 ? i < playoutCount_ : timing_->haveTime()) && !tree_->isSolved(); ++i)
-		tree_->playout(stateCopy, playoutAi1_, playoutAi2_);
+		tree_->playout(stateCopy, playoutAi1_.get(), playoutAi2_.get());
 	Direction direction = tree_->chooseMove();
 	
 	//printf("playouts: %d, direction: %d\n", i, direction);
@@ -91,8 +83,7 @@ void MonteCarloTreeSearch::opponentMoved(Direction direction)
 
 void MonteCarloTreeSearch::reset()
 {
-	delete tree_;
-	tree_ = nullptr;
+    tree_.reset();
 }
 	
 } }

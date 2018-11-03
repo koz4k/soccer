@@ -1,6 +1,7 @@
 #include "soccer/ai/open/AlphaBetaGenerator.h"
 #include "soccer/ai/open/io.h"
 #include "soccer/ai/heur/naive.h"
+#include <memory>
 #include <cmath>
 
 using namespace soccer;
@@ -24,12 +25,10 @@ int main(int argc, char* argv[])
 	}
 	
 	AlphaBetaGenerator gen(depth, limit, naive1);
-	Move* openings1 = gen.generate(true, confidence1);
-	Move* openings2 = gen.generate(false, confidence2);
-	save(openings1, out1);
-	save(openings2, out2);
-	delete openings1;
-	delete openings2;
+    std::unique_ptr<Move> openings1 = gen.generate(true, confidence1);
+    std::unique_ptr<Move> openings2 = gen.generate(false, confidence2);
+	save(std::move(openings1), out1);
+	save(std::move(openings2), out2);
 	
 	return 0;
 }

@@ -24,26 +24,26 @@ int main(int argc, char* argv[])
 	
 	contest::Full theContest(4000, true, true);
 	
-	theContest.addAi("mcts", new MonteCarloTreeSearch(new RouletteSearch(naive1, 1),
-                  		  			new RouletteSearch(naive2, 1),
+	theContest.addAi("mcts", std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1),
+                  		  			std::make_unique<RouletteSearch>(naive2, 1),
                   		  			1, 1, naive1, 0.01, 0.1, 1e5,
-                  		  			new timing::Uniform(4.0, 2), 0),
-					 		    new MonteCarloTreeSearch(new RouletteSearch(naive1, 1),
-                  		  			new RouletteSearch(naive2, 1),
+                  		  			std::make_unique<timing::Uniform>(4.0, 2), 0),
+					 		    std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 1),
+                  		  			std::make_unique<RouletteSearch>(naive2, 1),
                   		  			1, 1, naive2, 0.01, 0.1, 1e5,
-                  		  			new timing::Uniform(4.0, 2), 0));
+                  		  			std::make_unique<timing::Uniform>(4.0, 2), 0));
 	theContest.run(8);
 	std::cout << theContest << std::endl;
 	
 	/*contest::Full theContest = contest::Full(0, true, true);
-	theContest.addAi("mcts 2800", new MonteCarloTreeSearch(new RouletteSearch(naive1, 3),
-                  		  			new RouletteSearch(naive2, 3),
+	theContest.addAi("mcts 2800", std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 3),
+                  		  			std::make_unique<RouletteSearch>(naive2, 3),
                   		  			1, 1, naive1, 0, 0, 1e9,
-                  		  			new timing::Uniform(4.0, 2), 2500),
-	                             new MonteCarloTreeSearch(new RouletteSearch(naive1, 3),
-                  		  			new RouletteSearch(naive2, 3),
+                  		  			std::make_unique<timing::Uniform>(4.0, 2), 2500),
+	                             std::make_unique<MonteCarloTreeSearch>(std::make_unique<RouletteSearch>(naive1, 3),
+                  		  			std::make_unique<RouletteSearch>(naive2, 3),
                   		  			1, 1, naive2, 0, 0, 1e9,
-                  		  			new timing::Uniform(4.0, 2), 2500));
+                  		  			std::make_unique<timing::Uniform>(4.0, 2), 2500));
 	theContest.run(8);
 	std::cout << theContest << std::endl;*/
 	

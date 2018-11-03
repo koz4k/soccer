@@ -11,19 +11,10 @@ Contest::Contest(Matches matches, int matchTime, bool verbose):
 {
 }
 
-Contest::~Contest()
+void Contest::addAi(std::string name, std::unique_ptr<Ai> ai1, std::unique_ptr<Ai> ai2)
 {
-	for(int i = 0; i < ais1_.size(); ++i)
-		delete ais1_[i];
-	
-	for(int i = 0; i < ais2_.size(); ++i)
-		delete ais2_[i];
-}
-
-void Contest::addAi(std::string name, Ai* ai1, Ai* ai2)
-{
-	ais1_.push_back(ai1);
-	ais2_.push_back(ai2);
+	ais1_.push_back(std::move(ai1));
+	ais2_.push_back(std::move(ai2));
 	names_.push_back(std::move(name));
 }
 
@@ -47,7 +38,7 @@ void Contest::run(int repetitions)
 			if(getData_(i, j) == std::make_pair(-1, -1))
 				getData_(i, j) = std::make_pair(0, 0);
 			
-			Judge judge(ais1_[i], ais2_[j], time_);
+			Judge judge(ais1_[i].get(), ais2_[j].get(), time_);
 			int wins = 0;
 			clock_t t = clock();
 			
